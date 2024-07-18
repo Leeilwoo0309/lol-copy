@@ -1,0 +1,29 @@
+:root {
+    --player-size: 30px;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    background-image: url(../imgs/stone-patch.png);
+    height: 900px;  
+}
+
+.player {
+    position: absolute;
+
+    width: var(--player-size);
+    height: var(--player-size);
+    border-radius: 100%;
+
+    background-color: black;
+}
+
+.enemy {
+    background-color: red;
+}
+
+.ally {
+    background-color: blue;
+}
