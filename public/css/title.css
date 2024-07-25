@@ -1,0 +1,96 @@
+@import url("https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css");
+
+body {
+    background: linear-gradient(135deg, rgb(251, 253, 255), rgb(218, 228, 240));
+    overflow: hidden;
+
+    font-family: 'NanumBarunGothic';
+    user-select: none;
+}
+
+main {
+    height: 50%;
+
+    border: 1px solid black;
+    border-radius: 30px;
+
+    background-color: rgb(242, 243, 245);
+}
+
+.char-selection {
+    height: 1000px;
+    /* grid-template-rows: repeat(3, 33%); */
+    /* display: grid;; */
+}
+
+.char-btn {
+    display: grid;
+    
+    height: 40px; width: 100px;
+    margin: 20px;
+    padding: 15px;
+    border: 4px solid black;
+    border-radius: 10px;
+
+    font-size: 20px;
+    color: white;
+    align-items: center;
+    justify-items: center;
+
+    /* background: linear-gradient(200deg, rgb(53, 53, 53), rgb(95, 99, 110)); */
+    background: rgb(0, 15, 46);
+
+    transition: all 200ms ease-out;
+    -webkit-transition: all 200ms ease-out;
+    -moz-transition: all 200ms ease-out;
+    -ms-transition: all 200ms ease-out;
+    -o-transition: all 200ms ease-out;
+}
+
+.char-btn:hover {
+    /* background: linear-gradient(150deg, rgb(119, 119, 119), rgb(10, 75, 255)); */
+    background: rgb(0, 46, 197);
+    box-shadow: rgb(5, 0, 68) 0px 0px 10px;
+}
+
+.char-btn.selected {
+    background: rgb(0, 60, 255);
+    box-shadow: rgb(5, 0, 68) 0px 0px 10px;
+}
+
+.selected-display {
+    text-align: center;
+    font-size: 25px;
+}
+
+.selected-display>b {
+    color: blue;
+}
+
+.selected-display>span {
+    color: rgb(163, 163, 163);
+}
+
+.description {
+    position: absolute;
+
+    top: 150px;
+    right: 50px;
+
+    height: 500px;
+    width: 500px;
+
+    border: 3px solid black;
+    border-radius: 10px;
+
+    background-color: white;
+}
+
+.description>p {
+    margin-bottom: -8px;
+    padding: 0px 10px 0px 20px;
+}
+
+.description>h2 {
+    padding-left: 20px;
+}

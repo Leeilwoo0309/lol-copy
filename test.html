@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champion Select</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0c0c0c;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .champion-select {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .selected-champion {
+            width: 200px;
+            height: 200px;
+            background-color: #222;
+            border: 2px solid #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .selected-champion img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .champion-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            max-width: 600px;
+        }
+        .champion {
+            width: 80px;
+            height: 80px;
+            background-color: #333;
+            border: 2px solid #555;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .champion img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="champion-select">
+        <div class="selected-champion" id="selectedChampion">
+            <span>Select a Champion</span>
+        </div>
+        <div class="champion-list">
+            <div class="champion" onclick="selectChampion('champion1.jpg')">
+                <img src="champion1.jpg" alt="Champion 1">
+            </div>
+            <div class="champion" onclick="selectChampion('champion2.jpg')">
+                <img src="champion2.jpg" alt="Champion 2">
+            </div>
+            <div class="champion" onclick="selectChampion('champion3.jpg')">
+                <img src="champion3.jpg" alt="Champion 3">
+            </div>
+            <!-- 추가 챔피언들을 여기에 추가 -->
+        </div>
+    </div>
+
+    <script>
+        function selectChampion(imageSrc) {
+            const selectedChampion = document.getElementById('selectedChampion');
+            selectedChampion.innerHTML = `<img src="${imageSrc}" alt="Selected Champion">`;
+        }
+    </script>
+</body>
+</html>

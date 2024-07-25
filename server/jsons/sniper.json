@@ -1,0 +1,39 @@
+{
+    "cn": "sniper",
+    "name": "스나이퍼",
+    "defaultSpec": {
+        "ad": 9,
+        "atkspd": 1.2,
+        "armor": 28,
+        "range": 600,
+        "projectileSpd": 25,
+        "moveSpd": 5.25,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 130,
+        "healthBoost": 1.2,
+        "vamp": 0
+    },
+    "skills": {
+        "Q": {
+            "damage": 20,
+            "cooldown": 500,
+            "ad": 50
+        },
+        "E": {
+
+        },
+        "LShift": {
+
+        },
+        "Wheel": {
+
+        }
+    },
+    "des": {
+        "Q": "대충 q스킬ㅇ",
+        "E": "대충 E스킬ㅇ",
+        "LShift": "대충 LShift스킬ㅇ",
+        "Wheel": "대충 휠스킬ㅇ"
+    }
+}

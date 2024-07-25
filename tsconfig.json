@@ -1,8 +1,9 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "ESNext",
         "rootDir": "./src/ts",
-        "outDir": "./src/js"
+        "outDir": "./src/js",
+        "moduleResolution": "Node"
     },
     "exclude": [
         "node_modules"

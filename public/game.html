@@ -9,19 +9,112 @@
 <body>
     <!-- 게임 플레이어들이 주로 보게 될 곳: main -->
     <main>
-        <div class="player enemy" style="top: 0px; left: 0px;"></div>
-        <div class="player ally" style="top: 0px; left: 0px;"></div>
+        <div class="projectiles"></div>
+        <div class="player enemy">
+            <div class="hp enemy">
+                <div class="hp-progress enemy"></div>
+            </div>
+        </div>
+        <div class="player checker"></div>
+        <div class="player ally">
+            <div class="hp ally">
+                <div class="hp-progress ally"></div>
+            </div>
+        </div>
     </main>
     <!-- 게임에 필요한 정보들을 표기할 부분: footer -->
     <footer>
-
+        <div class="items">
+            <div class="item-vault" id="vault-1"></div>
+            <div class="item-vault" id="vault-2"></div>
+            <div class="item-vault" id="vault-3"></div>
+            <div class="item-vault" id="vault-4"></div>
+            <div class="item-vault" id="vault-5"></div>
+            <div class="item-vault" id="vault-6"></div>
+            <div id="gold-div">
+                <p id="gold">0G</p>
+            </div>
+        </div>
+        <div class="spec">
+            <p>공격력: n</p>
+            <p>공격 속도: n</p>
+            <p>방어력: n</p>
+            <p>사거리: n</p>
+        </div>
+        <div class="status">
+            <div class="skill">
+                <div class="passive-btn">P</div>
+                <div class="skill-btn">Q</div>
+                <div class="skill-btn">E</div>
+                <div class="skill-btn">X</div>
+                <div class="skill-btn">C</div>
+            </div>
+            <div class="hp-mana">
+                <div class="hp-status">
+                    <div class="hp-bar hp-progress ally"></div>
+                    <p id="now-hp">100 / 100</p>
+                </div>
+                <div class="cost-status">
+                    <div class="cost-bar"></div>
+                </div>
+            </div>
+        </div>
     </footer>
     
+    <div id="shop" style="display: none;">
+        <div id="list">
+            <div id="item-selling-1" class="item">
+                <p class="price">G1500</p>
+            </div>
+            <div id="item-selling-2" class="item">
+                <p class="price">G3400</p>
+            </div>
+            <div id="item-selling-3" class="item">
+                <p class="price">G300</p>
+            </div>
+            <div id="item-selling-4" class="item">
+                <p class="price">G50</p>
+            </div>
+            <div id="item-selling-5" class="item">
+                <p class="price">G4444</p>
+            </div>
+        </div>
+        <div id="buy-info">
+            <div id="result-div">
+                <div id="result" class="item">
+                    <p class="price">G3400</p>
+                </div>
+            </div>
+            <p>하위 아이템들</p>
+            <div id="need-items">
+                <div id="need-item-1" class="item">
+                    <p class="price">G3400</p>
+                </div>
+                <div id="need-item-2" class="item">
+                    <p class="price">G3400</p>
+                </div>
+                <div id="need-item-3" class="item">
+                    <p class="price">G3400</p>
+                </div>
+            </div>
+            <div id="item-des">
+                <p>공격력: n</p>
+                <p>치명타 확률: n</p>
+                <p>추가 치명타 피해량: n</p>
+            </div>
+        </div>
+        <div id="shop-exit-btn">X</div>
+    </div>
+    
     <script src="../src/js/game/engine/object.js"></script>
+    <script src="../src/js/game/engine/item.js"></script>
+    <script src="../src/js/game/engine/projectile.js"></script>
 
     <script src="../src/js/game/variables.js"></script>
     <script src="../src/js/game/game.js"></script>
+    <script src="../src/js/game/shop.js"></script>
     <script src="../src/js/game/update.js"></script>
+    <script src="../src/js/game/server.js"></script>
     <script src="../src/js/modules/controlPlayer.js"></script>
 
 </body>

@@ -1,13 +1,17 @@
+@import url("https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css");
 :root {
     --player-size: 30px;
 }
 
 body {
+    user-select: none;
+    font-family: 'NanumBarunGothic';
     padding: 0;
     margin: 0;
     overflow: hidden;
-    background-image: url(../imgs/stone-patch.png);
-    height: 900px;  
+    /* background-image: url(../assets/imgs/stone-patch.png); */
+    background-color: rgb(223, 223, 223);
+    height: 900px;
 }
 
 .player {
@@ -26,4 +30,342 @@ body {
 
 .ally {
     background-color: blue;
+}
+
+.checker {
+    opacity: 0%;
+    background-color: gray;
+}
+
+.hp {
+    margin-left: -4px;
+    margin-top: -20px;
+    border: 1px solid black;
+    border-radius: 3px;
+
+    width: 35px;
+    height: 10px;
+    
+    background-color: black;
+}
+
+
+.hp-progress {
+    width: 80%;
+    height: 100%;
+    
+    background-color: yellowgreen;
+}
+
+#now-hp {
+    padding: 0;
+    margin: 0;
+    margin-top: -16.5px;
+    margin-left: auto;
+    
+    text-align: center;
+
+    color: rgb(255, 255, 255);
+}
+
+.status {
+    position: absolute;
+    display: grid;
+
+    grid-template-rows: 70% 30%;
+
+    bottom: 0;
+
+    width: 600px;
+    height: 150px;
+
+    border-radius: 20px 20px 0px 0px;
+
+    background-color: rgb(17, 31, 41);
+}
+
+.skill {
+    display: grid;
+
+    grid-template-columns: 15% 20% 20% 20% 20%;
+    /* align-items: center; */
+    justify-items: center;
+}
+
+.skill-btn {
+    align-content: center;
+
+    height: 65px;
+    width: 65px;
+
+    margin-top: 25px;
+    border-radius: 5px;
+
+    background-color: rgb(144, 148, 167);
+
+    text-align: center;
+    font-size: 30px;
+}
+
+.passive-btn {
+    align-content: center;
+
+    height: 40px;
+    width: 40px;
+
+    margin-top: 37.5px;
+    margin-left: 15px;
+    border-radius: 5px;
+
+    background-color: rgb(144, 148, 167);
+
+    text-align: center;
+    font-size: 30px;
+}
+
+.hp-mana {
+    width: 600px;
+}
+
+.hp-status {
+    width: 500px;
+    height: 15px;
+    
+    margin-left: auto; margin-right: auto;
+    border-radius: 5px;
+    
+    background-color: rgb(0, 0, 0);
+}
+
+.hp-bar {
+    width: 500px;
+    height: 15px;
+    
+    /* margin-left: auto; margin-right: auto; */
+    border-radius: 5px;
+    
+    background-color: rgb(35, 209, 0);
+}
+
+.cost-status {
+    width: 500px;
+    height: 15px;
+    
+    margin-left: auto; margin-right: auto;
+    margin-top: 5px;
+    border-radius: 5px;
+    
+    background-color: white;
+}
+
+.cost-bar {
+    width: 500px;
+    height: 15px;
+    
+    margin-left: auto; margin-right: auto;
+    border-radius: 5px;
+    
+    background-color: rgb(0, 150, 209);
+}
+
+.items {
+    position: absolute;
+    display: grid;
+    padding-left: 15px; padding-right: 0px;
+
+    grid-template-columns: 30% 30% 30%;
+    grid-template-rows: 35% 35%;
+
+    bottom: 0;
+
+    border-radius: 12px 12px 0px 0px;
+
+    height: 140px;
+    width: 200px;
+
+    background-color: rgb(30, 59, 80);
+}
+
+.item-vault {
+    margin: 10px;
+    border-radius: 3px;
+
+    height: 40px;
+    width: 40px;
+
+    background-color: rgb(74, 107, 134);
+}
+
+#gold {
+    margin-top: 1px;
+
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+#gold-div {
+    width: 180px;
+    height: 25px;
+
+    margin: 8px;
+    margin-left: auto; margin-right: auto;
+    border-radius: 5px;
+
+    background-color: rgb(6, 21, 32);
+}
+
+.spec {
+    position: absolute;
+    overflow-y: scroll;
+
+    scroll-margin-right: -5px;
+
+    width: 140px;
+    height: 130px;
+    
+    bottom: 0;
+
+    padding: 0px 15px 0px 15px;
+    border-radius: 10px 0px 0px 0px;
+    
+    background-color: rgb(30, 59, 80);
+}
+
+.spec::-webkit-scrollbar {
+    width: 10px;
+    background-color: red;
+}
+
+.spec::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgb(212, 212, 212);
+}
+
+.spec::-webkit-scrollbar-track {
+    background-color: rgb(30, 59, 80);
+}
+
+.spec>p {
+    margin-bottom: 0px;
+    margin-top: 10px;
+    
+    color: white;
+}
+
+#shop {
+    position: absolute;
+    display: grid;
+
+    grid-template-columns: 70% 30%;
+
+    width: 1200px;
+    height: 800px;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border-radius: 10px;
+
+    background-color: rgb(16, 37, 51);
+}
+
+#shop>#list {
+    display: grid;
+
+    grid-template-columns: repeat(10, 9%);
+    grid-template-rows: repeat(7, 100px);
+
+    padding: 30px;
+    border-right: 1px solid white;
+}
+
+.item {
+    background-color: rgb(201, 238, 255);
+    background-size: 50px;
+
+    width: 50px;
+    height: 50px;
+
+    margin: 5px;
+    margin-bottom: 40px;
+    border: 1px solid white;
+    border-radius: 5px;
+
+    text-align: center;
+}
+
+.price {
+    margin-top: 55px;
+
+    color: white;
+}
+
+#shop-exit-btn {
+    position: absolute;
+
+    right: 0;
+
+    padding: 3px 10px 3px 10px;
+    border-radius: 0px 10px 0px 10px;
+
+    background-color: red;
+    color: white;
+}
+
+#result {
+    margin-left: auto; margin-right: auto;
+    margin-top: 100px;
+
+    
+}
+
+#buy-info>p {
+    margin-top: 50px;
+    margin-left: 30px;
+
+    color: white;
+}
+
+#need-items {
+    display: grid;
+
+    margin-left: 30px;
+    margin-right: 30px;
+    padding: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+
+
+    grid-template-columns: repeat(3, 33%);
+}
+
+#need-items>div {
+    margin-left: auto; margin-right: auto;
+}
+
+#result-div {
+    display: grid;
+}
+
+#item-des {
+    margin: 50px;
+    color: white;
+}
+
+.bullet {
+    --bullet-size: 20px;
+
+    position: absolute;
+    height: var(--bullet-size); width: var(--bullet-size);
+    border-radius: 100%;
+}
+
+.enemy.bullet {
+    background-color: rgb(180, 0, 0);
+}
+
+.ally.bullet {
+    background-color: rgb(0, 0, 180);
 }

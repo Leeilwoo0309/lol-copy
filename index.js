@@ -13,7 +13,7 @@ function createWindow () {
         }
     });
 
-    win.loadFile('public/game.html');
+    win.loadFile('public/title.html');
 }
 
 app.on('ready',createWindow)

@@ -24,11 +24,41 @@ type Players = {
 
 type PlayerDeclare = {
     size: number,
-    moveSpd: number,
-    selector: HTMLDivElement
+    selector: HTMLDivElement,
+    hp: [number, number],
+    spec: Ability,
+    specItem: Ability,
+    specINIT: Ability,
+    gold: number,
+    items: Item[],
 }
 
 type AbsolutePosition = {
     ally: {x: number, y: number},
     enemy: {x: number, y: number}
+}
+
+type ItemData = {
+    name: [string, string],
+    price: number,
+    lower: string[],
+    higher: string[],
+    ability: Ability,
+};
+
+type Ability = {
+    range?: number,
+    moveSpd?: number,
+    ad?: number,
+    ap?: number,
+    atkspd?: number,
+    projectileSpd?: number,
+    health?: number,
+    healthBoost?: number,
+    armor?: number,
+    vamp?: number,
+    criticP?: number,
+    criticD?: number,
+    mana?: number,
+    manaR?: number
 }

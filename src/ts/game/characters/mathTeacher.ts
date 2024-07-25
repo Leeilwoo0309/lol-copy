@@ -1,0 +1,1 @@
+const mathTeacher = new Char();

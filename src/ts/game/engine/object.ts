@@ -4,6 +4,7 @@ class GameObject {
     public style: {color: string} = {color: 'rgb(80, 80, 80)'};
     public objSelector: HTMLDivElement;
     public INIT: {position: ObjPosition, size: ObjSize} = {position: {x: 0, y: 0}, size: {height: 0, width: 0}};
+    public event = {onclick: undefined};
 
     public isCollide(subjectDiv: HTMLDivElement): boolean {
         const rect1 = subjectDiv.getBoundingClientRect();
@@ -17,12 +18,24 @@ class GameObject {
         );
     }
 
+    public onClick(callback: () => void) {
+        this.event.onclick = callback;
+
+        this.objSelector.addEventListener('click', () => { callback() });
+        this.objSelector.addEventListener('mouseenter', () => { game.style.cursor = 'pointer'; });
+        this.objSelector.addEventListener('mouseleave', () => { game.style.cursor = ''; });
+
+        return this;
+    }
+
     public start() {
         this.INIT = {position: this.position, size: this.size}
 
         setInterval(() => {
             this.update();
-        }, 16)
+        }, 16);
+
+        if (this.event.onclick) this.onClick(this.event.onclick);
     }
 
     private update() {

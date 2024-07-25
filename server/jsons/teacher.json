@@ -1,0 +1,39 @@
+{
+    "cn": "teacher",
+    "name": "교사",
+    "defaultSpec": {
+        "ad": 7,
+        "atkspd": 1.5,
+        "armor": 30,
+        "range": 500,
+        "projectileSpd": 15,
+        "moveSpd": 5.5,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 150,
+        "healthBoost": 1,
+        "vamp": 0
+    },
+    "skills": {
+        "Q": {
+            "damage": 20,
+            "cooldown": 500,
+            "ad": 50
+        },
+        "E": {
+
+        },
+        "LShift": {
+
+        },
+        "Wheel": {
+
+        }
+    },
+    "des": {
+        "Q": "대충 q스킬ㅇ",
+        "E": "대충 E스킬ㅇ",
+        "LShift": "대충 LShift스킬ㅇ",
+        "Wheel": "대충 휠스킬ㅇ"
+    }
+}

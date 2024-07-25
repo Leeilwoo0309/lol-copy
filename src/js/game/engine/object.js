@@ -3,6 +3,7 @@ var GameObject = /** @class */ (function () {
         this.position = { x: 0, y: 0 };
         this.style = { color: 'rgb(80, 80, 80)' };
         this.INIT = { position: { x: 0, y: 0 }, size: { height: 0, width: 0 } };
+        this.event = { onclick: undefined };
     }
     GameObject.prototype.isCollide = function (subjectDiv) {
         var rect1 = subjectDiv.getBoundingClientRect();
@@ -12,12 +13,21 @@ var GameObject = /** @class */ (function () {
             rect1.bottom < rect2.top ||
             rect1.top > rect2.bottom);
     };
+    GameObject.prototype.onClick = function (callback) {
+        this.event.onclick = callback;
+        this.objSelector.addEventListener('click', function () { callback(); });
+        this.objSelector.addEventListener('mouseenter', function () { game.style.cursor = 'pointer'; });
+        this.objSelector.addEventListener('mouseleave', function () { game.style.cursor = ''; });
+        return this;
+    };
     GameObject.prototype.start = function () {
         var _this = this;
         this.INIT = { position: this.position, size: this.size };
         setInterval(function () {
             _this.update();
         }, 16);
+        if (this.event.onclick)
+            this.onClick(this.event.onclick);
     };
     GameObject.prototype.update = function () {
         this.objSelector.style.left = "".concat(this.position.x, "px");
