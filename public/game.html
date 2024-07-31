@@ -9,21 +9,26 @@
 <body>
     <!-- 게임 플레이어들이 주로 보게 될 곳: main -->
     <main>
+        <div class="cancollide"></div>
         <div class="projectiles"></div>
-        <div class="player enemy">
-            <div class="hp enemy">
-                <div class="hp-progress enemy"></div>
+        <div class="player red">
+            <div class="hp red">
+                <div class="hp-progress later red"></div>
+                <div class="hp-progress red"></div>
             </div>
         </div>
         <div class="player checker"></div>
-        <div class="player ally">
-            <div class="hp ally">
-                <div class="hp-progress ally"></div>
+        <div class="player checker-dash"></div>
+        <div class="player blue">
+            <div class="hp blue">
+                <div class="hp-progress later blue"></div>
+                <div class="hp-progress blue"></div>
             </div>
         </div>
     </main>
     <!-- 게임에 필요한 정보들을 표기할 부분: footer -->
     <footer>
+        <p id="skill-damage" style="display: none;">피해량: 0</p>
         <div class="items">
             <div class="item-vault" id="vault-1"></div>
             <div class="item-vault" id="vault-2"></div>
@@ -46,8 +51,8 @@
                 <div class="passive-btn">P</div>
                 <div class="skill-btn">Q</div>
                 <div class="skill-btn">E</div>
-                <div class="skill-btn">X</div>
-                <div class="skill-btn">C</div>
+                <div class="skill-btn smalls">LSHIFT</div>
+                <div class="skill-btn smalls">WHEEL</div>
             </div>
             <div class="hp-mana">
                 <div class="hp-status">
@@ -79,13 +84,13 @@
                 <p class="price">G4444</p>
             </div>
         </div>
-        <div id="buy-info">
+        <div id="buy-info" style="display: none;">
             <div id="result-div">
                 <div id="result" class="item">
                     <p class="price">G3400</p>
                 </div>
             </div>
-            <p>하위 아이템들</p>
+            <p id="need-items-text">하위 아이템들</p>
             <div id="need-items">
                 <div id="need-item-1" class="item">
                     <p class="price">G3400</p>
@@ -105,7 +110,34 @@
         </div>
         <div id="shop-exit-btn">X</div>
     </div>
+    <div id="information">
+        <div id="inf-blue" class="team-inf">
+            <h2>BLUE</h2>
+            <p class="inf-kda">KILL: 0 / DEATH: 0</p>
+            <div id="inf-item-b">
+                <div class="item-vault" id="vault-1"></div>
+                <div class="item-vault" id="vault-2"></div>
+                <div class="item-vault" id="vault-3"></div>
+                <div class="item-vault" id="vault-4"></div>
+                <div class="item-vault" id="vault-5"></div>
+                <div class="item-vault" id="vault-6"></div>
+            </div>
+        </div>
+        <div id="inf-red" class="team-inf">
+            <h2>RED</h2>
+            <p class="inf-kda">KILL: 0 / DEATH: 0</p>
+            <div id="inf-item-r">
+                <div class="item-vault" id="vault-1"></div>
+                <div class="item-vault" id="vault-2"></div>
+                <div class="item-vault" id="vault-3"></div>
+                <div class="item-vault" id="vault-4"></div>
+                <div class="item-vault" id="vault-5"></div>
+                <div class="item-vault" id="vault-6"></div>
+            </div>
+        </div>
+    </div>
     
+    <h2 id="loading">상대방 기다리는 중..</h2>
     <script src="../src/js/game/engine/object.js"></script>
     <script src="../src/js/game/engine/item.js"></script>
     <script src="../src/js/game/engine/projectile.js"></script>
@@ -117,5 +149,9 @@
     <script src="../src/js/game/server.js"></script>
     <script src="../src/js/modules/controlPlayer.js"></script>
 
+    <script src="../src/js/game/characters/INIT.js"></script>
+    <script src="../src/js/game/characters/ezreal.js"></script>
+    <script src="../src/js/game/characters/sniper.js"></script>
+    <script src="../src/js/game/characters/samira.js"></script>
 </body>
 </html>

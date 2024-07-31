@@ -1,0 +1,59 @@
+{
+    "cn": "samira",
+    "name": "사미라",
+    "defaultSpec": {
+        "ad": 6,
+        "ap": 0,
+        "atkspd": 1,
+        "armor": 32,
+        "magicRegist": 30,
+        "skillHaste": 0,
+        "range": 450,
+        "projectileSpd": 19,
+        "moveSpd": 5.2,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 145,
+        "healthBoost": 2.3,
+        "vamp": 0
+    },
+    "skills": {
+        "passive": {
+            "moveSpd": 0.25,
+            "duration": 150
+        },
+        "Q": {
+            "cooldown": 350,
+            "damage": 5,
+            "ad": 1.25
+        },
+        "E": {
+            "cooldown": 1500,
+            "atkspd": 0.6,
+            "ap": 0.45,
+            "duration": 500
+        },
+        "Shift": {
+            "cooldown": 1500,
+            "type": "magic",
+            "damage": 3,
+            "ad": 0.2,
+            "ap": 0.45,
+            "duration": 500
+        },
+        "Wheel": {
+            "cooldown": 500,
+            "damage": 10,
+            "ad": 0.7,
+            "range": 500,
+            "type": "melee"
+        }
+    },
+    "des": {
+        "passive": "서로 다른 공격으로 적에게 피해를 가할 때마다 스타일 등급이 오릅니다. S스타일이 되면 궁극기를 사용할 수 있게 됩니다. 스타일이 1회 중첩될 때마다 이동속도가 $pmv 상승합니다.",
+        "Q": "커서 방향으로 적에게 물리 피해를 입히는 투사체를 발사합니다. <br/>(피해량: $qd + 공격력 * $qad, 재사용 대기시간: $qcd초)",
+        "E": "네",
+        "Shift": "적을 향해 돌진합니다. 돌진하면서 충돌하는 적은 마법 피해를 입습니다. <br/>(피해량: $sd + 공격력 * $sad, 재사용 대기시간: $scd초)",
+        "Wheel": "적에게 총을 10회 난사합니다. 사용 시 스타일 등급이 초기화됩니다. <br/>(피해량: $wd + 공격력 * $wad, 재사용 대기시간: $wcd초)"
+    }
+}

@@ -1,28 +1,19 @@
 type CharData = {
     cn: string,
     name: string,
-    defaultSpec: {
-        ad: number,
-        atkspd: number,
-        armor: number,
-        range: number,
-        moveSpd: number,
-        criticD: number,
-        criticP: number,
-        health: number,
-        healthBoost: number,
-        vamp: number
-    },
+    defaultSpec: Ability
     skills: {
-        Q: Ability
-        E: Ability
-        LShift: Ability
-        Wheel: Ability
+        passive: SkillAbility,
+        Q: SkillAbility,
+        E: SkillAbility,
+        Shift: SkillAbility,
+        Wheel: SkillAbility,
     },
     des: {
+        passive: string,
         Q: string,
         E: string,
-        LShift: string,
-        Wheel: string
+        Shift: string,
+        Wheel: string,
     }
 }

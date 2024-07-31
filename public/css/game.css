@@ -14,6 +14,19 @@ body {
     height: 900px;
 }
 
+
+#loading {
+    position: absolute;
+
+    width: 100%;
+    top: 10px;
+
+    text-align: center;
+    font-size: 30px;
+    color: white;
+    -webkit-text-stroke: 1px black;
+}
+
 .player {
     position: absolute;
 
@@ -24,15 +37,20 @@ body {
     background-color: black;
 }
 
-.enemy {
+.red {
     background-color: red;
 }
 
-.ally {
+.blue {
     background-color: blue;
 }
 
 .checker {
+    opacity: 0%;
+    background-color: gray;
+}
+
+.checker-dash {
     opacity: 0%;
     background-color: gray;
 }
@@ -49,12 +67,59 @@ body {
     background-color: black;
 }
 
+.hp.nexus {
+    margin-left: -50px;
+    margin-top: -30px;
+    border: 1px solid black;
+    border-radius: 3px;
+    
+    width: 150px;
+    height: 20px;
+    
+    background-color: black;
+
+}
 
 .hp-progress {
     width: 80%;
     height: 100%;
     
     background-color: yellowgreen;
+}
+
+.hp-progress.nexus {
+    width: 100%;
+    height: 100%;
+    
+    background-color: yellowgreen;
+}
+
+.hp-progress.nexus:not(.later) {
+    margin-top: -20px;
+}
+
+.hp-progress.nexus.later {
+    position: inherit;
+
+    width: 80%;
+    height: 100%;
+    
+    background-color: red;
+    transition: 1s all ease-out;
+}
+
+.hp-progress:not(.later) {
+    margin-top: -10px;
+}
+
+.hp-progress.later {
+    position: inherit;
+
+    width: 80%;
+    height: 100%;
+
+    background-color: red;
+    transition: 1s all ease-out;
 }
 
 #now-hp {
@@ -88,7 +153,6 @@ body {
     display: grid;
 
     grid-template-columns: 15% 20% 20% 20% 20%;
-    /* align-items: center; */
     justify-items: center;
 }
 
@@ -105,6 +169,10 @@ body {
 
     text-align: center;
     font-size: 30px;
+}
+
+.skill-btn.smalls {
+    font-size: 20px;
 }
 
 .passive-btn {
@@ -125,6 +193,7 @@ body {
 
 .hp-mana {
     width: 600px;
+    padding-top: 7px;
 }
 
 .hp-status {
@@ -260,9 +329,9 @@ body {
     grid-template-columns: 70% 30%;
 
     width: 1200px;
-    height: 800px;
+    height: 750px;
 
-    top: 50%;
+    top: 42%;
     left: 50%;
     transform: translate(-50%, -50%);
 
@@ -274,12 +343,38 @@ body {
 #shop>#list {
     display: grid;
 
-    grid-template-columns: repeat(10, 9%);
-    grid-template-rows: repeat(7, 100px);
+    grid-template-columns: repeat(11, 9%);
+    /* grid-column-start: repeat(2, 9%);
+    /* grid-column: repeat(4, 9%);
+    grid-column: repeat(1, 9%); */  
+
+    grid-template-rows: repeat(8, 80px);
 
     padding: 30px;
     border-right: 1px solid white;
 }
+
+
+.start {
+    grid-column: span 10;
+}
+
+.boots {
+    grid-column: span 10;
+}
+
+.item1 {
+    grid-column: span 11;
+}
+
+.item2 {
+    grid-column: span 6;
+}
+
+.item3 {
+    grid-column: span 0;
+}
+
 
 .item {
     background-color: rgb(201, 238, 255);
@@ -336,8 +431,8 @@ body {
     padding: 10px;
     border: 1px solid white;
     border-radius: 10px;
-
-
+    
+    
     grid-template-columns: repeat(3, 33%);
 }
 
@@ -351,7 +446,90 @@ body {
 
 #item-des {
     margin: 50px;
+    margin-top: 0px;
     color: white;
+}
+
+#item-des>p {
+    margin: 3px;
+}
+
+#information {
+    position: absolute;
+    display: grid;
+
+    grid-template-columns: 50% 50%;
+
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    height: 250px;
+    width: 1200px;
+
+    border-radius: 20px;
+
+    background-color: rgb(16, 37, 51);
+}
+
+#inf-item-b {
+    display: grid;
+
+    height: 70px;
+    width: 450px;
+    grid-template-columns: repeat(6, 16%);
+}
+
+#inf-item-b>.item-vault {
+    background-size: 60px;
+
+    width: 60px;
+    height: 60px;
+
+    border: 1px solid white;
+}
+
+#inf-item-r {
+    display: grid;
+
+    height: 70px;
+    width: 450px;
+    grid-template-columns: repeat(6, 16%);
+
+    margin-left: 120px;
+}
+
+#inf-item-r>.item-vault {
+    background-size: 60px;
+
+    width: 60px;
+    height: 60px;
+
+    border: 1px solid white;
+}
+
+.inf-kda {
+    padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+}
+
+.team-inf>h2 {
+    color: white;
+}
+
+.team-inf {
+    padding: 20px;
+}
+
+#inf-red {
+    border-left: 1px solid white;
+
+    text-align: right;
+}
+
+#inf-red>#inf-item {
+
 }
 
 .bullet {
@@ -362,10 +540,29 @@ body {
     border-radius: 100%;
 }
 
-.enemy.bullet {
+.red.bullet {
     background-color: rgb(180, 0, 0);
 }
 
-.ally.bullet {
+.blue.bullet {
     background-color: rgb(0, 0, 180);
+}
+
+#skill-damage {
+    position: absolute;
+    
+    top: 76%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 700px;
+
+    border-radius: 5px;
+    padding: 10px 20px 10px 20px;
+
+    background-color: rgb(16, 37, 51);
+    
+    font-size: 20px;
+    color: white;
+    text-align: center;
 }

@@ -4,11 +4,11 @@ type KeyDown = {
     s: boolean,
     d: boolean,
     space: boolean,
-    // q: boolean,
-    // w: boolean,
-    // e: boolean,
-    // r: boolean,
-    // d: boolean,
+    p: boolean,
+    q: boolean,
+    e: boolean,
+    shift: boolean,
+    tab: boolean,
     // f: boolean,
     arrowup: boolean,
     arrowleft: boolean,
@@ -18,8 +18,8 @@ type KeyDown = {
 }
 
 type Players = {
-    ally: PlayerDeclare,
-    enemy: PlayerDeclare,
+    blue: PlayerDeclare,
+    red: PlayerDeclare,
 }
 
 type PlayerDeclare = {
@@ -29,21 +29,31 @@ type PlayerDeclare = {
     spec: Ability,
     specItem: Ability,
     specINIT: Ability,
+    marker: Marker,
+    status: { invisible: boolean },
     gold: number,
     items: Item[],
 }
 
+type Marker = {
+    ezreal?: boolean
+}
+
 type AbsolutePosition = {
-    ally: {x: number, y: number},
-    enemy: {x: number, y: number}
+    blue: {x: number, y: number},
+    red: {x: number, y: number}
 }
 
 type ItemData = {
+    cooldown: number,
     name: [string, string],
     price: number,
-    lower: string[],
-    higher: string[],
     ability: Ability,
+    lower?: string[],
+    extra?: number[],
+    enable: boolean,
+    des?: string,
+    grade?: "시작" | "장화" | "기본" | "서사" | "전설",
 };
 
 type Ability = {
@@ -60,5 +70,30 @@ type Ability = {
     criticP?: number,
     criticD?: number,
     mana?: number,
-    manaR?: number
+    manaR?: number,
+    magicRegist?: number,
+    skillHaste?: number,
+}
+
+type SkillAbility = {
+    cooldown: number,
+    duration?: number,
+    damage?: number,
+    type?: "melee" | "magic" | "true",
+    range?: number,
+    moveSpd?: number,
+    ad?: number,
+    ap?: number,
+    atkspd?: number,
+    projectileSpd?: number,
+    health?: number,
+    healthBoost?: number,
+    armor?: number,
+    vamp?: number,
+    criticP?: number,
+    criticD?: number,
+    mana?: number,
+    manaR?: number,
+    magicRegist?: number,
+    skillHaste?: number,
 }

@@ -35,7 +35,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 game.style.cursor = 'pointer';
+document.oncontextmenu = function () { return false; };
+gameObjects[8].objSelector.classList.add('ally');
+gameObjects[10].objSelector.classList.add('enemy');
+document.querySelector('.hp-bar.hp-progress').classList.add(team);
+console.log(team == 'red' ? "빨갱이팀" : "자본주의자팀");
 body.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab') {
+        e.preventDefault();
+    }
     if (keyDown[e.key.toLowerCase()] === false) {
         keyDown[e.key.toLowerCase()] = true;
     }
@@ -66,33 +74,164 @@ body.addEventListener('mousedown', function (e) {
 body.addEventListener('mouseup', function (e) {
     keyDown.mouse[e.button] = false;
 });
-function getCharInfo() {
+skillBtns.forEach(function (e, i) {
+    //@ts-ignore
+    var key = ['q', 'e', 'shift', 'wheel'][i];
+    var damageDisplayer = document.querySelector('#skill-damage');
+    e.addEventListener('mouseenter', function () {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+        var damage = 0;
+        var damageInfo = '';
+        if (skillInfo[key].damage) {
+            damage += skillInfo[key].damage;
+            damageInfo += "".concat(skillInfo[key].damage);
+        }
+        if (skillInfo[key].ad) {
+            damage += skillInfo[key].ad * players[team].spec.ad;
+            damageInfo += " + \uACF5\uACA9\uB825 (".concat(players[team].spec.ad, ") * ").concat(skillInfo[key].ad);
+        }
+        ;
+        if (skillInfo[key].ap) {
+            damage += skillInfo[key].ap * players[team].spec.ap;
+            damageInfo += " + \uC8FC\uBB38\uB825 (".concat(players[team].spec.ap, ") * ").concat(skillInfo[key].ap);
+        }
+        ;
+        if (skillInfo[key].damage > 0) {
+            damageDisplayer.innerHTML = "".concat(key.toUpperCase(), " \uC2A4\uD0AC \uD53C\uD574\uB7C9: ").concat(Math.floor(damage), " <span style=\"font-size: 15px\">(").concat((_d = (_c = (_b = (_a = damageInfo === null || damageInfo === void 0 ? void 0 : damageInfo.replace("물리 피해", "<span style=\"color: rgb(243, 117, 0)\">\uBB3C\uB9AC \uD53C\uD574</span>")) === null || _a === void 0 ? void 0 : _a.replace("공격력", "<span style=\"color: rgb(243, 117, 0)\">\uACF5\uACA9\uB825</span>")) === null || _b === void 0 ? void 0 : _b.replace("마법 피해", "<span style=\"color: rgb(0, 162, 255)\">\uB9C8\uBC95 \uD53C\uD574</span>")) === null || _c === void 0 ? void 0 : _c.replace("주문력", "<span style=\"color: rgb(0, 162, 255)\">\uC8FC\uBB38\uB825</span>")) === null || _d === void 0 ? void 0 : _d.replace("이동 속도", "<span style=\"color: gray\">\uC774\uB3D9 \uC18D\uB3C4</span>"), ")</span>");
+            damageDisplayer.style.display = '';
+        }
+        else if (skillInfo[key].atkspd > 0) {
+            damageInfo = '';
+            damage = 0;
+            if (skillInfo[key].atkspd) {
+                damage += skillInfo[key].atkspd * 100;
+                damageInfo += "".concat(skillInfo[key].atkspd * 100, "%");
+            }
+            if (skillInfo[key].ad) {
+                damage += skillInfo[key].ad * players[team].spec.ad;
+                damageInfo += " + \uACF5\uACA9\uB825 (".concat(players[team].spec.ad, ") * ").concat(skillInfo[key].ad);
+            }
+            ;
+            if (skillInfo[key].ap) {
+                damage += skillInfo[key].ap * players[team].spec.ap;
+                damageInfo += " + \uC8FC\uBB38\uB825 (".concat(players[team].spec.ap, ") * ").concat(skillInfo[key].ap);
+            }
+            ;
+            damageDisplayer.innerHTML = "".concat(key.toUpperCase(), " \uACF5\uACA9\uC18D\uB3C4 \uC99D\uAC00\uB7C9: ").concat(Math.floor(damage), "% <span style=\"font-size: 15px\">(").concat((_h = (_g = (_f = (_e = damageInfo === null || damageInfo === void 0 ? void 0 : damageInfo.replace("물리 피해", "<span style=\"color: rgb(243, 117, 0)\">\uBB3C\uB9AC \uD53C\uD574</span>")) === null || _e === void 0 ? void 0 : _e.replace("공격력", "<span style=\"color: rgb(243, 117, 0)\">\uACF5\uACA9\uB825</span>")) === null || _f === void 0 ? void 0 : _f.replace("마법 피해", "<span style=\"color: rgb(0, 162, 255)\">\uB9C8\uBC95 \uD53C\uD574</span>")) === null || _g === void 0 ? void 0 : _g.replace("주문력", "<span style=\"color: rgb(0, 162, 255)\">\uC8FC\uBB38\uB825</span>")) === null || _h === void 0 ? void 0 : _h.replace("이동 속도", "<span style=\"color: gray\">\uC774\uB3D9 \uC18D\uB3C4</span>"), ")</span>");
+            damageDisplayer.style.display = '';
+        }
+        else if (skillInfo[key].duration > 0) {
+            damageInfo = '';
+            if (skillInfo[key].duration) {
+                damage += skillInfo[key].duration;
+                damageInfo += "".concat(skillInfo[key].duration / 100, "\uCD08");
+            }
+            if (skillInfo[key].ad) {
+                damage += skillInfo[key].ad * players[team].spec.ad * 100;
+                damageInfo += " + \uACF5\uACA9\uB825 (".concat(players[team].spec.ad, ") * ").concat(skillInfo[key].ad);
+            }
+            ;
+            if (skillInfo[key].ap) {
+                damage += skillInfo[key].ap * players[team].spec.ap * 100;
+                damageInfo += " + \uC8FC\uBB38\uB825 (".concat(players[team].spec.ap, ") * ").concat(skillInfo[key].ap);
+            }
+            ;
+            damageDisplayer.innerHTML = "".concat(key.toUpperCase(), " \uC9C0\uC18D \uC2DC\uAC04: ").concat(Math.floor(damage) / 100, "\uCD08 <span style=\"font-size: 15px\">(").concat((_m = (_l = (_k = (_j = damageInfo === null || damageInfo === void 0 ? void 0 : damageInfo.replace("물리 피해", "<span style=\"color: rgb(243, 117, 0)\">\uBB3C\uB9AC \uD53C\uD574</span>")) === null || _j === void 0 ? void 0 : _j.replace("공격력", "<span style=\"color: rgb(243, 117, 0)\">\uACF5\uACA9\uB825</span>")) === null || _k === void 0 ? void 0 : _k.replace("마법 피해", "<span style=\"color: rgb(0, 162, 255)\">\uB9C8\uBC95 \uD53C\uD574</span>")) === null || _l === void 0 ? void 0 : _l.replace("주문력", "<span style=\"color: rgb(0, 162, 255)\">\uC8FC\uBB38\uB825</span>")) === null || _m === void 0 ? void 0 : _m.replace("이동 속도", "<span style=\"color: gray\">\uC774\uB3D9 \uC18D\uB3C4</span>"), ")</span>");
+            damageDisplayer.style.display = '';
+        }
+    });
+    e.addEventListener('mouseleave', function () {
+        damageDisplayer.style.display = 'none';
+    });
+});
+function getCharInfo(char) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch("http://localhost:1973/getChar?char=teacher")
+                case 0: return [4 /*yield*/, fetch("http://kimchi-game.kro.kr:1973/getChar?char=".concat(char))
                         .then(function (r) { return r.json(); })
-                        .then(function (result) { return result.body.defaultSpec; })];
+                        .then(function (result) { return result.body; })];
                 case 1: return [2 /*return*/, _a.sent()];
             }
         });
     });
 }
-function setCharInfo() {
+function getItemInfo() {
     return __awaiter(this, void 0, void 0, function () {
-        var _a;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch("http://kimchi-game.kro.kr:1973/getItem")
+                        .then(function (r) { return r.json(); })
+                        .then(function (result) { return result.body; })];
+                case 1: return [2 /*return*/, _a.sent()];
+            }
+        });
+    });
+}
+function getData() {
+    return __awaiter(this, void 0, void 0, function () {
+        var fetched, fetched2, _a, fetchedItemData;
         return __generator(this, function (_b) {
             switch (_b.label) {
-                case 0:
-                    _a = players.ally;
-                    return [4 /*yield*/, getCharInfo()];
+                case 0: return [4 /*yield*/, getCharInfo(char[team])];
                 case 1:
+                    fetched = _b.sent();
+                    players[team].specINIT = fetched.defaultSpec;
+                    players[team].hp[0] = players[team].specINIT.health;
+                    players[team].hp[1] = players[team].specINIT.health;
+                    skillInfo.passive = fetched.skills.passive;
+                    skillInfo.q = fetched.skills.Q;
+                    skillInfo.e = fetched.skills.E;
+                    skillInfo.shift = fetched.skills.Shift;
+                    skillInfo.wheel = fetched.skills.Wheel;
+                    return [4 /*yield*/, getCharInfo(char[getEnemyTeam()])];
+                case 2:
+                    fetched2 = _b.sent();
+                    enemySkillInfo.passive = fetched2.skills.passive;
+                    enemySkillInfo.q = fetched2.skills.Q;
+                    enemySkillInfo.e = fetched2.skills.E;
+                    enemySkillInfo.shift = fetched2.skills.Shift;
+                    enemySkillInfo.wheel = fetched2.skills.Wheel;
+                    _a = players[getEnemyTeam()];
+                    return [4 /*yield*/, getCharInfo(char[getEnemyTeam()])];
+                case 3:
                     _a.specINIT = _b.sent();
-                    players.ally.hp[0] = players.ally.specINIT.health;
-                    players.ally.hp[1] = players.ally.specINIT.health;
+                    players[getEnemyTeam()].hp[0] = players[getEnemyTeam()].specINIT.health;
+                    players[getEnemyTeam()].hp[1] = players[getEnemyTeam()].specINIT.health;
+                    makeEzreal();
+                    makeSniper();
+                    makeSamira();
+                    if (char[team] == 'ezreal') {
+                        charClass = ezreal;
+                    }
+                    else if (char[team] == 'sniper') {
+                        charClass = sniper;
+                    }
+                    else if (char[team] == 'samira') {
+                        charClass = samira;
+                    }
+                    return [4 /*yield*/, getItemInfo()];
+                case 4:
+                    fetchedItemData = _b.sent();
+                    itemData = [];
+                    fetchedItemData.forEach(function (e) {
+                        if (e.enable) {
+                            var item = new ItemBuilder()
+                                .setName(e.name[0], e.name[1]).setPrice(e.price)
+                                .setAbility(e.ability);
+                            if (e.lower)
+                                item.setLower(e.lower);
+                            if (e.grade)
+                                item.setGrade(e.grade);
+                            if (e.extra)
+                                item.setExtra(e.extra);
+                            if (e.des)
+                                item.setDescription(e.des);
+                            itemData.push(item.build());
+                        }
+                    });
                     return [2 /*return*/];
             }
         });
     });
 }
-setCharInfo();

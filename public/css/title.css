@@ -73,12 +73,14 @@ main {
 
 .description {
     position: absolute;
+    overflow-y: scroll;
+    overflow-x: hidden;
 
     top: 150px;
     right: 50px;
 
-    height: 500px;
-    width: 500px;
+    height: 520px;
+    width: 600px;
 
     border: 3px solid black;
     border-radius: 10px;
@@ -86,11 +88,54 @@ main {
     background-color: white;
 }
 
+.description::-webkit-scrollbar {
+    width: 10px;
+}
+
+.description::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgb(40, 41, 43);
+}
+
+.description::-webkit-scrollbar-track {
+    border-radius: 100%;
+    background-color: white;
+}
+
+
 .description>p {
     margin-bottom: -8px;
     padding: 0px 10px 0px 20px;
 }
 
+.description>p>span {
+    width: 500px;
+    
+}
+
 .description>h2 {
     padding-left: 20px;
+}
+
+#ready-btn {
+    position: absolute;
+
+    top: 665px;
+    right: 250px;
+
+    height: 50px;
+    width: 200px;
+    
+    align-content: center;
+
+    border-radius: 10px;
+
+    background: linear-gradient(60deg, rgb(0, 71, 165), rgb(6, 31, 63));
+    box-shadow: 0px 0px 5px rgb(0, 15, 128);
+
+    transition: all 1s cubic-bezier(0, 0.48, 0, 0.99);
+    
+    color: white;
+    text-align: center;
+    font-size: 30px;
 }

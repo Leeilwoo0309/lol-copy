@@ -6,6 +6,7 @@ const fs = require("fs");
 const express = require("express");
 const cors = require('cors');
 const app = express();
+const path = require('path');
 
 const clients = new Set();
 
@@ -37,11 +38,12 @@ console.log(`WSS server is running in: http://localhost:${ PORT.ws }`);
 
 
 app.use(cors());
-app.use(express.static('js'))
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/src', express.static(path.join(__dirname, 'src')));
 
 app.get('/getChar', (req, res) => {
     const query = req.query.char;
-    const charList = ['teacher', 'sniper', 'samira'];
+    const charList = ['teacher', 'sniper', 'samira', 'ezreal'];
 
     if (query === undefined) {
         return res.send(JSON.stringify({
@@ -56,11 +58,25 @@ app.get('/getChar', (req, res) => {
     fs.readFile(`./jsons/${ query }.json`, (err, data) => {
         if (err) throw err;
 
-        const jobData = {body: JSON.parse(data.toString())};
+        const charData = {body: JSON.parse(data.toString())};
 
-        return res.send(JSON.stringify(jobData));
+        return res.send(JSON.stringify(charData));
     });
 });
+
+app.get('/getItem', (req, res) => {
+    fs.readFile(`./jsons/items.json`, (err, data) => {
+        if (err) throw err;
+
+        const itemData = {body: JSON.parse(data.toString())};
+
+        return res.send(JSON.stringify(itemData));
+    });
+});
+
+app.get('/game', (req, res) => {
+    return res.sendFile('C:\\Users\\leeil\\OneDrive\\바탕 화면\\loljjapr\\public\\game.html')
+})
 
 app.listen(PORT.api, () => {
     console.log(`API server is running in: http://localhost:${ PORT.api }`)

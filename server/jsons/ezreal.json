@@ -1,0 +1,59 @@
+{
+    "cn": "ezreal",
+    "name": "이즈리얼",
+    "defaultSpec": {
+        "ad": 5,
+        "ap": 0,
+        "atkspd": 0.8,
+        "armor": 24,
+        "magicRegist": 24,
+        "skillHaste": 0,
+        "range": 500,
+        "projectileSpd": 18,
+        "moveSpd": 5.15,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 120,
+        "healthBoost": 0.8,
+        "vamp": 0
+    },
+    "skills": {
+        "passive": {
+            "ap": 0.3,
+            "ad": 1.2,
+            "skillHaste": 200,
+            "damage": 10
+        },
+        "Q": {
+            "cooldown": 500,
+            "type": "melee",
+            "damage": 15,
+            "ad": 1.2
+        },
+        "E": {
+            "cooldown": 800,
+            "type": "magic",
+            "damage": 3,
+            "ad": 0.5,
+            "ap": 0.6
+        },
+        "Shift": {
+            "cooldown": 2000,
+            "range": 30
+        },
+        "Wheel": {
+            "cooldown": 5000,
+            "type": "melee",
+            "damage": 20,
+            "ad": 1.4,
+            "ap": 0.4
+        }
+    },
+    "des": {
+        "passive": "스킬 적중 시, 모든 스킬의 재사용 대기시간이 $psh초 감소합니다.",
+        "Q": "이즈리얼이 에너지 화살을 발사하여 처음 적중한 적에게 물리 피해를 입힙니다.<br /> (피해량: $qd + 공격력 * $qad, 재사용 대기시간: $qcd초)",
+        "E": "이즈리얼이 마법의 구체를 발사해 적중한 챔피언에게 남아있게 합니다. 이즈리얼이 해당 대상에게 기본 공격이나 스킬을 적중하면 구체가 폭발하여 마법 피해를 입힙니다.<br /> (피해량 : $ed + 주문력 * $eap + 공격력 * $ead, 재사용 대기시간: $ecd초)",
+        "Shift": "이즈리얼이 짧은 거리를 빠르게 이동합니다. <br /> (재사용 대기시간: $scd초)",
+        "Wheel": "이즈리얼이 거대한 에너지파를 발사하여 물리 피해를 입힙니다.<br /> (피해량: $wd + 공격력 * $wad, 재사용 대기시간: $wcd초)"
+    }
+}
