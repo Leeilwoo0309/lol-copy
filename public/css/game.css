@@ -356,7 +356,7 @@ body {
 
 
 .start {
-    grid-column: span 10;
+    grid-column: span 9;
 }
 
 .boots {
@@ -368,7 +368,7 @@ body {
 }
 
 .item2 {
-    grid-column: span 6;
+    grid-column: span 4;
 }
 
 .item3 {

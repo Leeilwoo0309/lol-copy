@@ -128,6 +128,8 @@ class GameObjectBuilder {
             const hpBarProgress: HTMLDivElement = document.createElement('div');
             const hpBarProgressLater: HTMLDivElement = document.createElement('div');
 
+            object.style.transition = 'opacity 3s';
+
             hpBar.className = `nexus hp ${ this.obj.team }`;
             hpBarProgress.className = `hp-progress nexus ${ this.obj.team }`;
             hpBarProgressLater.className = `hp-progress later nexus ${ this.obj.team }`;

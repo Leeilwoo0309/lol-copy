@@ -2,29 +2,26 @@ const charsBtn: NodeListOf<HTMLDivElement> = document.querySelectorAll('.char-bt
 const selectedP: HTMLParagraphElement = document.querySelector('.selected-display');
 const des: HTMLParagraphElement = document.querySelector('.description');
 const readyBtn: HTMLParagraphElement = document.querySelector('#ready-btn');
-const _socket = new WebSocket("ws://localhost:8001");
+const _socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 
 let selected: {ally: number, enemy: number} = {ally: undefined, enemy: undefined};
 let chars: CharData = undefined;
-let charName: string[] = ['teacher', 'sniper', 'ezreal', 'samira'];
-let charNameKr: string[] = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라'];
+let charName: string[] = ['teacher', 'sniper', 'ezreal', 'samira', 'vampire'];
+let charNameKr: string[] = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '블라디미르'];
 let readyStatus: [boolean, boolean] = [false, false];
 
 async function getCharInfo(name: string) {
-    chars = await fetch(`http://localhost:1973/getChar?char=${ name }`)
+    chars = await fetch(`http://kimchi-game.kro.kr:1973/getChar?char=${ name }`, {method: 'GET'})
         .then(r => r.json())
         .then(result => result.body)
         .catch(err => console.log(err));
     
     updateSelected();
+    console.log(chars);
 };
 
 charsBtn.forEach((e, i) => {
     e.addEventListener('click', () => {
-        if (i === 0) {
-            alert("아직 안만듦~~");
-            return;
-        }
         selected.ally = i;
 
         document.querySelector('.selected')?.classList.remove('selected');
@@ -39,6 +36,11 @@ charsBtn.forEach((e, i) => {
 readyBtn.addEventListener('click', () => {
     if (selected.ally === undefined) {
         alert("챔피언을 선택해주세요.");
+        return;
+    }
+
+    if (selected.ally === 0 || selected.ally === 4) {
+        alert("그챔 아직 안만듦~~");
         return;
     }
 
@@ -61,6 +63,8 @@ _socket.onopen = () => {
         reader.onload = function() {
             //@ts-ignore
             const sentJson: {body: any} = JSON.parse(reader.result);
+
+            console.log(sentJson);
 
             if (sentJson.body) {
                 if (sentJson.body.selection !== undefined) {

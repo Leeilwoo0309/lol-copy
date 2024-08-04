@@ -2,7 +2,7 @@
     "cn": "ezreal",
     "name": "이즈리얼",
     "defaultSpec": {
-        "ad": 5,
+        "ad": 17,
         "ap": 0,
         "atkspd": 0.8,
         "armor": 24,
@@ -13,7 +13,7 @@
         "moveSpd": 5.15,
         "criticD": 0,
         "criticP": 0,
-        "health": 120,
+        "health": 420,
         "healthBoost": 0.8,
         "vamp": 0
     },

@@ -1,48 +1,36 @@
 {
-    "cn": "sniper",
-    "name": "스나이퍼",
+    "cn": "vampire",
+    "name": "블라디미르",
     "defaultSpec": {
-        "ad": 18,
+        "ad": 3,
         "ap": 0,
-        "atkspd": 1.2,
-        "armor": 28,
-        "magicRegist": 24,
+        "atkspd": 0.75,
+        "armor": 27,
+        "magicRegist": 30,
         "skillHaste": 0,
-        "range": 600,
-        "projectileSpd": 25,
-        "moveSpd": 4.75,
+        "range": 300,
+        "projectileSpd": 7,
+        "moveSpd": 5,
         "criticD": 0,
         "criticP": 0,
-        "health": 390,
-        "healthBoost": 1.2,
+        "health": 125,
+        "healthBoost": 3,
         "vamp": 0
     },
     "skills": {
         "passive": {
-            "moveSpd": 1.25,
-            "duration": 150
         },
         "Q": {
-            "cooldown": 500,
-            "damage": 8,
-            "ad": 1.2
+            "cooldown": 500
         },
         "E": {
-            "cooldown": 1500,
-            "atkspd": 0.6,
-            "ap": 0.45,
-            "duration": 500
+            "cooldown": 1500
         },
         "Shift": {
-            "cooldown": 1500,
-            "ap": 0.005,
-            "duration": 150
+            "cooldown": 1500
         },
         "Wheel": {
-            "cooldown": 7500,
-            "damage": 10,
-            "ad": 2.3,
-            "type": "melee"
+            "cooldown": 7500
         }
     },
     "des": {

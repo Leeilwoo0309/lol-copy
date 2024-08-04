@@ -1,4 +1,5 @@
 socket.onopen = function () {
+    socket.send(JSON.stringify({ body: { msg: "connected" } }));
     socket.send(JSON.stringify({ body: { msg: "ready" } }));
     readyStatus[team] = true;
     socket.onmessage = function (event) {
@@ -38,9 +39,16 @@ socket.onopen = function () {
                 }
                 else if (sentJson.body.msg) {
                     var message = sentJson.body.msg;
-                    if (message == 'ready') {
+                    if (message == 'connected') {
+                        socket.send(JSON.stringify({ body: { msg: "char", char: char[team] } }));
+                        socket.send(JSON.stringify({ body: { msg: "ready" } }));
+                        readyStatus[getEnemyTeam()] = false;
+                    }
+                    else if (message == 'ready') {
                         if (!readyStatus[getEnemyTeam()])
                             socket.send(JSON.stringify({ body: { msg: "char", char: char[team] } }));
+                        if (!readyStatus[getEnemyTeam()])
+                            socket.send(JSON.stringify({ body: { msg: "ready" } }));
                         readyStatus[getEnemyTeam()] = true;
                         document.querySelector('#loading').innerHTML = '';
                     }
@@ -58,6 +66,35 @@ socket.onopen = function () {
                     }
                     else if (message == 'sniper-wheel') {
                         sniperWheelMotion(team);
+                    }
+                    else if (message == 'samiraOnhit') {
+                        currentAttackType = sentJson.body.damageType;
+                    }
+                    else if (message == 'collideDash') {
+                        var dashDamage = enemySkillInfo.shift.damage;
+                        if (enemySkillInfo.shift.ad)
+                            dashDamage += enemySkillInfo.shift.ad * players[getEnemyTeam()].spec.ad;
+                        if (enemySkillInfo.shift.ap)
+                            dashDamage += enemySkillInfo.shift.ap * players[getEnemyTeam()].spec.ap;
+                        players[team].hp[1] -= dashDamage * (1 / (1 + players[team].spec.magicRegist * 0.01));
+                        damageAmount[getEnemyTeam()] += dashDamage * (1 / (1 + players[team].spec.magicRegist * 0.01));
+                        damageAlert('magic', dashDamage * (1 / (1 + players[team].spec.magicRegist * 0.01)), false, team);
+                    }
+                    else if (message == 'gameEnd') {
+                        window.location.href = "../public/result.html?result=win&game=".concat(btoa(unescape(encodeURIComponent(JSON.stringify({
+                            dmg: { blue: damageAmount.blue, red: damageAmount.red },
+                            onhitCount: { blue: onhitCount.blue, red: onhitCount.red },
+                            char: { blue: char.blue, red: char.red },
+                            kda: { blue: kda.blue, red: kda.red },
+                            team: team, result: 'win',
+                            items: { blue: players.blue.items, red: players.red.items }
+                        })))));
+                    }
+                    else if (message == 'reload') {
+                        reload();
+                    }
+                    else if (message == 'damageAlert') {
+                        damageAlert(sentJson.body.info[0], sentJson.body.info[1], sentJson.body.info[2], sentJson.body.info[3]);
                     }
                 }
             }

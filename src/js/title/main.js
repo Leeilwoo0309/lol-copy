@@ -38,23 +38,24 @@ var charsBtn = document.querySelectorAll('.char-btn');
 var selectedP = document.querySelector('.selected-display');
 var des = document.querySelector('.description');
 var readyBtn = document.querySelector('#ready-btn');
-var _socket = new WebSocket("ws://localhost:8001");
+var _socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 var selected = { ally: undefined, enemy: undefined };
 var chars = undefined;
-var charName = ['teacher', 'sniper', 'ezreal', 'samira'];
-var charNameKr = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라'];
+var charName = ['teacher', 'sniper', 'ezreal', 'samira', 'vampire'];
+var charNameKr = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '블라디미르'];
 var readyStatus = [false, false];
 function getCharInfo(name) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fetch("http://localhost:1973/getChar?char=".concat(name))
+                case 0: return [4 /*yield*/, fetch("http://kimchi-game.kro.kr:1973/getChar?char=".concat(name), { method: 'GET' })
                         .then(function (r) { return r.json(); })
                         .then(function (result) { return result.body; })
                         .catch(function (err) { return console.log(err); })];
                 case 1:
                     chars = _a.sent();
                     updateSelected();
+                    console.log(chars);
                     return [2 /*return*/];
             }
         });
@@ -64,10 +65,6 @@ function getCharInfo(name) {
 charsBtn.forEach(function (e, i) {
     e.addEventListener('click', function () {
         var _a;
-        if (i === 0) {
-            alert("아직 안만듦~~");
-            return;
-        }
         selected.ally = i;
         (_a = document.querySelector('.selected')) === null || _a === void 0 ? void 0 : _a.classList.remove('selected');
         e.classList.add('selected');
@@ -78,6 +75,10 @@ charsBtn.forEach(function (e, i) {
 readyBtn.addEventListener('click', function () {
     if (selected.ally === undefined) {
         alert("챔피언을 선택해주세요.");
+        return;
+    }
+    if (selected.ally === 0 || selected.ally === 4) {
+        alert("그챔 아직 안만듦~~");
         return;
     }
     readyStatus[0] = !readyStatus[0];
@@ -95,6 +96,7 @@ _socket.onopen = function () {
         reader.onload = function () {
             //@ts-ignore
             var sentJson = JSON.parse(reader.result);
+            console.log(sentJson);
             if (sentJson.body) {
                 if (sentJson.body.selection !== undefined) {
                     selected.enemy = sentJson.body.selection;

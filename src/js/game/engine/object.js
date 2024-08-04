@@ -95,6 +95,7 @@ var GameObjectBuilder = /** @class */ (function () {
             var hpBar = document.createElement('div');
             var hpBarProgress = document.createElement('div');
             var hpBarProgressLater = document.createElement('div');
+            object.style.transition = 'opacity 3s';
             hpBar.className = "nexus hp ".concat(this.obj.team);
             hpBarProgress.className = "hp-progress nexus ".concat(this.obj.team);
             hpBarProgressLater.className = "hp-progress later nexus ".concat(this.obj.team);

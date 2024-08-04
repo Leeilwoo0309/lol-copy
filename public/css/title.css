@@ -138,4 +138,33 @@ main {
     color: white;
     text-align: center;
     font-size: 30px;
+    
+    /* color:rgb(97, 20, 20) */
+}
+
+.header {
+    margin-top: 20px;
+
+    text-align: center;
+    font-size: 50px;
+    font-weight: 800;
+}
+
+.result {
+    display: grid;
+
+    grid-template-columns: 50% 50%;
+
+    padding: 50px;
+}
+
+.res {
+    text-align: center;
+}
+
+#back {
+    margin-top: 0;
+    padding: 0;
+    margin-right: auto;
+    margin-left: auto;
 }

@@ -17,6 +17,7 @@ var isOpen = false;
 var items;
 var isSellActive = false;
 var hasBoots = false;
+// 사는거
 resultItem.addEventListener('click', function () {
     // 업그레이드하는 함수
     function upgradeLower() {
@@ -40,7 +41,6 @@ resultItem.addEventListener('click', function () {
                         players[team].specItem.criticP -= e.ability.criticP;
                     if (e.ability.health) {
                         players[team].specItem.health -= e.ability.health;
-                        players[team].hp[0] -= itemData[itemInfo].ability.health;
                         players[team].hp[1] -= itemData[itemInfo].ability.health;
                     }
                     if (e.ability.healthBoost)
@@ -113,6 +113,8 @@ resultItem.addEventListener('click', function () {
                 break;
             }
         }
+        if (itemData[itemInfo].name[1].includes('3_'))
+            players[team].hp[1] += 190;
         refreshPrice();
         sellItems();
     }
@@ -153,8 +155,7 @@ function sellItems() {
                         players[team].specItem.vamp -= sellitem.body.ability.vamp;
                     if (sellitem.body.ability.health) {
                         players[team].specItem.health -= sellitem.body.ability.health;
-                        players[team].hp[0] -= sellitem.body.ability.health;
-                        players[team].hp[1] -= sellitem.body.ability.health;
+                        // players[team].hp[1] -= sellitem.body.ability.health;
                     }
                     ;
                     if (itemData[itemInfo].ability.mana)
@@ -211,7 +212,7 @@ exitBtn.addEventListener('click', function () {
 shopBtn.addEventListener('mouseenter', function () { game.style.cursor = 'pointer'; });
 shopBtn.addEventListener('mouseleave', function () { game.style.cursor = ''; });
 function refreshShop(element, index) {
-    var _a;
+    var _a, _b, _c, _d, _e;
     var buyInfo = document.querySelector('#buy-info');
     buyInfo.style.display = '';
     itemInfo = index;
@@ -256,9 +257,9 @@ function refreshShop(element, index) {
     if (itemData[itemInfo].ability.healthBoost)
         des.innerHTML += "<p>\uCCB4\uB825 \uD68C\uBCF5 \uC18D\uB3C4 \uC99D\uAC00: ".concat(itemData[itemInfo].ability.healthBoost, "%</p>");
     if (itemData[itemInfo].des)
-        des.innerHTML += "<br/><b>\uAE30\uBCF8 \uC9C0\uC18D \uD6A8\uACFC</b> - ".concat(itemData[itemInfo].des.replace(/\$e1/, (itemData[itemInfo].extra[0] * 100).toFixed()));
+        des.innerHTML += "<br/><b>\uAE30\uBCF8 \uC9C0\uC18D \uD6A8\uACFC</b> - ".concat((_d = (_c = (_b = (_a = itemData[itemInfo].des) === null || _a === void 0 ? void 0 : _a.replace(/\$e1/g, (itemData[itemInfo].extra[0]).toFixed())) === null || _b === void 0 ? void 0 : _b.replace(/\$e2/g, (itemData[itemInfo].extra[1] / 100).toFixed())) === null || _c === void 0 ? void 0 : _c.replace(/\$e3/g, (itemData[itemInfo].extra[2]).toFixed())) === null || _d === void 0 ? void 0 : _d.replace(/\$e4/g, (itemData[itemInfo].extra[3]).toFixed()));
     var aText = document.querySelector('#need-items-text');
-    (_a = itemData[index].lower) === null || _a === void 0 ? void 0 : _a.forEach(function (e, i) {
+    (_e = itemData[index].lower) === null || _e === void 0 ? void 0 : _e.forEach(function (e, i) {
         underItem.style.display = '';
         aText.style.display = '';
         underItem.innerHTML += "<div id=\"need-item-".concat(i, "\" class=\"item need itid-").concat(findItem(e).index, "\" style=\"background-image: url(./assets/items/").concat(e, ".png)\">\n        <p class=\"price\">G").concat(findItem(e).body.price, "</p>\n        </div>");

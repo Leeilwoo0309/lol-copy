@@ -235,3 +235,9 @@ function getData() {
         });
     });
 }
+function reload() {
+    getData();
+    socket.send(JSON.stringify({
+        body: { msg: "reload" }
+    }));
+}

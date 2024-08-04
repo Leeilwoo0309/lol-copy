@@ -14,12 +14,16 @@
         "extra": [], "enable": false
     },
     {
+        "name": ["도란의 방패", "0_doran_shield"], "price": 400,
+        "ability": { "healthBoost": 200, "health": 110 }, "enable": true
+    },
+    {
         "name": ["도란의 검", "0_doran_blade"], "price": 450,
-        "ability": { "ad": 7, "vamp": 3.5, "health": 50 }, "enable": true
+        "ability": { "ad": 4, "vamp": 3.5, "health": 50 }, "enable": true
     },
     {
         "name": ["수확의 낫", "0_cull"], "price": 450, "grade": "start",
-        "ability": { "ad": 3 }, "enable": true,
+        "ability": { "ad": 2 }, "enable": true,
         "des": "기본 공격 시 $e1골드를 추가로 획득합니다.", "extra": [3]
     },
     {
@@ -49,7 +53,7 @@
     },
     {
         "name": ["롱소드", "1_long_sword"], "price": 350,
-        "ability": { "ad": 8 }, "enable": true
+        "ability": { "ad": 5 }, "enable": true
     },
     {
         "name": ["증폭의 고서", "1_tome"], "price": 400,
@@ -57,7 +61,7 @@
     },
     {
         "name": ["루비 수정", "1_ruby_c"], "price": 400,
-        "ability": { "health": 50 }, "enable": true
+        "ability": { "health": 75 }, "enable": true
     },
     {
         "name": ["마법무효화의 망토", "1_mantle"], "price": 450,
@@ -65,7 +69,7 @@
     },
     {
         "name": ["곡괭이", "1_pickaxe"], "price": 875,
-        "ability": { "ad": 13 }, "enable": true
+        "ability": { "ad": 12 }, "enable": true
     },
     {
         "name": ["방출의 마법봉", "1_blasting_wand"], "price": 850,
@@ -77,7 +81,7 @@
     },
     {
         "name": ["B.F. 대검", "1_bf_sword"], "price": 1300, "grade": "item1",
-        "ability": { "ad": 30 }, "enable": true
+        "ability": { "ad": 25 }, "enable": true
     },
     {
         "name": ["곡궁", "2_recurve_bow"], "price": 700,
@@ -92,7 +96,7 @@
     {
         "name": ["수정팔 보호구", "2_bracer"], "price": 800,
         "lower": ["1_ruby_c", "1_bead"],
-        "ability": { "health": 100, "healthBoost": 100 }, "enable": true
+        "ability": { "health": 200, "healthBoost": 100 }, "enable": true
     },
     {
         "name": ["흡혈의 낫", "2_vampiric_scepter"], "price": 900,
@@ -101,34 +105,72 @@
     },
     {
         "name": ["악마의 마법서", "2_codex"], "price": 900,
-        "lower": ["1_tome", "1_ glowing_mote"],
+        "lower": ["1_tome", "1_glowing_mote"],
         "ability": { "ap": 15, "skillHaste": 10 }, "enable": true
     },
     {
         "name": ["음전자의 망토", "2_negatron_cloak"], "price": 900,
-        "lower": ["1_mantle"], "grade": "item2",
+        "lower": ["1_mantle"],
         "ability": { "magicRegist": 50 }, "enable": true
+    },
+    {
+        "name": ["열성의 검", "2_zeal"], "price": 1100,
+        "lower": ["1_cloak", "1_short_sword"],
+        "ability": { "criticP": 15, "atkspd": 50, "moveSpd": 0.3 }, "enable": true
+    },
+    {
+        "name": ["절정의 화살", "2_noonquiver"], "price": 1400,
+        "lower": ["1_long_sword", "1_cloak"], "grade": "item2",
+        "ability": { "ad": 10, "criticP": 20 }, "enable": true
+    },
+    {
+        "name": ["유령 무희", "3_phantom_dance"], "price": 2600,
+        "lower": ["1_short_sword", "2_zeal", "1_short_sword"],
+        "ability": { "atkspd": 150, "criticP": 25, "moveSpd": 0.5 }, "enable": true
+    },
+    {
+        "name": ["구인수의 격노검", "3_guinsu"], "price": 3000,
+        "lower": ["1_tome", "2_recurve_bow", "1_pickaxe"],
+        "ability": { "ap": 20, "ad": 20, "atkspd": 80 }, "enable": true,
+        "des": "기본 공격 시 공격 속도가 $e1% 증가합니다. 해당 효과는 $e3번까지 중첩되어 최대 공격 속도가 $e4%까지 증가합니다.", "extra": [12, 400, 10, 120]
     },
     {
         "name": ["내셔의 이빨", "3_nashor"], "price": 3000,
         "lower": ["2_recurve_bow", "1_blasting_wand", "2_codex"],
         "ability": { "ap": 65, "atkspd": 120, "skillHaste": 15 }, "enable": true,
-        "des": "기본 공격 적중 시 $e1의 마법 피해를 입힙니다.", "extra": [15]
+        "des": "기본 공격 적중 시 $e1의 마법 피해를 입힙니다.", "extra": [15, 0, 0, 0]
+    },
+    {
+        "name": ["불멸의 철갑궁", "3_shieldbow"], "price": 3000,
+        "lower": ["1_pickaxe", "2_vampiric_scepter", "2_noonquiver"],
+        "ability": { "ad": 30, "criticP": 25, "vamp": 10 }, "enable": true,
+        "des": "체력이 30% 이하로 떨어지면 입으면 최대체력의 $e1%를 체력을 즉시 회복합니다. (재사용 대기시간: $e2초)", "extra": [20, 3000, 0, 0]
     },
     {
         "name": ["해신 작쇼", "3_jaksho"], "price": 3200,
         "lower": ["2_chain_vest", "2_negatron_cloak", "2_bracer"],
-        "ability": { "health": 200, "armor": 50, "magicRegist": 70, "healthBoost": 200 }, "enable": true
+        "ability": { "health": 500, "armor": 60, "magicRegist": 70, "healthBoost": 400 }, "enable": true
     },
     {
         "name": ["몰락한 왕의 검", "3_molwang"], "price": 3200,
         "lower": ["2_vampiric_scepter", "2_recurve_bow", "1_pickaxe"],
-        "ability": { "ad": 25, "atkspd": 100, "vamp": 10 }, "enable": true,
-        "extra": [6], "des": "기본 공격 시 적 현재 체력에 따라 $e1%의 물리 피해를 입힙니다."
+        "ability": { "ad": 35, "atkspd": 100, "vamp": 10 }, "enable": true,
+        "extra": [10, 0, 0, 0], "des": "기본 공격 시 적 현재 체력에 따라 $e1%의 물리 피해를 입힙니다."
+    },
+    {
+        "name": ["크라켄 학살자", "3_kraken"], "price": 3200,
+        "lower": ["2_noonquiver", "1_cloak", "2_recurve_bow"],
+        "ability": { "ad": 30, "atkspd": 50, "criticP": 25 }, "enable": true,
+        "extra": [30, 0, 0.6, 0], "des": "세 번째 기본 공격을 가할 때마다 $e1 + 공격력 * 0.6의 추가 물리 피해를 입힙니다."
     },
     {
         "name": ["무한의 대검", "3_infinity_edge"], "price": 3400,
-        "lower": ["1_bf_sword", "1_pickaxe", "1_cloak"], "grade": "item3",
-        "ability": { "ad": 50, "criticP": 25, "criticD": 40 }, "enable": true
+        "lower": ["1_bf_sword", "1_pickaxe", "1_cloak"],
+        "ability": { "ad": 55, "criticP": 25, "criticD": 40 }, "enable": true
+    },
+    {
+        "name": ["피바라기", "3_bloodthir"], "price": 3300,
+        "lower": ["1_pickaxe", "1_cloak", "2_vampiric_scepter"], "grade": "item3",
+        "ability": { "ad": 40, "vamp": 18, "criticP": 25 }, "enable": true
     }
 ]

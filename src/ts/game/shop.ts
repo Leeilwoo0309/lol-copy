@@ -10,6 +10,7 @@ let items: NodeListOf<HTMLDivElement>;
 let isSellActive: boolean = false;
 let hasBoots: boolean = false;
 
+// 사는거
 resultItem.addEventListener('click', () => {
     // 업그레이드하는 함수
     function upgradeLower() {
@@ -28,7 +29,6 @@ resultItem.addEventListener('click', () => {
                     if (e.ability.health) {
                         players[team].specItem.health -= e.ability.health;
                     
-                        players[team].hp[0] -= itemData[itemInfo].ability.health;
                         players[team].hp[1] -= itemData[itemInfo].ability.health;
                     }
                     if (e.ability.healthBoost) players[team].specItem.healthBoost -= e.ability.healthBoost;
@@ -87,6 +87,7 @@ resultItem.addEventListener('click', () => {
             }
         }
         
+        if (itemData[itemInfo].name[1].includes('3_')) players[team].hp[1] += 190;
         refreshPrice();
         sellItems();
     }
@@ -122,8 +123,7 @@ function sellItems() {
                     if (sellitem.body.ability.vamp) players[team].specItem.vamp -= sellitem.body.ability.vamp;
                     if (sellitem.body.ability.health) {
                         players[team].specItem.health -= sellitem.body.ability.health
-                        players[team].hp[0] -= sellitem.body.ability.health;
-                        players[team].hp[1] -= sellitem.body.ability.health;
+                        // players[team].hp[1] -= sellitem.body.ability.health;
                     };
                     if (itemData[itemInfo].ability.mana) players[team].specItem.mana -= itemData[itemInfo].ability.mana;
                     if (itemData[itemInfo].ability.manaR) players[team].specItem.manaR -= itemData[itemInfo].ability.manaR;
@@ -227,7 +227,11 @@ function refreshShop(element, index) {
     if (itemData[itemInfo].ability.criticD) des.innerHTML += `<p>추가 치명타 피해: ${itemData[itemInfo].ability.criticD}%</p>`;
     if (itemData[itemInfo].ability.moveSpd) des.innerHTML += `<p>이동 속도: ${itemData[itemInfo].ability.moveSpd}</p>`;
     if (itemData[itemInfo].ability.healthBoost) des.innerHTML += `<p>체력 회복 속도 증가: ${itemData[itemInfo].ability.healthBoost}%</p>`;
-    if (itemData[itemInfo].des) des.innerHTML += `<br/><b>기본 지속 효과</b> - ${ itemData[itemInfo].des.replace(/\$e1/, (itemData[itemInfo].extra[0] * 100).toFixed()) }`
+    if (itemData[itemInfo].des) des.innerHTML += `<br/><b>기본 지속 효과</b> - ${ itemData[itemInfo].des
+        ?.replace(/\$e1/g, (itemData[itemInfo].extra[0]).toFixed())
+        ?.replace(/\$e2/g, (itemData[itemInfo].extra[1] / 100).toFixed())
+        ?.replace(/\$e3/g, (itemData[itemInfo].extra[2]).toFixed())
+        ?.replace(/\$e4/g, (itemData[itemInfo].extra[3]).toFixed()) }`
     const aText: HTMLParagraphElement = document.querySelector('#need-items-text');
 
     

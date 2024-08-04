@@ -15,7 +15,7 @@ class Projectile {
     };
     public ignoreObj: boolean = false;
     public onhit: string = undefined;
-    public damageType: string;
+    public damageType: 'melee' | 'magic' | 'true';
     public targetEnemy: [boolean, 'red' | 'blue'] = [false, team];
     public canPass: boolean = false;
 
@@ -70,27 +70,66 @@ class Projectile {
             _bullet.style.top = `${ -this.absPos.y - cameraPosition.y }px`;
 
             // on-hit
+            let isCritical: boolean = Math.random() <= this.critical[0] / 100;
+
             if (type === getEnemyTeam()) {
                 if (this.isCollideWithPlayer2(_bullet, team) && !this.isCollide) {
-                    let damageCoefficient: number;
+                    let damageCoefficient = {
+                        melee: (1 / (1 + players[team].spec.armor * 0.01)),
+                        magic: (1 / (1 + players[team].spec.magicRegist * 0.01)),
+                        true: 1
+                    };
+                    let criticalDamage: number =  this.damage * (1.75 + this.critical[1] / 100);
                     this.isCollide = true;
 
+                    
                     if (!this.canPass) this.isArrive = false;
 
-                    if (this.damageType == 'melee') damageCoefficient = (1 / (1 + players[team].spec.armor * 0.01))
-                    if (this.damageType == 'magic') damageCoefficient = (1 / (1 + players[team].spec.magicRegist * 0.01))
-
                     // 크리티컬 데미지
-                    if (Math.random() <= this.critical[0] / 100) players[team].hp[1] -= this.damage * (1.75 + this.critical[1] / 100) * damageCoefficient;
-                    else players[team].hp[1] -= this.damage * damageCoefficient;
+                    if (isCritical) {
+                        players[team].hp[1] -= criticalDamage * damageCoefficient[this.damageType];
+                        
+                        damageAlert(this.damageType, damageCoefficient[this.damageType] * criticalDamage, true, type == 'blue' ? 'red' : 'blue');
+                    } else {
+                        players[team].hp[1] -= this.damage * damageCoefficient[this.damageType];
+                        
+                        damageAlert(this.damageType, this.damage * damageCoefficient[this.damageType], false, type == 'blue' ? 'red' : 'blue');
+                    };
+                    
 
                     // 아이템 감지
                     players[getEnemyTeam()].items.forEach(e => {
                         if (e?.name[1] == '3_molwang' && !this.onhit?.includes('skill')) {
-                            players[team].hp[1] -= players[team].hp[1] * (e.extra[0] / 100) * (1 / (1 + players[team].spec.armor * 0.01));
+                            players[team].hp[1] -= players[team].hp[1] * (e.extra[0] / 100) * damageCoefficient.melee;
+
+                            socket.send(JSON.stringify({
+                                body: {
+                                    msg: 'damageAlert',
+                                    info: [
+                                        "melee",
+                                        players[team].hp[1] * (e.extra[0] / 100) * damageCoefficient.melee,
+                                        false,
+                                        type == 'blue' ? 'red' : 'blue'
+                                    ]
+                                }
+                            }));
+                            damageAlert("melee", players[team].hp[1] * (e.extra[0] / 100) * damageCoefficient.melee, false, type == 'blue' ? 'red' : 'blue');
                         }
                         if (e?.name[1] == '3_nashor' && !this.onhit?.includes('skill')) {
-                            players[team].hp[1] -= e.extra[0] * (1 / (1 + players[team].spec.magicRegist * 0.01));
+                            players[team].hp[1] -= e.extra[0] * damageCoefficient.magic;
+
+                            socket.send(JSON.stringify({
+                                body: {
+                                    msg: 'damageAlert',
+                                    info: [
+                                        "magic",
+                                        e.extra[0] * damageCoefficient.magic,
+                                        false,
+                                        type == 'blue' ? 'red' : 'blue'
+                                    ]
+                                }
+                            }));
+                            damageAlert("magic", e.extra[0] * damageCoefficient.magic, false, type == 'blue' ? 'red' : 'blue');
                         }
                     });
 
@@ -101,8 +140,28 @@ class Projectile {
                         players[team].hp[1] -= (
                             players[getEnemyTeam()].spec.ap * enemySkillInfo.passive.ap +
                             players[getEnemyTeam()].spec.ad * enemySkillInfo.passive.ad +
-                            enemySkillInfo.passive.damage) * damageCoefficient
+                            enemySkillInfo.passive.damage) * damageCoefficient.magic
                         players[team].marker.ezreal = false;
+
+                        damageAlert("magic", (
+                            players[getEnemyTeam()].spec.ap * enemySkillInfo.passive.ap +
+                            players[getEnemyTeam()].spec.ad * enemySkillInfo.passive.ad +
+                            enemySkillInfo.passive.damage) * damageCoefficient.magic
+                        , false, type == 'blue' ? 'red' : 'blue');
+
+                        socket.send(JSON.stringify({
+                            body: {
+                                msg: 'damageAlert',
+                                info: [
+                                    "magic",
+                                    (players[getEnemyTeam()].spec.ap * enemySkillInfo.passive.ap +
+                                    players[getEnemyTeam()].spec.ad * enemySkillInfo.passive.ad +
+                                    enemySkillInfo.passive.damage) * damageCoefficient.magic,
+                                    false,
+                                    type == 'blue' ? 'red' : 'blue'
+                                ]
+                            }
+                        }));
                     }
                     
                     // 캐릭터별 온힛 효과
@@ -110,21 +169,56 @@ class Projectile {
                         absolutePosition[team].x -= 3;
                         absolutePosition[team].y += 3;
                         players[team].marker.ezreal = true;
+                    } else if (this.onhit?.includes("samira")) {
+                        socket.send(JSON.stringify({
+                            body: {
+                                msg: `samiraOnhit`, damageType: this.onhit?.split(' ')[this.onhit.split(' ').length - 1]
+                            }
+                        }));
+
+                        if (this.onhit?.includes(" e")) {
+                            canMove = false;
+                            
+                            setTimeout(() => {
+                                canMove = true;
+                            }, enemySkillInfo.e.duration * 10);
+                        }
                     }
 
+                    if (this.damage > 0) onhitCount[type] += 1;
                     socket.send(JSON.stringify({body: {msg: "onhit", target: 'enemy'}}));
                 }
 
                 let nexusIndex = {blue: [7, 8], red: [9, 10]};
 
                 if (this.isCollideWithNexus(gameObjects[nexusIndex[team][1]].objSelector, _bullet) && gameObjects[nexusIndex[team][0]].isCollide(players[getEnemyTeam()].selector) && !this.isCollide) {
+                    if (nexusHp[team][1] <= 0) return;
+                    
                     nexusHp[team][1] -= this.damage;
                     this.isCollide = true;
 
-                    socket.send(JSON.stringify({body: {msg: 'onhit', target: 'nexus'}}))
+                    socket.send(JSON.stringify({body: {msg: 'onhit', target: 'nexus'}}));
                 }
             } else {
                 if (this.isCollideWithPlayer(_bullet, getEnemyTeam()) && !this.isCollide) {
+                    let damageCoefficient: number = 0;
+
+                    if (this.damageType == 'melee') damageCoefficient = (1 / (1 + players[getEnemyTeam()].spec.armor * 0.01));
+                    if (this.damageType == 'magic') damageCoefficient = (1 / (1 + players[getEnemyTeam()].spec.magicRegist * 0.01));
+                    if (this.damageType == 'true') damageCoefficient = 1;
+
+                    
+                    if (isCritical) {
+                        let criticalDamage: number =  this.damage * (1.75 + this.critical[1] / 100);
+                        
+                        damageAlert(this.damageType, damageCoefficient * criticalDamage, true, type == 'blue' ? 'red' : 'blue');
+                    } else {
+                        damageAlert(this.damageType, this.damage * damageCoefficient, isCritical, type == 'blue' ? 'red' : 'blue');
+                    };
+
+
+                    if (this.damage > 0) onhitCount[type] += 1;
+
                     if (!this.canPass) this.isArrive = false;
                     if (char[team] == 'ezreal' && this.onhit?.includes('skill')) {
                         this.isCollide = true;

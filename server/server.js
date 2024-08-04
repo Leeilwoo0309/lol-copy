@@ -7,6 +7,8 @@ const express = require("express");
 const cors = require('cors');
 const app = express();
 const path = require('path');
+const { open } = require('sqlite');
+const sqlite3 = require('sqlite3');
 
 const clients = new Set();
 
@@ -35,15 +37,30 @@ wss.on('connection', (ws) => {
 
 console.log(`WSS server is running in: http://localhost:${ PORT.ws }`);
 
+// const corsOptions = {
+//     origin: 'http://kimchi-game.kro.kr:5500',
+//     methods: 'GET,POST,PUT,DELETE',
+//     allowedHeaders: 'Content-Type,Authorization',
+//     credentials: true
+// };
 
-
+// app.options('*', cors(corsOptions));
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/src', express.static(path.join(__dirname, 'src')));
+// app.use(cors({
+//     origin: 'http://kimchi-game.kro.kr:5500', // 웹 페이지의 도메인과 포트
+//     methods: 'GET',
+//     credentials: true
+// }));
+// app.use(cors({
+//     origin: 'file:///C:/Users/leeil/OneDrive/%EB%B0%94%ED%83%95%20%ED%99%94%EB%A9%B4/loljjapr/src/js', // 웹 페이지의 도메인과 포트
+//     methods: 'GET',
+//     credentials: true
+// }));
+
 
 app.get('/getChar', (req, res) => {
     const query = req.query.char;
-    const charList = ['teacher', 'sniper', 'samira', 'ezreal'];
+    const charList = ['teacher', 'sniper', 'samira', 'ezreal', 'vampire'];
 
     if (query === undefined) {
         return res.send(JSON.stringify({
@@ -74,10 +91,78 @@ app.get('/getItem', (req, res) => {
     });
 });
 
+
 app.get('/game', (req, res) => {
-    return res.sendFile('C:\\Users\\leeil\\OneDrive\\바탕 화면\\loljjapr\\public\\game.html')
+    return res.sendFile('C:\\Users\\leeil\\OneDrive\\바탕 화면\\loljjapr\\public\\title.html');
+});
+
+app.get('/addPlay', async (req, res) => {
+    let data;
+
+    try {
+        data = JSON.parse(atob(unescape(encodeURIComponent(req.query.data))));
+    } catch (err) {
+        console.error(err)
+        return;
+    }
+    
+    // console.log(data);
+
+    const db = await open({
+        filename: './db/playdata.db',
+        driver: sqlite3.Database,
+    });
+
+    let items = {blue: [], red: []};
+
+    try {
+        data.items.blue.forEach((e, i) => {
+            items.blue.push(e.name[1] ?? '')
+        })
+        
+        data.items.red.forEach((e, i) => {
+            items.red.push(e.name[1] ?? '')
+        });
+    } catch (err) {
+        items = {blue: [], red: []};
+        
+        JSON.parse(data.items.blue).forEach((e, i) => {
+            items.blue.push(e.name[1] ?? '')
+        })
+        
+        JSON.parse(data.items.red).forEach((e, i) => {
+            items.red.push(e.name[1] ?? '')
+        });
+    }
+
+    let addBlue = await db.all(`INSERT INTO ${ data.char.blue }
+        ("enemy", "items", "projectileHit", "damage", "result")
+        VALUES
+        ("${ data.char.red }", "${ items.blue }", ${ data.onhitCount.blue }, ${ data.dmg.red  }, "${ data.team == 'blue' && data.result == 'win' }")
+        `);
+
+    let addRed = await db.all(`INSERT INTO ${ data.char.red }
+        ("enemy", "items", "projectileHit", "damage", "result")
+        VALUES
+        ("${ data.char.blue }", "${ items.red }", ${ data.onhitCount.red }, ${ data.dmg.blue  }, "${ data.team == 'red' && data.result == 'win' }")
+        `);
+
+    // return res.send(data);
+});
+
+app.get('/get/char/:name', async (req, res) => {
+    const charName = req.params.name;
+
+    const db = await open({
+        filename: './db/playdata.db',
+        driver: sqlite3.Database,
+    });
+
+    let data = await db.all(`SELECT * FROM ${ charName }`);
+
+    return res.send(data);
 })
 
 app.listen(PORT.api, () => {
     console.log(`API server is running in: http://localhost:${ PORT.api }`)
-})
+});

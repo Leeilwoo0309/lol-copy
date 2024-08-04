@@ -55,6 +55,7 @@ function makeEzreal() {
             .setSpeed(20)
             .setSize({ height: 40, width: 200 })
             .setStyle('yellow')
+            .onHit('skill')
             .ignoreObj()
             .canPass()
             .build(team));
