@@ -36,7 +36,8 @@ type PlayerDeclare = {
 }
 
 type Marker = {
-    ezreal?: boolean
+    ezreal?: boolean,
+    vayne?: number
 }
 
 type AbsolutePosition = {
@@ -66,6 +67,7 @@ type Ability = {
     health?: number,
     healthBoost?: number,
     armor?: number,
+    ignoreArmor?: number,
     vamp?: number,
     criticP?: number,
     criticD?: number,
@@ -77,6 +79,7 @@ type Ability = {
 
 type SkillAbility = {
     cooldown: number,
+    des?: string,
     duration?: number,
     damage?: number,
     type?: "melee" | "magic" | "true",

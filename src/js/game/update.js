@@ -95,6 +95,16 @@ setInterval(function () {
     players[getEnemyTeam()].selector.style.left = "".concat(absolutePosition[getEnemyTeam()].x - cameraPosition.x, "px");
     players[getEnemyTeam()].selector.style.top = "".concat(-absolutePosition[getEnemyTeam()].y - cameraPosition.y, "px");
     playerDistance = Math.sqrt(Math.pow((absolutePosition.blue.x - absolutePosition.red.x), 2) + Math.pow((absolutePosition.blue.y - absolutePosition.red.y), 2));
+    damageAlertDiv.forEach(function (e) {
+        if (e.classList.contains('blue-d')) {
+            e.style.left = "".concat(absolutePosition.blue.x - cameraPosition.x, "px");
+            e.style.top = "".concat(-absolutePosition.blue.y - cameraPosition.y, "px");
+        }
+        else if (e.classList.contains('red-d')) {
+            e.style.left = "".concat(absolutePosition.red.x - cameraPosition.x, "px");
+            e.style.top = "".concat(-absolutePosition.red.y - cameraPosition.y, "px");
+        }
+    });
     // body.style.backgroundPositionX = `${ -1 * cameraPosition.x }px`;
     // body.style.backgroundPositionY = `${ -1 * cameraPosition.y }px`;
     players[team].spec = {
@@ -102,6 +112,7 @@ setInterval(function () {
         ap: players[team].specINIT.ap + players[team].specItem.ap,
         atkspd: Math.floor(players[team].specINIT.atkspd * (1 + Math.floor(players[team].specItem.atkspd) / 100) * 100) / 100,
         armor: players[team].specINIT.armor + players[team].specItem.armor + legendItem * 25 + seosaItem * 6 + commonItem * 2,
+        ignoreArmor: players[team].specINIT.ignoreArmor + players[team].specItem.ignoreArmor,
         magicRegist: players[team].specINIT.magicRegist + players[team].specItem.magicRegist + legendItem * 25 + seosaItem * 6 + commonItem * 2,
         skillHaste: players[team].specItem.skillHaste,
         range: players[team].specINIT.range + players[team].specItem.range,
@@ -138,7 +149,7 @@ setInterval(function () {
     itemsDiv.style.left = "".concat(window.innerWidth / 2 + 300, "px");
     itemsDiv.children[6].innerHTML = "<p id=\"gold\">G".concat(players[team].gold, "</p>");
     specDiv.style.left = "".concat(window.innerWidth / 2 - 470, "px");
-    specDiv.innerHTML = "\n        <p>\uACF5\uACA9\uB825: ".concat(players[team].spec.ad, "</p>\n        <p>\uC8FC\uBB38\uB825: ").concat(players[team].spec.ap, "</p>\n        <p>\uACF5\uACA9 \uC18D\uB3C4: ").concat(players[team].spec.atkspd, "</p>\n        <p>\uBC29\uC5B4\uB825: ").concat(players[team].spec.armor, "</p>\n        <p>\uB9C8\uBC95 \uC800\uD56D\uB825: ").concat(players[team].spec.magicRegist, "</p>\n        <p>\uC0AC\uAC70\uB9AC: ").concat(players[team].spec.range, "</p>\n        <p>\uC774\uB3D9\uC18D\uB3C4: ").concat(Math.floor((players[team].spec.moveSpd) * 100) / 100, "</p>\n        <p>\uCE58\uBA85\uD0C0 \uD655\uB960: ").concat(players[team].spec.criticP, "%</p>\n        <p>\uC0DD\uBA85\uB825 \uD761\uC218: ").concat(players[team].spec.vamp, "%</p>\n        <p>\uC2A4\uD0AC \uAC00\uC18D: ").concat(players[team].spec.skillHaste, "%</p>\n        <p>\uCD08\uB2F9 \uCCB4\uB825 \uD68C\uBCF5: ").concat(Math.floor((players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10) / 10, "</p>\n    ");
+    specDiv.innerHTML = "\n        <p>\uACF5\uACA9\uB825: ".concat(players[team].spec.ad, "</p>\n        <p>\uC8FC\uBB38\uB825: ").concat(players[team].spec.ap, "</p>\n        <p>\uACF5\uACA9 \uC18D\uB3C4: ").concat(players[team].spec.atkspd, "</p>\n        <p>\uBC29\uC5B4\uB825: ").concat(players[team].spec.armor, "</p>\n        <p>\uB9C8\uBC95 \uC800\uD56D\uB825: ").concat(players[team].spec.magicRegist, "</p>\n        <p>\uC0AC\uAC70\uB9AC: ").concat(players[team].spec.range, "</p>\n        <p>\uC774\uB3D9\uC18D\uB3C4: ").concat(Math.floor((players[team].spec.moveSpd) * 100) / 100, "</p>\n        <p>\uCE58\uBA85\uD0C0 \uD655\uB960: ").concat(players[team].spec.criticP, "%</p>\n        <p>\uC0DD\uBA85\uB825 \uD761\uC218: ").concat(players[team].spec.vamp, "%</p>\n        <p>\uBB3C\uB9AC \uAD00\uD1B5\uB825: ").concat(players[team].spec.ignoreArmor, "</p>\n        <p>\uC2A4\uD0AC \uAC00\uC18D: ").concat(players[team].spec.skillHaste, "%</p>\n        <p>\uCD08\uB2F9 \uCCB4\uB825 \uD68C\uBCF5: ").concat(Math.floor((players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10) / 10, "</p>\n    ");
     shopBtn.addEventListener('click', function () { shopOpen(); });
     var position = {
         x: parseFloat(players[team].selector.style.left),
@@ -174,7 +185,7 @@ setInterval(function () {
         cameraPosition.y = 0;
     if (players[team].hp[1] > players[team].hp[0])
         players[team].hp[1] = players[team].hp[0];
-    if (players[team].hp[1] < 0) {
+    if (players[team].hp[1] < 0 && deathCoolDown[team] == 0) {
         players[team].hp[1] = 0;
         death();
     }
@@ -198,6 +209,7 @@ setInterval(function () {
                 .build(team));
         }
         else {
+            players[team].status.invisible = false;
             projectiles[team].push(new ProjectileBuilder()
                 .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, "melee")
                 .setCritical(players[team].spec.criticP, players[team].spec.criticD)
@@ -394,7 +406,7 @@ setInterval(function () {
         deathCoolDown[getEnemyTeam()] = 0;
 }, 1000);
 // 내가 쏜걸 상대방이 맞았을 때
-function onhit() {
+function onhit(type) {
     players[team].gold += 3;
     players[team].hp[1] += players[team].spec.ad * players[team].spec.vamp / 100;
     if (hasItem('0_cull')) {
@@ -416,13 +428,29 @@ function onhit() {
         }
         console.log(cooldownItem.kraken.count, cooldownItem.kraken.damage);
     }
-    if (aaA.ad > 0) {
+    if (hasItem('3_navori')) {
+        var decreasePercent = findItem('3_navori').body.extra[0] / 100;
+        console.log(decreasePercent);
+        charClass.cooldown.q -= charClass.cooldownINIT.q * decreasePercent;
+        charClass.cooldown.e -= charClass.cooldownINIT.e * decreasePercent;
+        charClass.cooldown.shift -= charClass.cooldownINIT.shift * decreasePercent;
+    }
+    if ((hasItem('2_sheen') || hasItem('3_tfo')) && cooldownItem.sheen.isActive) {
+        console.log('비활');
+        cooldownItem.sheen.isActive = false;
+        aaA.ad = 0;
+    }
+    if ((hasItem('2_sheen') || hasItem('3_tfo')) && !cooldownItem.sheen.isActive && type == 'skill') {
+        console.log('활');
+        aaA.ad += players[team].spec.ad;
+        cooldownItem.sheen.isActive = true;
+    }
+    if (aaA.ad > 0 && !cooldownItem.sheen.isActive) {
         aaA.ad = 0;
         if (char[team] == 'sniper') {
             charClass.isActive.q = false;
         }
     }
-    ;
     if (char[team] == 'sniper') {
         charClass.passive();
     }
@@ -432,14 +460,16 @@ function onhit() {
 }
 function death() {
     if (!isNexusAlive[team]) {
-        window.location.href = "../public/result.html?result=lose&game=".concat(btoa(unescape(encodeURIComponent(JSON.stringify({
-            dmg: { blue: damageAmount.blue, red: damageAmount.red },
-            onhitCount: { blue: onhitCount.blue, red: onhitCount.red },
-            char: { blue: char.blue, red: char.red },
-            kda: { blue: kda.blue, red: kda.red },
-            team: getEnemyTeam(), result: 'win',
-            items: { blue: JSON.stringify(players.blue.items), red: JSON.stringify(players.red.items) }
-        })))));
+        // window.location.href = `../public/result.html?result=lose&game=${ btoa(unescape(encodeURIComponent(JSON.stringify(
+        //     {
+        //         dmg: {blue: damageAmount.blue, red: damageAmount.red},
+        //         onhitCount: {blue: onhitCount.blue, red: onhitCount.red},
+        //         char: {blue: char.blue, red: char.red},
+        //         kda: {blue: kda.blue, red: kda.red},
+        //         team: getEnemyTeam(), result: 'win',
+        //         items: {blue: JSON.stringify(players.blue.items), red: JSON.stringify(players.red.items)}
+        //     }
+        // )))) }`;
         socket.send(JSON.stringify({ body: { msg: 'gameEnd' } }));
         return;
     }

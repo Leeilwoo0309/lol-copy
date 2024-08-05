@@ -1,0 +1,60 @@
+{
+    "cn": "vayne",
+    "name": "베인",
+    "defaultSpec": {
+        "ad": 4,
+        "ap": 0,
+        "atkspd": 0.6,
+        "armor": 18,
+        "ignoreArmor": 0,
+        "magicRegist": 17,
+        "skillHaste": 0,
+        "range": 315,
+        "projectileSpd": 15,
+        "moveSpd": 5.25,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 360,
+        "healthBoost": 1.5,
+        "vamp": 0
+    },
+    "skills": {
+        "passive": {
+            "damage": 9
+        },
+        "Q": {
+            "cooldown": 300,
+            "damage": 1,
+            "ad": 1,
+            "range": 20
+        },
+        "E": {
+            "cooldown": 3000,
+            "des": "burf-heal",
+            "criticD": 30,
+            "damage": 15,
+            "ap": 0.02,
+            "ad": 0.01
+        },
+        "Shift": {
+            "cooldown": 2000,
+            "type": "melee",
+            "damage": 15,
+            "ad": 0.3,
+            "duration": 100
+        },
+        "Wheel": {
+            "cooldown": 4700,
+            "damage": 13,
+            "moveSpd": 0.75,
+            "duration": 1000
+        }
+    },
+    "des": {
+        "passive": "적에게 세 번 기본 공격 또는 스킬이 적중할 때마다 대상 최대 체력에 해당하는 고정 피해를 추가로 입힙니다. <br/>(피해량: 적 최대 체력의 $pd%)",
+        "Q": "베인이 짧은 구르기를 합니다. 이후 기본 공격을 하면 물리 피해를 추가로 입힙니다.<br/>(피해량: $qd + 공격력 * $qad, 재사용 대기시간: $qcd초)",
+        "E": "잃은 체력에 비례해 체력을 회복합니다. <br/>(회복량: $ed + 공격력 * $ead + 주문력 * $eap, 재사용 대기시간: $ecd초)",
+        "Shift": "베인이 볼트를 발사하여 대상을 속박시키고 물리 피해를 입힙니다.<br/>(피해량: $sd + 공격력 * $sad, 재사용 대기시간: $scd초)",
+        "Wheel": "베인이 $wdu초 동안 공격력을 얻습니다. 구르기의 재사용 대기시간이 감소하며, 구르기를 사용하면 1초 동안 투명 상태가 됩니다. <br/>(공격력 상승: $wd, 재사용 대기시간: $wcd초)"
+    }
+}

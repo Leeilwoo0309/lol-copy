@@ -57,7 +57,7 @@ socket.onopen = function () {
                     }
                     else if (message == 'onhit') {
                         if (sentJson.body.target == 'enemy')
-                            onhit();
+                            onhit(sentJson.body.type);
                         if (sentJson.body.target == 'nexus')
                             players[team].gold += 10;
                     }
@@ -80,15 +80,37 @@ socket.onopen = function () {
                         damageAmount[getEnemyTeam()] += dashDamage * (1 / (1 + players[team].spec.magicRegist * 0.01));
                         damageAlert('magic', dashDamage * (1 / (1 + players[team].spec.magicRegist * 0.01)), false, team);
                     }
+                    else if (message == 'gameInfo') {
+                        window.location.href = "../public/result.html?result=win&game=".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sentJson.body.info)))));
+                    }
                     else if (message == 'gameEnd') {
+                        var items_1 = { red: [], blue: [] };
+                        players.red.items.forEach(function (e) {
+                            if (e !== null)
+                                items_1.red.push(e.name[1]);
+                        });
+                        players.blue.items.forEach(function (e) {
+                            if (e !== null)
+                                items_1.blue.push(e.name[1]);
+                        });
                         window.location.href = "../public/result.html?result=win&game=".concat(btoa(unescape(encodeURIComponent(JSON.stringify({
                             dmg: { blue: damageAmount.blue, red: damageAmount.red },
                             onhitCount: { blue: onhitCount.blue, red: onhitCount.red },
                             char: { blue: char.blue, red: char.red },
                             kda: { blue: kda.blue, red: kda.red },
                             team: team, result: 'win',
-                            items: { blue: players.blue.items, red: players.red.items }
+                            items: { blue: items_1.blue, red: items_1.red }
                         })))));
+                        socket.send(JSON.stringify({
+                            body: { msg: 'gameInfo', info: {
+                                    dmg: { blue: damageAmount.blue, red: damageAmount.red },
+                                    onhitCount: { blue: onhitCount.blue, red: onhitCount.red },
+                                    char: { blue: char.blue, red: char.red },
+                                    kda: { blue: kda.blue, red: kda.red },
+                                    team: team, result: 'lose',
+                                    items: { blue: items_1.blue, red: items_1.red }
+                                } }
+                        }));
                     }
                     else if (message == 'reload') {
                         reload();

@@ -93,12 +93,22 @@ function checkCollide(position) {
     return ret;
 }
 function animation(_team) {
-    var _a, _b;
+    var _a, _b, _c, _d, _e;
     if (((_a = players[_team].marker) === null || _a === void 0 ? void 0 : _a.ezreal) == true) {
         players[_team].selector.style.boxShadow = "rgb(235, 201, 54) 0px 0px 10px";
         players[_team].selector.style.border = "3px solid rgb(235, 201, 54)";
     }
     else if (((_b = players[_team].marker) === null || _b === void 0 ? void 0 : _b.ezreal) == false) {
+        players[_team].selector.style.boxShadow = "";
+        players[_team].selector.style.border = "";
+    }
+    if (((_c = players[_team].marker) === null || _c === void 0 ? void 0 : _c.vayne) == 1) {
+        players[_team].selector.style.boxShadow = "rgb(0, 128, 255) 0px 0px 10px";
+    }
+    else if (((_d = players[_team].marker) === null || _d === void 0 ? void 0 : _d.vayne) == 2) {
+        players[_team].selector.style.boxShadow = "rgb(255, 0, 0) 0px 0px 10px";
+    }
+    else if (((_e = players[_team].marker) === null || _e === void 0 ? void 0 : _e.vayne) == 0) {
         players[_team].selector.style.boxShadow = "";
         players[_team].selector.style.border = "";
     }
@@ -123,7 +133,7 @@ function animation(_team) {
     }
 }
 function damageAlert(type, dmg, isCritical, target) {
-    var parent = players[target].selector;
+    var parent = document.querySelector(".".concat(target, "-d"));
     var alerter = document.createElement('div');
     var textColor = {
         melee: 'rgb(227, 106, 14)',
@@ -141,10 +151,20 @@ function damageAlert(type, dmg, isCritical, target) {
     alerter.style.transition = 'opacity 700ms';
     alerter.style.position = 'fixed ';
     alerter.style.textShadow = "0px 0px 2px ".concat(textColor[type]);
+    if (type === 'true')
+        alerter.style.textShadow = '0px 0px 2px black';
     if (isCritical) {
         alerter.style.fontWeight = '800';
         alerter.innerHTML = "".concat(Math.floor(dmg), "!");
         alerter.style.fontSize = "".concat(Math.log2(dmg * 4) + 20, "px");
+    }
+    if (dmg == 9999 && type == 'true' && target != team) {
+        players[team].gold += findItem('3_collector').body.extra[2];
+        console.log("".concat(findItem('3_collector').body.extra[2], "\uC6D0 \uB4E4\uC5B4\uC634\u3145\u3145"));
+    }
+    else if (dmg == 9999 && type == 'true' && target == team) {
+        death();
+        socket.send(JSON.stringify({ body: { msg: "death" } }));
     }
     damageAmount[target] += dmg;
     parent.appendChild(alerter);

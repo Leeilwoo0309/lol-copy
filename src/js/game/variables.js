@@ -4,6 +4,7 @@ var statusDiv = document.querySelector('.status');
 var itemsDiv = document.querySelector('.items');
 var specDiv = document.querySelector('.spec');
 var skillBtns = document.querySelectorAll('.skill-btn');
+var damageAlertDiv = document.querySelectorAll('.damagep');
 var hpProgressBars;
 var deathCoolDown = { blue: 0, red: 0 };
 var kda = { blue: [0, 0], red: [0, 0] };
@@ -19,6 +20,7 @@ var players = {
             ad: 30,
             atkspd: 1.5,
             armor: 30,
+            ignoreArmor: 0,
             range: 500,
             moveSpd: 5.5,
             criticD: 0,
@@ -44,6 +46,7 @@ var players = {
             ap: 0,
             atkspd: 0,
             armor: 0,
+            ignoreArmor: 0,
             range: 0,
             magicRegist: 0,
             skillHaste: 0,
@@ -72,6 +75,7 @@ var players = {
             ad: 30,
             atkspd: 1,
             armor: 30,
+            ignoreArmor: 0,
             range: 500,
             moveSpd: 5,
             criticD: 0,
@@ -97,6 +101,7 @@ var players = {
             ap: 0,
             atkspd: 0,
             armor: 0,
+            ignoreArmor: 0,
             range: 0,
             magicRegist: 0,
             skillHaste: 0,
@@ -152,6 +157,9 @@ var cooldownItem = {
     kraken: {
         count: 0,
         damage: 0,
+    },
+    sheen: {
+        isActive: false
     }
 };
 var keyDown = {

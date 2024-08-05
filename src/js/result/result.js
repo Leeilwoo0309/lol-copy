@@ -1,6 +1,7 @@
 var params = new URLSearchParams(window.location.search);
 var result = params.get('result');
-var gameResult = JSON.parse(atob(params.get('game')));
+console.log(params.get('game'));
+var gameResult = JSON.parse(atob(unescape(encodeURIComponent(params.get('game')))));
 var resultPar = document.querySelector('.header');
 var resultPrint = document.querySelector('.result');
 var toTitleBtn = document.querySelector('#back');

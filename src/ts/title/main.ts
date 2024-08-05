@@ -6,8 +6,8 @@ const _socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 
 let selected: {ally: number, enemy: number} = {ally: undefined, enemy: undefined};
 let chars: CharData = undefined;
-let charName: string[] = ['teacher', 'sniper', 'ezreal', 'samira', 'vampire'];
-let charNameKr: string[] = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '블라디미르'];
+let charName: string[] = ['teacher', 'sniper', 'ezreal', 'samira', 'vayne', 'vampire'];
+let charNameKr: string[] = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '베인', '블라디미르'];
 let readyStatus: [boolean, boolean] = [false, false];
 
 async function getCharInfo(name: string) {
@@ -39,7 +39,7 @@ readyBtn.addEventListener('click', () => {
         return;
     }
 
-    if (selected.ally === 0 || selected.ally === 4) {
+    if (selected.ally === 0 || selected.ally === 5) {
         alert("그챔 아직 안만듦~~");
         return;
     }
@@ -109,6 +109,7 @@ _socket.onopen = () => {
 function updateSelected() {
     function generateDes(des: string, chars) {
         return des
+            ?.replace(/\$pd/g, (chars.skills.passive?.damage)?.toString())
             ?.replace(/\$psh/g, (chars.skills.passive?.skillHaste / 100)?.toString())
             ?.replace(/\$pdu/g, ((chars.skills.passive?.duration) / 100)?.toString())
             ?.replace(/\$pmv/g, (chars.skills.passive?.moveSpd)?.toString())

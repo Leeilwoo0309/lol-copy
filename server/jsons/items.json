@@ -99,6 +99,12 @@
         "ability": { "health": 200, "healthBoost": 100 }, "enable": true
     },
     {
+        "name": ["광휘의 검", "2_sheen"], "price": 900,
+        "lower": ["1_glowing_mote"],
+        "ability": { "skillHaste": 10 }, "enable": true,
+        "des": "스킬을 사용하고 나면 다음 기본 공격 적중 시 기본 공격력의 $e1%의 물리 피해를 추가로 입힙니다.", "extra": [100, 0, 0, 0]
+    },
+    {
         "name": ["흡혈의 낫", "2_vampiric_scepter"], "price": 900,
         "lower": ["1_long_sword"],
         "ability": { "ad": 10, "vamp": 7 }, "enable": true
@@ -114,9 +120,24 @@
         "ability": { "magicRegist": 50 }, "enable": true
     },
     {
+        "name": ["톱날 단검", "2_dirk"], "price": 1000,
+        "lower": ["1_long_sword", "1_long_sword"],
+        "ability": { "ad": 10, "ignoreArmor": 10 }, "enable": true
+    },
+    {
         "name": ["열성의 검", "2_zeal"], "price": 1100,
         "lower": ["1_cloak", "1_short_sword"],
         "ability": { "criticP": 15, "atkspd": 50, "moveSpd": 0.3 }, "enable": true
+    },
+    {
+        "name": ["탐식의 망치", "2_phage"], "price": 1100,
+        "lower": ["1_ruby_c", "1_long_sword"],
+        "ability": { "ad": 7, "health": 100 }, "enable": true
+    },
+    {
+        "name": ["온기가 필요한 자의 도끼", "2_onpildo"], "price": 1300,
+        "lower": ["1_long_sword", "1_short_sword","1_long_sword"],
+        "ability": { "ad": 10, "atkspd": 40 }, "enable": true
     },
     {
         "name": ["절정의 화살", "2_noonquiver"], "price": 1400,
@@ -124,9 +145,21 @@
         "ability": { "ad": 10, "criticP": 20 }, "enable": true
     },
     {
+        "name": ["나보리의 명멸검", "3_navori"], "price": 2600,
+        "lower": ["1_short_sword", "2_zeal", "1_short_sword"],
+        "ability": { "atkspd": 120, "criticP": 25, "moveSpd": 0.3 }, "enable": true,
+        "des": "기본 공격 시 기본 스킬의 남은 재사용 대기시간이 $e1% 감소합니다.", "extra": [15, 0, 0, 0]
+    },
+    {
         "name": ["유령 무희", "3_phantom_dance"], "price": 2600,
         "lower": ["1_short_sword", "2_zeal", "1_short_sword"],
         "ability": { "atkspd": 150, "criticP": 25, "moveSpd": 0.5 }, "enable": true
+    },
+    {
+        "name": ["마법사희 최후", "3_wits_end"], "price": 2800,
+        "lower": ["2_recurve_bow", "2_negatron_cloak", "1_short_sword"],
+        "ability": { "atkspd": 135, "magicRegist": 50, "moveSpd": 0.5 }, "enable": true,
+        "des": "기본 공격 적중 시 $e1의 마법 피해를 입힙니다.", "extra": [40, 0, 0, 0]
     },
     {
         "name": ["구인수의 격노검", "3_guinsu"], "price": 3000,
@@ -139,6 +172,12 @@
         "lower": ["2_recurve_bow", "1_blasting_wand", "2_codex"],
         "ability": { "ap": 65, "atkspd": 120, "skillHaste": 15 }, "enable": true,
         "des": "기본 공격 적중 시 $e1의 마법 피해를 입힙니다.", "extra": [15, 0, 0, 0]
+    },
+    {
+        "name": ["고속연사포", "3_rapid_firecannon"], "price": 3000,
+        "lower": ["2_recurve_bow", "2_zeal", "1_pickaxe"],
+        "ability": { "ad": 20, "criticP": 25, "atkspd": 150 }, "enable": true,
+        "des": "상대방과 거리가 멀수록 더욱 강한 피해를 입힙니다. (피해량: 공격력 * 1.5)", "extra": [1.5, 3000, 0, 0]
     },
     {
         "name": ["불멸의 철갑궁", "3_shieldbow"], "price": 3000,
@@ -158,10 +197,22 @@
         "extra": [10, 0, 0, 0], "des": "기본 공격 시 적 현재 체력에 따라 $e1%의 물리 피해를 입힙니다."
     },
     {
+        "name": ["징수의 총", "3_collector"], "price": 3200,
+        "lower": ["1_bf_sword", "2_dirk", "1_cloak"],
+        "ability": { "ad": 40, "criticP": 25, "ignoreArmor": 15 }, "enable": true,
+        "extra": [8, 0, 50, 0], "des": "체력이 $e1% 이하인 적을 처형하고 $e3의 골드를 추가로 획득합니다."
+    },
+    {
         "name": ["크라켄 학살자", "3_kraken"], "price": 3200,
         "lower": ["2_noonquiver", "1_cloak", "2_recurve_bow"],
-        "ability": { "ad": 30, "atkspd": 50, "criticP": 25 }, "enable": true,
+        "ability": { "ad": 35, "atkspd": 50, "criticP": 25 }, "enable": true,
         "extra": [30, 0, 0.6, 0], "des": "세 번째 기본 공격을 가할 때마다 $e1 + 공격력 * 0.6의 추가 물리 피해를 입힙니다."
+    },
+    {
+        "name": ["삼위일체", "3_tfo"], "price": 3333,
+        "lower": ["2_sheen", "2_phage", "2_onpildo"],
+        "ability": { "ad": 30, "atkspd": 45, "health": 150, "skillHaste": 20 }, "enable": true,
+        "extra": [100, 0, 0, 0], "des": "스킬을 사용하고 나면 다음 기본 공격 적중 시 공격력의 $e1%의 물리 피해를 추가로 입힙니다"
     },
     {
         "name": ["무한의 대검", "3_infinity_edge"], "price": 3400,

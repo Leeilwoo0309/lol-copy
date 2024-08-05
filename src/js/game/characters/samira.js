@@ -100,7 +100,7 @@ function makeSamira() {
                     }));
                     isCollide = true;
                     currentAttackType = 'shift';
-                    onhit();
+                    onhit("skill");
                 }
             }
             else {

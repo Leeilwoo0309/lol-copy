@@ -368,7 +368,7 @@ body {
 }
 
 .item2 {
-    grid-column: span 4;
+    grid-column: span 1;
 }
 
 .item3 {
@@ -565,4 +565,8 @@ body {
     font-size: 20px;
     color: white;
     text-align: center;
+}
+
+.damagep {
+    position: absolute;
 }

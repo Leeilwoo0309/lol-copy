@@ -105,6 +105,15 @@ function animation(_team: 'red' | 'blue') {
         players[_team].selector.style.border = ``;
     }
 
+    if (players[_team].marker?.vayne == 1) {
+        players[_team].selector.style.boxShadow = `rgb(0, 128, 255) 0px 0px 10px`;
+    } else if (players[_team].marker?.vayne == 2) {
+        players[_team].selector.style.boxShadow = `rgb(255, 0, 0) 0px 0px 10px`;
+    } else if (players[_team].marker?.vayne == 0) {
+        players[_team].selector.style.boxShadow = ``;
+        players[_team].selector.style.border = ``;
+    }
+
     if (players[_team].status.invisible && _team == team) {
         players[_team].selector.style.opacity = '20%'
     } else if (players[_team].status.invisible && _team !== team) {
@@ -129,7 +138,7 @@ function animation(_team: 'red' | 'blue') {
 }
 
 function damageAlert(type: 'melee' | 'magic' | 'true', dmg: number, isCritical: boolean, target: 'blue' | 'red') {
-    const parent: HTMLDivElement = players[target].selector;
+    const parent: HTMLDivElement = document.querySelector(`.${target}-d`);
     const alerter: HTMLDivElement = document.createElement('div');
     const textColor = {
         melee: 'rgb(227, 106, 14)',
@@ -148,11 +157,21 @@ function damageAlert(type: 'melee' | 'magic' | 'true', dmg: number, isCritical: 
     alerter.style.transition = 'opacity 700ms';
     alerter.style.position = 'fixed ';
     alerter.style.textShadow = `0px 0px 2px ${ textColor[type] }`;
+
+    if (type === 'true') alerter.style.textShadow = '0px 0px 2px black'
     
     if (isCritical) {
         alerter.style.fontWeight = '800';
         alerter.innerHTML = `${ Math.floor(dmg) }!`;
         alerter.style.fontSize = `${ Math.log2(dmg * 4) + 20 }px`;
+    }
+
+    if (dmg == 9999 && type == 'true' && target != team) {
+        players[team].gold += findItem('3_collector').body.extra[2];
+        console.log(`${findItem('3_collector').body.extra[2]}원 들어옴ㅅㅅ`);
+    } else if (dmg == 9999 && type == 'true' && target == team) {
+        death();
+        socket.send(JSON.stringify({body: {msg: "death"}}));
     }
 
     

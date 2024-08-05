@@ -19,6 +19,10 @@ var isSellActive = false;
 var hasBoots = false;
 // 사는거
 resultItem.addEventListener('click', function () {
+    if (team == 'blue' && absolutePosition[team].x > 855)
+        return;
+    if (team == 'red' && absolutePosition[team].x < 3530)
+        return;
     // 업그레이드하는 함수
     function upgradeLower() {
         var lower = __spreadArray([], itemData[itemInfo].lower, true);
@@ -99,6 +103,8 @@ resultItem.addEventListener('click', function () {
             players[team].specItem.vamp += itemData[itemInfo].ability.vamp;
         if (itemData[itemInfo].ability.healthBoost)
             players[team].specItem.healthBoost += itemData[itemInfo].ability.healthBoost;
+        if (itemData[itemInfo].ability.ignoreArmor)
+            players[team].specItem.ignoreArmor += itemData[itemInfo].ability.ignoreArmor;
         if (itemData[itemInfo].ability.mana)
             players[team].specItem.mana += itemData[itemInfo].ability.mana;
         if (itemData[itemInfo].ability.manaR)
@@ -114,22 +120,30 @@ resultItem.addEventListener('click', function () {
             }
         }
         if (itemData[itemInfo].name[1].includes('3_'))
-            players[team].hp[1] += 190;
+            players[team].hp[1] += 300;
+        if (itemData[itemInfo].name[1].includes('2_'))
+            players[team].hp[1] += 80;
+        if (itemData[itemInfo].name[1].includes('1_'))
+            players[team].hp[1] += 30;
         refreshPrice();
         sellItems();
     }
 });
 function sellItems() {
-    if (!isSellActive) {
+    if (!isSellActive && isOpen) {
         isSellActive = true;
         var itemVault = document.querySelectorAll('.item-vault');
         itemVault.forEach(function (e, i) {
             e.addEventListener('mousedown', function (event) {
-                if (event.button) {
+                if (team == 'blue' && absolutePosition[team].x > 855)
+                    return;
+                if (team == 'red' && absolutePosition[team].x < 3530)
+                    return;
+                if (event.button && isOpen) {
                     var sellitem = findItem(players[team].items[i].name[1]);
                     if (sellitem.body.name[1].includes('b_1') || sellitem.body.name[1].includes('b_2'))
                         hasBoots = false;
-                    players[team].gold += players[team].items[i].price * 0.5;
+                    players[team].gold += players[team].items[i].price * 0.7;
                     players[team].items[i] = undefined;
                     if (sellitem.body.ability.ad)
                         players[team].specItem.ad -= sellitem.body.ability.ad;
@@ -151,6 +165,8 @@ function sellItems() {
                         players[team].specItem.criticP -= sellitem.body.ability.criticP;
                     if (sellitem.body.ability.healthBoost)
                         players[team].specItem.healthBoost -= sellitem.body.ability.healthBoost;
+                    if (sellitem.body.ability.ignoreArmor)
+                        players[team].specItem.ignoreArmor -= sellitem.body.ability.ignoreArmor;
                     if (sellitem.body.ability.vamp)
                         players[team].specItem.vamp -= sellitem.body.ability.vamp;
                     if (sellitem.body.ability.health) {
@@ -256,6 +272,8 @@ function refreshShop(element, index) {
         des.innerHTML += "<p>\uC774\uB3D9 \uC18D\uB3C4: ".concat(itemData[itemInfo].ability.moveSpd, "</p>");
     if (itemData[itemInfo].ability.healthBoost)
         des.innerHTML += "<p>\uCCB4\uB825 \uD68C\uBCF5 \uC18D\uB3C4 \uC99D\uAC00: ".concat(itemData[itemInfo].ability.healthBoost, "%</p>");
+    if (itemData[itemInfo].ability.ignoreArmor)
+        des.innerHTML += "<p>\uBB3C\uB9AC \uAD00\uD1B5\uB825: ".concat(itemData[itemInfo].ability.ignoreArmor, "</p>");
     if (itemData[itemInfo].des)
         des.innerHTML += "<br/><b>\uAE30\uBCF8 \uC9C0\uC18D \uD6A8\uACFC</b> - ".concat((_d = (_c = (_b = (_a = itemData[itemInfo].des) === null || _a === void 0 ? void 0 : _a.replace(/\$e1/g, (itemData[itemInfo].extra[0]).toFixed())) === null || _b === void 0 ? void 0 : _b.replace(/\$e2/g, (itemData[itemInfo].extra[1] / 100).toFixed())) === null || _c === void 0 ? void 0 : _c.replace(/\$e3/g, (itemData[itemInfo].extra[2]).toFixed())) === null || _d === void 0 ? void 0 : _d.replace(/\$e4/g, (itemData[itemInfo].extra[3]).toFixed()));
     var aText = document.querySelector('#need-items-text');

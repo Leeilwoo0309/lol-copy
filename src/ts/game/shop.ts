@@ -12,6 +12,8 @@ let hasBoots: boolean = false;
 
 // 사는거
 resultItem.addEventListener('click', () => {
+    if (team == 'blue' && absolutePosition[team].x > 855) return;
+    if (team == 'red' && absolutePosition[team].x < 3530) return;
     // 업그레이드하는 함수
     function upgradeLower() {
         let lower: string[] = [...itemData[itemInfo].lower];
@@ -74,6 +76,7 @@ resultItem.addEventListener('click', () => {
         };
         if (itemData[itemInfo].ability.vamp) players[team].specItem.vamp += itemData[itemInfo].ability.vamp;
         if (itemData[itemInfo].ability.healthBoost) players[team].specItem.healthBoost += itemData[itemInfo].ability.healthBoost;
+        if (itemData[itemInfo].ability.ignoreArmor) players[team].specItem.ignoreArmor += itemData[itemInfo].ability.ignoreArmor;
         if (itemData[itemInfo].ability.mana) players[team].specItem.mana += itemData[itemInfo].ability.mana;
         if (itemData[itemInfo].ability.manaR) players[team].specItem.manaR += itemData[itemInfo].ability.manaR;
 
@@ -87,27 +90,31 @@ resultItem.addEventListener('click', () => {
             }
         }
         
-        if (itemData[itemInfo].name[1].includes('3_')) players[team].hp[1] += 190;
+        if (itemData[itemInfo].name[1].includes('3_')) players[team].hp[1] += 300;
+        if (itemData[itemInfo].name[1].includes('2_')) players[team].hp[1] += 80;
+        if (itemData[itemInfo].name[1].includes('1_')) players[team].hp[1] += 30;
         refreshPrice();
         sellItems();
     }
 });
 
 function sellItems() {
-    if (!isSellActive) {
+    if (!isSellActive && isOpen) {
         isSellActive = true;
         
         const itemVault: NodeListOf<HTMLDivElement> = document.querySelectorAll('.item-vault');
         
         itemVault.forEach((e, i) => {
             e.addEventListener('mousedown', (event) => {
-                if (event.button) {
+                if (team == 'blue' && absolutePosition[team].x > 855) return;
+                if (team == 'red' && absolutePosition[team].x < 3530) return;
+                if (event.button && isOpen) {
                     let sellitem = findItem(players[team].items[i].name[1]);
 
                     if (sellitem.body.name[1].includes('b_1') || sellitem.body.name[1].includes('b_2'))
                         hasBoots = false;
 
-                    players[team].gold += players[team].items[i].price * 0.5;
+                    players[team].gold += players[team].items[i].price * 0.7;
                     players[team].items[i] = undefined;
                     
                     if (sellitem.body.ability.ad) players[team].specItem.ad -= sellitem.body.ability.ad;
@@ -120,6 +127,7 @@ function sellItems() {
                     if (sellitem.body.ability.criticD) players[team].specItem.criticD -= sellitem.body.ability.criticD;
                     if (sellitem.body.ability.criticP) players[team].specItem.criticP -= sellitem.body.ability.criticP;
                     if (sellitem.body.ability.healthBoost) players[team].specItem.healthBoost -= sellitem.body.ability.healthBoost;
+                    if (sellitem.body.ability.ignoreArmor) players[team].specItem.ignoreArmor -= sellitem.body.ability.ignoreArmor;
                     if (sellitem.body.ability.vamp) players[team].specItem.vamp -= sellitem.body.ability.vamp;
                     if (sellitem.body.ability.health) {
                         players[team].specItem.health -= sellitem.body.ability.health
@@ -227,6 +235,7 @@ function refreshShop(element, index) {
     if (itemData[itemInfo].ability.criticD) des.innerHTML += `<p>추가 치명타 피해: ${itemData[itemInfo].ability.criticD}%</p>`;
     if (itemData[itemInfo].ability.moveSpd) des.innerHTML += `<p>이동 속도: ${itemData[itemInfo].ability.moveSpd}</p>`;
     if (itemData[itemInfo].ability.healthBoost) des.innerHTML += `<p>체력 회복 속도 증가: ${itemData[itemInfo].ability.healthBoost}%</p>`;
+    if (itemData[itemInfo].ability.ignoreArmor) des.innerHTML += `<p>물리 관통력: ${itemData[itemInfo].ability.ignoreArmor}</p>`;
     if (itemData[itemInfo].des) des.innerHTML += `<br/><b>기본 지속 효과</b> - ${ itemData[itemInfo].des
         ?.replace(/\$e1/g, (itemData[itemInfo].extra[0]).toFixed())
         ?.replace(/\$e2/g, (itemData[itemInfo].extra[1] / 100).toFixed())

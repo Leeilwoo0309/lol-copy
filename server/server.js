@@ -60,7 +60,7 @@ app.use(cors());
 
 app.get('/getChar', (req, res) => {
     const query = req.query.char;
-    const charList = ['teacher', 'sniper', 'samira', 'ezreal', 'vampire'];
+    const charList = ['teacher', 'sniper', 'samira', 'ezreal', 'vayne', 'vampire'];
 
     if (query === undefined) {
         return res.send(JSON.stringify({
@@ -115,36 +115,36 @@ app.get('/addPlay', async (req, res) => {
 
     let items = {blue: [], red: []};
 
-    try {
-        data.items.blue.forEach((e, i) => {
-            items.blue.push(e.name[1] ?? '')
-        })
+    // try {
+    //     data.items.blue.forEach((e, i) => {
+    //         items.blue.push(e.name[1] ?? '')
+    //     })
         
-        data.items.red.forEach((e, i) => {
-            items.red.push(e.name[1] ?? '')
-        });
-    } catch (err) {
-        items = {blue: [], red: []};
+    //     data.items.red.forEach((e, i) => {
+    //         items.red.push(e.name[1] ?? '')
+    //     });
+    // } catch (err) {
+    //     items = {blue: [], red: []};
         
-        JSON.parse(data.items.blue).forEach((e, i) => {
-            items.blue.push(e.name[1] ?? '')
-        })
+    //     JSON.parse(data.items.blue).forEach((e, i) => {
+    //         items.blue.push(e.name[1] ?? '')
+    //     })
         
-        JSON.parse(data.items.red).forEach((e, i) => {
-            items.red.push(e.name[1] ?? '')
-        });
-    }
+    //     JSON.parse(data.items.red).forEach((e, i) => {
+    //         items.red.push(e.name[1] ?? '')
+    //     });
+    // }
 
     let addBlue = await db.all(`INSERT INTO ${ data.char.blue }
         ("enemy", "items", "projectileHit", "damage", "result")
         VALUES
-        ("${ data.char.red }", "${ items.blue }", ${ data.onhitCount.blue }, ${ data.dmg.red  }, "${ data.team == 'blue' && data.result == 'win' }")
+        ("${ data.char.red }", "${ data.items.blue }", ${ data.onhitCount.blue }, ${ data.dmg.red  }, "${ data.team == 'blue' && data.result == 'win' }")
         `);
 
     let addRed = await db.all(`INSERT INTO ${ data.char.red }
         ("enemy", "items", "projectileHit", "damage", "result")
         VALUES
-        ("${ data.char.blue }", "${ items.red }", ${ data.onhitCount.red }, ${ data.dmg.blue  }, "${ data.team == 'red' && data.result == 'win' }")
+        ("${ data.char.blue }", "${ data.items.red }", ${ data.onhitCount.red }, ${ data.dmg.blue  }, "${ data.team == 'red' && data.result == 'win' }")
         `);
 
     // return res.send(data);
@@ -152,17 +152,35 @@ app.get('/addPlay', async (req, res) => {
 
 app.get('/get/char/:name', async (req, res) => {
     const charName = req.params.name;
+    const charList = ["sniper", "ezreal", "samira"];
 
     const db = await open({
         filename: './db/playdata.db',
         driver: sqlite3.Database,
     });
 
-    let data = await db.all(`SELECT * FROM ${ charName }`);
+    if (charName === 'all') {
+        let data = {};
 
-    return res.send(data);
-})
+        charList.forEach(async e => {
+            let pushData = await db.all(`SELECT * FROM ${ e }`);
+
+            data[e] = pushData;
+        });
+
+        const ret = setInterval(() => {
+            if (data != []) {
+                clearInterval(ret);
+                return res.send(data);
+            };
+        }, 16);
+    } else {
+        let data = await db.all(`SELECT * FROM ${ charName }`);
+    
+        return res.send(data);
+    }
+});
 
 app.listen(PORT.api, () => {
-    console.log(`API server is running in: http://localhost:${ PORT.api }`)
+    console.log(`API server is running in: http://localhost:${ PORT.api }`);
 });

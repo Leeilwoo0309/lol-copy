@@ -69,7 +69,7 @@ skillBtns.forEach((e, i) => {
         };
 
         if (skillInfo[key].damage > 0) {
-            damageDisplayer.innerHTML = `${ key.toUpperCase() } 스킬 피해량: ${ Math.floor(damage) } <span style="font-size: 15px">(${
+            damageDisplayer.innerHTML = `${ key.toUpperCase() } ${skillInfo[key].des == "burf-heal" ? "회복량": "스킬 피해량"}: ${ Math.floor(damage) } <span style="font-size: 15px">(${
             damageInfo
                 ?.replace("물리 피해", `<span style="color: rgb(243, 117, 0)">물리 피해</span>`)
                 ?.replace("공격력", `<span style="color: rgb(243, 117, 0)">공격력</span>`)
@@ -172,6 +172,7 @@ async function getData() {
     makeEzreal();
     makeSniper();
     makeSamira();
+    makeVayne();
 
     if (char[team] == 'ezreal') {
         charClass = ezreal;
@@ -179,6 +180,8 @@ async function getData() {
         charClass = sniper;
     } else if (char[team] == 'samira') {
         charClass = samira;
+    } else if (char[team] == 'vayne') {
+        charClass = vayne;
     }
 
     let fetchedItemData: ItemData[] = await getItemInfo();

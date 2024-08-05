@@ -97,7 +97,7 @@ skillBtns.forEach(function (e, i) {
         }
         ;
         if (skillInfo[key].damage > 0) {
-            damageDisplayer.innerHTML = "".concat(key.toUpperCase(), " \uC2A4\uD0AC \uD53C\uD574\uB7C9: ").concat(Math.floor(damage), " <span style=\"font-size: 15px\">(").concat((_d = (_c = (_b = (_a = damageInfo === null || damageInfo === void 0 ? void 0 : damageInfo.replace("물리 피해", "<span style=\"color: rgb(243, 117, 0)\">\uBB3C\uB9AC \uD53C\uD574</span>")) === null || _a === void 0 ? void 0 : _a.replace("공격력", "<span style=\"color: rgb(243, 117, 0)\">\uACF5\uACA9\uB825</span>")) === null || _b === void 0 ? void 0 : _b.replace("마법 피해", "<span style=\"color: rgb(0, 162, 255)\">\uB9C8\uBC95 \uD53C\uD574</span>")) === null || _c === void 0 ? void 0 : _c.replace("주문력", "<span style=\"color: rgb(0, 162, 255)\">\uC8FC\uBB38\uB825</span>")) === null || _d === void 0 ? void 0 : _d.replace("이동 속도", "<span style=\"color: gray\">\uC774\uB3D9 \uC18D\uB3C4</span>"), ")</span>");
+            damageDisplayer.innerHTML = "".concat(key.toUpperCase(), " ").concat(skillInfo[key].des == "burf-heal" ? "회복량" : "스킬 피해량", ": ").concat(Math.floor(damage), " <span style=\"font-size: 15px\">(").concat((_d = (_c = (_b = (_a = damageInfo === null || damageInfo === void 0 ? void 0 : damageInfo.replace("물리 피해", "<span style=\"color: rgb(243, 117, 0)\">\uBB3C\uB9AC \uD53C\uD574</span>")) === null || _a === void 0 ? void 0 : _a.replace("공격력", "<span style=\"color: rgb(243, 117, 0)\">\uACF5\uACA9\uB825</span>")) === null || _b === void 0 ? void 0 : _b.replace("마법 피해", "<span style=\"color: rgb(0, 162, 255)\">\uB9C8\uBC95 \uD53C\uD574</span>")) === null || _c === void 0 ? void 0 : _c.replace("주문력", "<span style=\"color: rgb(0, 162, 255)\">\uC8FC\uBB38\uB825</span>")) === null || _d === void 0 ? void 0 : _d.replace("이동 속도", "<span style=\"color: gray\">\uC774\uB3D9 \uC18D\uB3C4</span>"), ")</span>");
             damageDisplayer.style.display = '';
         }
         else if (skillInfo[key].atkspd > 0) {
@@ -201,6 +201,7 @@ function getData() {
                     makeEzreal();
                     makeSniper();
                     makeSamira();
+                    makeVayne();
                     if (char[team] == 'ezreal') {
                         charClass = ezreal;
                     }
@@ -209,6 +210,9 @@ function getData() {
                     }
                     else if (char[team] == 'samira') {
                         charClass = samira;
+                    }
+                    else if (char[team] == 'vayne') {
+                        charClass = vayne;
                     }
                     return [4 /*yield*/, getItemInfo()];
                 case 4:

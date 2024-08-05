@@ -6,6 +6,7 @@
         "ap": 0,
         "atkspd": 0.8,
         "armor": 24,
+        "ignoreArmor": 0,
         "magicRegist": 24,
         "skillHaste": 0,
         "range": 500,
