@@ -69,6 +69,8 @@ socket.onopen = () => {
                         enemyDeath();
                     } else if (message == 'sniper-wheel') {
                         sniperWheelMotion(team);
+                    } else if (message == 'samira-wheel') {
+                        samiraWheelMotion(getEnemyTeam());
                     } else if (message == 'samiraOnhit') {
                         currentAttackType = sentJson.body.damageType;
                     } else if (message == 'collideDash') {
@@ -83,17 +85,17 @@ socket.onopen = () => {
                         damageAlert('magic', dashDamage * (1 / (1 + players[team].spec.magicRegist * 0.01)), false, team);
 
                     } else if (message == 'gameInfo') {
-                        window.location.href = `../public/result.html?result=win&game=${ btoa(unescape(encodeURIComponent(JSON.stringify(sentJson.body.info)))) }`
+                        window.location.href = `../public/result.html?result=lose&game=${ btoa(unescape(encodeURIComponent(JSON.stringify(sentJson.body.info)))) }`
                     } else if (message == 'gameEnd') {
                         let items = {red: [], blue: []};
 
                         players.red.items.forEach(e => {
-                            if (e !== null) items.red.push(e.name[1]);
-                        })
+                            if (e !== null && e !== undefined) items.red.push(e.name[1]);
+                        });
                         
                         players.blue.items.forEach(e => {
-                            if (e !== null) items.blue.push(e.name[1]);
-                        })
+                            if (e !== null && e !== undefined) items.blue.push(e.name[1]);
+                        });
 
                         window.location.href = `../public/result.html?result=win&game=${ btoa(unescape(encodeURIComponent(JSON.stringify(
                             {

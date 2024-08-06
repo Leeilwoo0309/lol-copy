@@ -2,7 +2,7 @@
     "cn": "vayne",
     "name": "베인",
     "defaultSpec": {
-        "ad": 4,
+        "ad": 6,
         "ap": 0,
         "atkspd": 0.6,
         "armor": 18,
@@ -16,7 +16,9 @@
         "criticP": 0,
         "health": 360,
         "healthBoost": 1.5,
-        "vamp": 0
+        "vamp": 0,
+        "projectileSize": [20, 20],
+        "damageType": "melee"
     },
     "skills": {
         "passive": {

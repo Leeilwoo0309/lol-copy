@@ -8,7 +8,9 @@ var toTitleBtn = document.querySelector('#back');
 var charKr = {
     sniper: "스나이퍼",
     ezreal: "이즈리얼",
-    samira: "사미라"
+    samira: "사미라",
+    vayne: "베인",
+    exponent: "엑스포넨트",
 };
 if (result == 'win') {
     console.log('win');

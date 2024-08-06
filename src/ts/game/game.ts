@@ -173,6 +173,7 @@ async function getData() {
     makeSniper();
     makeSamira();
     makeVayne();
+    makeExponent();
 
     if (char[team] == 'ezreal') {
         charClass = ezreal;
@@ -182,6 +183,8 @@ async function getData() {
         charClass = samira;
     } else if (char[team] == 'vayne') {
         charClass = vayne;
+    } else if (char[team] == 'exponent') {
+        charClass = exponent;
     }
 
     let fetchedItemData: ItemData[] = await getItemInfo();

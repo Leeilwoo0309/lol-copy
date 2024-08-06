@@ -26,32 +26,37 @@ var Projectile = /** @class */ (function () {
         _bullet.style.width = "".concat(this.size.width, "px");
         _bullet.style.height = "".concat(this.size.height, "px");
         _bullet.style.rotate = "".concat(-this.angle + Math.PI / 2, "rad");
-        if (this.style.color !== undefined)
-            _bullet.style.backgroundColor = "".concat(this.style.color);
+        var offsetX = players[team].size / 2 - this.size.width / 2;
+        // let offsetY = players[team].size / 2 - this.size.height / 1.5
+        // let offsetX = 4;
+        var offsetY = -players[type].size / 2 + this.size.height / 2;
         if (type === team) {
-            _bullet.style.top = "".concat(-absolutePosition[team].y - cameraPosition.y + 4, "px");
-            _bullet.style.left = "".concat(absolutePosition[team].x - cameraPosition.x + 4, "px");
-            this.absPos.x = absolutePosition[team].x + 4;
-            this.absPos.y = absolutePosition[team].y + 4;
+            _bullet.style.left = "".concat(absolutePosition[team].x - cameraPosition.x + offsetX, "px");
+            _bullet.style.top = "".concat(-absolutePosition[team].y - cameraPosition.y - offsetY, "px");
+            this.absPos.x = absolutePosition[team].x + offsetX;
+            this.absPos.y = absolutePosition[team].y - offsetY;
         }
         else {
-            _bullet.style.top = "".concat(-absolutePosition[getEnemyTeam()].y - cameraPosition.y + 4, "px");
-            _bullet.style.left = "".concat(absolutePosition[getEnemyTeam()].x - cameraPosition.x + 4, "px");
-            this.absPos.x = absolutePosition[getEnemyTeam()].x + 4;
-            this.absPos.y = absolutePosition[getEnemyTeam()].y + 4;
+            _bullet.style.left = "".concat(absolutePosition[getEnemyTeam()].x - cameraPosition.x + offsetX, "px");
+            _bullet.style.top = "".concat(-absolutePosition[getEnemyTeam()].y - cameraPosition.y - offsetY, "px");
+            this.absPos.x = absolutePosition[getEnemyTeam()].x + offsetX;
+            this.absPos.y = absolutePosition[getEnemyTeam()].y - offsetY;
         }
         if (this.damage == 0) {
             _bullet.style.opacity = "20%";
             _bullet.style.backgroundColor = "black";
         }
+        if (this.style.color !== undefined)
+            _bullet.style.backgroundColor = "".concat(this.style.color);
         _main.appendChild(_bullet);
         var update = setInterval(function () {
             var _a, _b, _c, _d, _e, _f, _g, _h;
+            // clearInterval(update);
             _this._movedDistance += _this.speed;
             var enemyTar = _this.targetEnemy[1] == 'blue' ? 'red' : 'blue';
             var totalDamage = { melee: 0, magic: 0 };
             if (_this.targetEnemy[0]) {
-                _this.angle = Math.atan2(absolutePosition[enemyTar].y - _this.absPos.y, absolutePosition[enemyTar].x - _this.absPos.x);
+                _this.angle = Math.atan2(absolutePosition[enemyTar].y - _this.absPos.y - offsetY, absolutePosition[enemyTar].x - _this.absPos.x + offsetX);
                 _this.absPos.x += _this.speed * Math.cos(_this.angle);
                 _this.absPos.y += _this.speed * Math.sin(_this.angle);
             }
@@ -59,8 +64,8 @@ var Projectile = /** @class */ (function () {
                 _this.absPos.x += -_this.speed * Math.cos(_this.angle);
                 _this.absPos.y += -_this.speed * Math.sin(_this.angle);
             }
-            _bullet.style.left = "".concat(_this.absPos.x - cameraPosition.x, "px");
-            _bullet.style.top = "".concat(-_this.absPos.y - cameraPosition.y, "px");
+            _bullet.style.left = "".concat(_this.absPos.x - cameraPosition.x + offsetX, "px");
+            _bullet.style.top = "".concat(-_this.absPos.y - cameraPosition.y - 2 * offsetY, "px");
             // on-hit
             var isCritical = Math.random() <= _this.critical[0] / 100;
             if (type === getEnemyTeam() && _this.damage > 0) {
@@ -229,7 +234,6 @@ var Projectile = /** @class */ (function () {
                             damageAlert("true", players[team].hp[0] * enemySkillInfo.passive.damage / 100, false, type == 'blue' ? 'red' : 'blue');
                         }
                         if ((_f = _this.onhit) === null || _f === void 0 ? void 0 : _f.includes('bondage')) {
-                            console.log('묶는다');
                             canMove = false;
                             setTimeout(function () {
                                 canMove = true;
@@ -238,11 +242,9 @@ var Projectile = /** @class */ (function () {
                     }
                     if ((_g = _this.onhit) === null || _g === void 0 ? void 0 : _g.includes('skill')) {
                         socket.send(JSON.stringify({ body: { msg: "onhit", target: 'enemy', type: "skill" } }));
-                        console.log("ㄴ");
                     }
                     else {
                         socket.send(JSON.stringify({ body: { msg: "onhit", target: 'enemy', type: "aa" } }));
-                        console.log("ㅇ");
                     }
                 }
                 var nexusIndex = { blue: [7, 8], red: [9, 10] };

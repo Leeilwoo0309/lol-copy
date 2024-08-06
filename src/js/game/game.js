@@ -202,6 +202,7 @@ function getData() {
                     makeSniper();
                     makeSamira();
                     makeVayne();
+                    makeExponent();
                     if (char[team] == 'ezreal') {
                         charClass = ezreal;
                     }
@@ -213,6 +214,9 @@ function getData() {
                     }
                     else if (char[team] == 'vayne') {
                         charClass = vayne;
+                    }
+                    else if (char[team] == 'exponent') {
+                        charClass = exponent;
                     }
                     return [4 /*yield*/, getItemInfo()];
                 case 4:

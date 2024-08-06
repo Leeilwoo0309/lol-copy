@@ -67,6 +67,9 @@ socket.onopen = function () {
                     else if (message == 'sniper-wheel') {
                         sniperWheelMotion(team);
                     }
+                    else if (message == 'samira-wheel') {
+                        samiraWheelMotion(getEnemyTeam());
+                    }
                     else if (message == 'samiraOnhit') {
                         currentAttackType = sentJson.body.damageType;
                     }
@@ -81,16 +84,16 @@ socket.onopen = function () {
                         damageAlert('magic', dashDamage * (1 / (1 + players[team].spec.magicRegist * 0.01)), false, team);
                     }
                     else if (message == 'gameInfo') {
-                        window.location.href = "../public/result.html?result=win&game=".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sentJson.body.info)))));
+                        window.location.href = "../public/result.html?result=lose&game=".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sentJson.body.info)))));
                     }
                     else if (message == 'gameEnd') {
                         var items_1 = { red: [], blue: [] };
                         players.red.items.forEach(function (e) {
-                            if (e !== null)
+                            if (e !== null && e !== undefined)
                                 items_1.red.push(e.name[1]);
                         });
                         players.blue.items.forEach(function (e) {
-                            if (e !== null)
+                            if (e !== null && e !== undefined)
                                 items_1.blue.push(e.name[1]);
                         });
                         window.location.href = "../public/result.html?result=win&game=".concat(btoa(unescape(encodeURIComponent(JSON.stringify({

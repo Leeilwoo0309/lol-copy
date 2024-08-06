@@ -75,6 +75,8 @@ type Ability = {
     manaR?: number,
     magicRegist?: number,
     skillHaste?: number,
+    projectileSize?: [number, number],
+    damageType?: 'magic' | 'melee'
 }
 
 type SkillAbility = {

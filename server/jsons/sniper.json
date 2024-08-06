@@ -16,7 +16,9 @@
         "criticP": 0,
         "health": 390,
         "healthBoost": 1.2,
-        "vamp": 0
+        "vamp": 0,
+        "projectileSize": [20, 20],
+        "damageType": "melee"
     },
     "skills": {
         "passive": {

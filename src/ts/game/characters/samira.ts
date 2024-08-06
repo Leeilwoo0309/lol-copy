@@ -145,6 +145,13 @@ function makeSamira() {
             let index: number = 0;
             alphaMoveSpd -= skillInfo.wheel.moveSpd;
 
+            samiraWheelMotion(team);
+            socket.send(JSON.stringify({
+                body: {
+                    msg: 'samira-wheel'
+                }
+            }));
+
             const infernoTrigger = setInterval(() => {
                 if (index >= 10) {
                     clearInterval(infernoTrigger);
@@ -174,19 +181,21 @@ function makeSamira() {
 
                 const angel = Math.atan2(absolutePosition[team].y - absolutePosition[getEnemyTeam()].y, absolutePosition[team].x - absolutePosition[getEnemyTeam()].x)
 
-                projectiles[team].push(
-                    new ProjectileBuilder()
-                        .setDamage(skillInfo.wheel.damage + players[team].spec.ad * skillInfo.wheel.ad, skillInfo.wheel.type)
-                        .setCritical(players[team].spec.criticP, players[team].spec.criticD)
-                        .setDegree(angel)
-                        .setReach(skillInfo.wheel.range)
-                        .setSpeed(40)
-                        .setSize({height: 35, width: 15})
-                        .setStyle('rgb(128, 59, 24)')
-                        .onHit(`skill samira wheel`)
-                        .setTarget()
-                        .build(team)
-                );
+                if (playerDistance <= skillInfo.wheel.range * 1.5) {
+                    projectiles[team].push(
+                        new ProjectileBuilder()
+                            .setDamage(skillInfo.wheel.damage + players[team].spec.ad * skillInfo.wheel.ad, skillInfo.wheel.type)
+                            .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                            .setDegree(angel)
+                            .setReach(skillInfo.wheel.range * 2)
+                            .setSpeed(40)
+                            .setSize({height: 35, width: 15})
+                            .setStyle('rgb(128, 59, 24)')
+                            .onHit(`skill samira wheel`)
+                            .setTarget()
+                            .build(team)
+                    );
+                }
             }, 200);
 
             const infernoTriggerEff = setInterval(() => {
@@ -194,15 +203,34 @@ function makeSamira() {
                     new ProjectileBuilder()
                         .setDamage(0, skillInfo.wheel.type)
                         .setCritical(0, 0)
+                        // .setDegree(Math.random() * 30)
                         .setDegree(Math.random() * Math.PI * 2 - Math.PI)
-                        .setReach(skillInfo.wheel.range)
+                        .setReach(100)
                         .setSpeed(30)
-                        .setSize({height: 20, width: 20})
+                        .setStyle(team == 'blue' ? 'rgb(128, 128, 150)' : 'rgb(150, 128, 128)')
+                        .setSize({height: 150, width: 30})
                         // .setStyle('rgb(128, 59, 24)')
                         .onHit(`skill`)
                         .build(team)
                 );
-            }, 50);
+
+                if (Math.random() < 0.5)
+                    projectiles[team].push(
+                        new ProjectileBuilder()
+                            .setDamage(0, skillInfo.wheel.type)
+                            .setCritical(0, 0)
+                            // .setDegree(Math.random() * 30)
+                            .setDegree(Math.random() * Math.PI * 2 - Math.PI)
+                            .setReach(220)
+                            .setSpeed(30)
+                            .setStyle(team == 'blue' ? 'rgb(0, 32, 128)' : 'rgb(128, 32, 0)')
+                            .setSize({height: 40, width: 20})
+                            // .setStyle('rgb(128, 59, 24)')
+                            .onHit(`skill`)
+                            .build(team)
+                    );
+            }, 20);
+
         }
     }
 
@@ -223,4 +251,50 @@ function makeSamira() {
         });
         return ret;
     }
+}
+
+
+/**
+ * 
+ * @param _team 맞을 팀 쓰셈ㅇ
+ */
+function samiraWheelMotion(_team: 'red' | 'blue') {
+    const eff: HTMLDivElement = document.createElement('div');
+    const eff2: HTMLDivElement = document.createElement('div');
+    const eff3: HTMLDivElement = document.createElement('div');
+
+    let index: number = 0;
+
+    game.appendChild(eff);
+    eff.style.transition = 'opacity 400ms';
+    eff.style.opacity = '0%';
+
+    setTimeout(() => {
+        eff.style.opacity = '100%';
+    }, 10)
+    
+    const effectInterval = setInterval(() => {
+        if (index >= 200) {
+            eff.style.opacity = '0%';
+            
+            setTimeout(() => {
+                clearInterval(effectInterval);
+                game.removeChild(eff);
+            }, 400)
+        };
+        
+        index += 1;
+        
+        // let range = char[_team] == 'samira' ? skillInfo.wheel.range * 3 : enemySkillInfo.wheel.range * 3
+        let range = 750;
+        
+        eff.style.top = `${ -absolutePosition[_team].y - cameraPosition.y - (range / 2) + players[_team].size }px`;
+        eff.style.left = `${ absolutePosition[_team].x - cameraPosition.x - (range / 2) + players[_team].size }px`;
+        eff.style.position = 'absolute';
+        eff.style.height = `${range}px`;
+        eff.style.width = `${range}px`;
+        eff.style.border = `3px solid ${ _team }`;
+        eff.style.borderRadius = '100%';
+        eff.style.backgroundColor = 'rgb(0, 0, 0, 0)';
+    }, 10);
 }

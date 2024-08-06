@@ -209,6 +209,11 @@
         "extra": [30, 0, 0.6, 0], "des": "세 번째 기본 공격을 가할 때마다 $e1 + 공격력 * 0.6의 추가 물리 피해를 입힙니다."
     },
     {
+        "name": ["피바라기", "3_bloodthir"], "price": 3300,
+        "lower": ["1_pickaxe", "1_cloak", "2_vampiric_scepter"],
+        "ability": { "ad": 40, "vamp": 18, "criticP": 25 }, "enable": true
+    },
+    {
         "name": ["삼위일체", "3_tfo"], "price": 3333,
         "lower": ["2_sheen", "2_phage", "2_onpildo"],
         "ability": { "ad": 30, "atkspd": 45, "health": 150, "skillHaste": 20 }, "enable": true,
@@ -216,12 +221,7 @@
     },
     {
         "name": ["무한의 대검", "3_infinity_edge"], "price": 3400,
-        "lower": ["1_bf_sword", "1_pickaxe", "1_cloak"],
+        "lower": ["1_bf_sword", "1_pickaxe", "1_cloak"], "grade": "item3",
         "ability": { "ad": 55, "criticP": 25, "criticD": 40 }, "enable": true
-    },
-    {
-        "name": ["피바라기", "3_bloodthir"], "price": 3300,
-        "lower": ["1_pickaxe", "1_cloak", "2_vampiric_scepter"], "grade": "item3",
-        "ability": { "ad": 40, "vamp": 18, "criticP": 25 }, "enable": true
     }
 ]

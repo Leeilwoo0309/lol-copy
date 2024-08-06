@@ -368,7 +368,7 @@ body {
 }
 
 .item2 {
-    grid-column: span 1;
+    grid-column: span 11;
 }
 
 .item3 {

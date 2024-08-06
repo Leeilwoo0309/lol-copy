@@ -154,8 +154,8 @@ setInterval(() => {
         <p>공격력: ${ players[team].spec.ad }</p>
         <p>주문력: ${ players[team].spec.ap }</p>
         <p>공격 속도: ${ players[team].spec.atkspd }</p>
-        <p>방어력: ${ players[team].spec.armor }</p>
-        <p>마법 저항력: ${ players[team].spec.magicRegist }</p>
+        <p>방어력: ${ Math.floor(players[team].spec.armor) }</p>
+        <p>마법 저항력: ${ Math.floor(players[team].spec.magicRegist) }</p>
         <p>사거리: ${ players[team].spec.range }</p>
         <p>이동속도: ${ Math.floor((players[team].spec.moveSpd) * 100) / 100 }</p>
         <p>치명타 확률: ${ players[team].spec.criticP }%</p>
@@ -223,34 +223,20 @@ setInterval(() => {
         atkWait = 1 / players[team].spec.atkspd * 100;
         const angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
 
-        if (char[team] == 'samira') {
-            projectiles[team].push(
-                new ProjectileBuilder()
-                    .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, "melee")
-                    .setCritical(players[team].spec.criticP, players[team].spec.criticD)
-                    .setDegree(angle)
-                    .setReach(players[team].spec.range)
-                    .setSpeed(players[team].spec.projectileSpd)
-                    .setSize({height: 20, width: 20})
-                    .onHit('samira aa')
-                    .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
-                    .build(team)
+        players[team].status.invisible = false;
+        
+        projectiles[team].push(
+            new ProjectileBuilder()
+                .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, players[team].specINIT.damageType)
+                .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                .setDegree(angle)
+                .setReach(players[team].spec.range)
+                .setSpeed(players[team].spec.projectileSpd)
+                .setSize({height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1]})
+                .onHit(`${ char[team] } aa`)
+                .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
+                .build(team)
             );
-        } else {
-            players[team].status.invisible = false;
-            
-            projectiles[team].push(
-                new ProjectileBuilder()
-                    .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, "melee")
-                    .setCritical(players[team].spec.criticP, players[team].spec.criticD)
-                    .setDegree(angle)
-                    .setReach(players[team].spec.range)
-                    .setSpeed(players[team].spec.projectileSpd)
-                    .setSize({height: 20, width: 20})
-                    .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
-                    .build(team)
-            );
-        }
 
     }
 
@@ -435,7 +421,6 @@ setInterval(() => {
     
     if (gameObjects[nexusIndex[team][0]].isCollide(players[team].selector)) {
         players[team].hp[1] += players[team].hp[0] / 40;
-        shopOpen(true);
     };
 
     if (deathCoolDown[team] > 0) {
@@ -467,28 +452,23 @@ function onhit(type) {
             cooldownItem.kraken.count = 0;
             cooldownItem.kraken.damage = 0;
         }
-
-        console.log(cooldownItem.kraken.count, cooldownItem.kraken.damage);
     }
 
     if (hasItem('3_navori')) {
         const decreasePercent = findItem('3_navori').body.extra[0] / 100;
-        console.log(decreasePercent);
         charClass.cooldown.q -= charClass.cooldownINIT.q * decreasePercent
         charClass.cooldown.e -= charClass.cooldownINIT.e * decreasePercent
         charClass.cooldown.shift -= charClass.cooldownINIT.shift * decreasePercent
     }
 
     if ((hasItem('2_sheen') || hasItem('3_tfo')) && cooldownItem.sheen.isActive) {
-        console.log('비활');
         cooldownItem.sheen.isActive = false;
         aaA.ad = 0;
     }
     if ((hasItem('2_sheen') || hasItem('3_tfo')) && !cooldownItem.sheen.isActive && type == 'skill') {
-        console.log('활');
         aaA.ad += players[team].spec.ad;
         cooldownItem.sheen.isActive = true;
-    } 
+    }
 
     if (aaA.ad > 0 && !cooldownItem.sheen.isActive) {
         aaA.ad = 0;

@@ -12,8 +12,8 @@ let hasBoots: boolean = false;
 
 // 사는거
 resultItem.addEventListener('click', () => {
-    if (team == 'blue' && absolutePosition[team].x > 855) return;
-    if (team == 'red' && absolutePosition[team].x < 3530) return;
+    if (team == 'blue' && absolutePosition[team].x > 855 && deathCoolDown[team] <= 0) return;
+    if (team == 'red' && absolutePosition[team].x < 3530  && deathCoolDown[team] <= 0) return;
     // 업그레이드하는 함수
     function upgradeLower() {
         let lower: string[] = [...itemData[itemInfo].lower];

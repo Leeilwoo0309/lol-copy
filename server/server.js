@@ -60,7 +60,7 @@ app.use(cors());
 
 app.get('/getChar', (req, res) => {
     const query = req.query.char;
-    const charList = ['teacher', 'sniper', 'samira', 'ezreal', 'vayne', 'vampire'];
+    const charList = ['teacher', 'sniper', 'samira', 'ezreal', 'vayne', 'exponent', 'vampire'];
 
     if (query === undefined) {
         return res.send(JSON.stringify({
@@ -152,7 +152,7 @@ app.get('/addPlay', async (req, res) => {
 
 app.get('/get/char/:name', async (req, res) => {
     const charName = req.params.name;
-    const charList = ["sniper", "ezreal", "samira"];
+    const charList = ["sniper", "ezreal", "samira", "vayne", "exponent"];
 
     const db = await open({
         filename: './db/playdata.db',

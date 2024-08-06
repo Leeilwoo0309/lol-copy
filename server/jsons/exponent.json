@@ -1,0 +1,63 @@
+{
+    "cn": "exponent",
+    "name": "엑스포넨트",
+    "defaultSpec": {
+        "ad": 2,
+        "ap": 0,
+        "atkspd": 1.4,
+        "armor": 5,
+        "ignoreArmor": 0,
+        "magicRegist": 4,
+        "skillHaste": 0,
+        "range": 150,
+        "projectileSpd": 12,
+        "moveSpd": 4.75,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 320,
+        "healthBoost": 3,
+        "vamp": 0,
+        "projectileSize": [20, 20],
+        "damageType": "melee"
+    },
+    "skills": {
+        "passive": {
+            "cooldown": 2000,
+            "ad": 4,
+            "ap": 5,
+            "health": 30,
+            "armor": 2.1,
+            "range": 15,
+            "magicRegist": 1.5
+        },
+        "Q": {
+            "cooldown": 900,
+            "type": "magic",
+            "damage": 10,
+            "ad": 0.6,
+            "ap": 0.5
+        },
+        "E": {
+            "cooldown": 1500,
+            "damage": 30,
+            "ap": 0.15,
+            "duration": 200,
+            "moveSpd": 0.75
+        },
+        "Shift": {
+            "cooldown": 750,
+            "range": 75,
+            "duration": 125
+        },
+        "Wheel": {
+            "cooldown": 4700
+        }
+    },
+    "des": {
+        "passive": "$pcd초마다 공격력 $pad, 주문력 $pap, 체력 $phe, 방어력 $par, 마법 저항력 $pmr, 사거리 $pra이 증가합니다. 40중첩 달성시 이후 증가량은 두배가 하며 기본 공격의 피해 범위와 속도가 증가합니다.",
+        "Q": "투사체를 발사해 마법 피해를 입합니다. 투사체에 적중당한 적은 방어력이 15% 감소합니다.<br/>(피해량: $qd + 공격력 * $qad + 주문력 * $qap, 재사용 대기시간: $qcd초)",
+        "E": "체력을 회복하고 2초 동안 이동 속도를 상승시킵니다.<br/>(회복량: $ep + 주문력 * $eap, 재사용 대기시간: $ecd초)",
+        "Shift": "$sdu초동안 사거리가 $sra만큼 증가합니다. <br/>(재사용 대기시간: $scd초)",
+        "Wheel": "즉시 기본 지속 효과를 발동해 중첩을 하나 쌓습니다. <br/>(재사용 대기시간: $wcd초)"
+    }
+}

@@ -149,7 +149,7 @@ setInterval(function () {
     itemsDiv.style.left = "".concat(window.innerWidth / 2 + 300, "px");
     itemsDiv.children[6].innerHTML = "<p id=\"gold\">G".concat(players[team].gold, "</p>");
     specDiv.style.left = "".concat(window.innerWidth / 2 - 470, "px");
-    specDiv.innerHTML = "\n        <p>\uACF5\uACA9\uB825: ".concat(players[team].spec.ad, "</p>\n        <p>\uC8FC\uBB38\uB825: ").concat(players[team].spec.ap, "</p>\n        <p>\uACF5\uACA9 \uC18D\uB3C4: ").concat(players[team].spec.atkspd, "</p>\n        <p>\uBC29\uC5B4\uB825: ").concat(players[team].spec.armor, "</p>\n        <p>\uB9C8\uBC95 \uC800\uD56D\uB825: ").concat(players[team].spec.magicRegist, "</p>\n        <p>\uC0AC\uAC70\uB9AC: ").concat(players[team].spec.range, "</p>\n        <p>\uC774\uB3D9\uC18D\uB3C4: ").concat(Math.floor((players[team].spec.moveSpd) * 100) / 100, "</p>\n        <p>\uCE58\uBA85\uD0C0 \uD655\uB960: ").concat(players[team].spec.criticP, "%</p>\n        <p>\uC0DD\uBA85\uB825 \uD761\uC218: ").concat(players[team].spec.vamp, "%</p>\n        <p>\uBB3C\uB9AC \uAD00\uD1B5\uB825: ").concat(players[team].spec.ignoreArmor, "</p>\n        <p>\uC2A4\uD0AC \uAC00\uC18D: ").concat(players[team].spec.skillHaste, "%</p>\n        <p>\uCD08\uB2F9 \uCCB4\uB825 \uD68C\uBCF5: ").concat(Math.floor((players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10) / 10, "</p>\n    ");
+    specDiv.innerHTML = "\n        <p>\uACF5\uACA9\uB825: ".concat(players[team].spec.ad, "</p>\n        <p>\uC8FC\uBB38\uB825: ").concat(players[team].spec.ap, "</p>\n        <p>\uACF5\uACA9 \uC18D\uB3C4: ").concat(players[team].spec.atkspd, "</p>\n        <p>\uBC29\uC5B4\uB825: ").concat(Math.floor(players[team].spec.armor), "</p>\n        <p>\uB9C8\uBC95 \uC800\uD56D\uB825: ").concat(Math.floor(players[team].spec.magicRegist), "</p>\n        <p>\uC0AC\uAC70\uB9AC: ").concat(players[team].spec.range, "</p>\n        <p>\uC774\uB3D9\uC18D\uB3C4: ").concat(Math.floor((players[team].spec.moveSpd) * 100) / 100, "</p>\n        <p>\uCE58\uBA85\uD0C0 \uD655\uB960: ").concat(players[team].spec.criticP, "%</p>\n        <p>\uC0DD\uBA85\uB825 \uD761\uC218: ").concat(players[team].spec.vamp, "%</p>\n        <p>\uBB3C\uB9AC \uAD00\uD1B5\uB825: ").concat(players[team].spec.ignoreArmor, "</p>\n        <p>\uC2A4\uD0AC \uAC00\uC18D: ").concat(players[team].spec.skillHaste, "%</p>\n        <p>\uCD08\uB2F9 \uCCB4\uB825 \uD68C\uBCF5: ").concat(Math.floor((players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10) / 10, "</p>\n    ");
     shopBtn.addEventListener('click', function () { shopOpen(); });
     var position = {
         x: parseFloat(players[team].selector.style.left),
@@ -196,30 +196,17 @@ setInterval(function () {
     if (keyDown.mouse[0] && atkWait === 0 && readyStatus[getEnemyTeam()] && deathCoolDown[team] === 0) {
         atkWait = 1 / players[team].spec.atkspd * 100;
         var angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
-        if (char[team] == 'samira') {
-            projectiles[team].push(new ProjectileBuilder()
-                .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, "melee")
-                .setCritical(players[team].spec.criticP, players[team].spec.criticD)
-                .setDegree(angle)
-                .setReach(players[team].spec.range)
-                .setSpeed(players[team].spec.projectileSpd)
-                .setSize({ height: 20, width: 20 })
-                .onHit('samira aa')
-                .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
-                .build(team));
-        }
-        else {
-            players[team].status.invisible = false;
-            projectiles[team].push(new ProjectileBuilder()
-                .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, "melee")
-                .setCritical(players[team].spec.criticP, players[team].spec.criticD)
-                .setDegree(angle)
-                .setReach(players[team].spec.range)
-                .setSpeed(players[team].spec.projectileSpd)
-                .setSize({ height: 20, width: 20 })
-                .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
-                .build(team));
-        }
+        players[team].status.invisible = false;
+        projectiles[team].push(new ProjectileBuilder()
+            .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, players[team].specINIT.damageType)
+            .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+            .setDegree(angle)
+            .setReach(players[team].spec.range)
+            .setSpeed(players[team].spec.projectileSpd)
+            .setSize({ height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1] })
+            .onHit("".concat(char[team], " aa"))
+            .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
+            .build(team));
     }
     if (keyDown.q && charClass.cooldown.q === 0 && deathCoolDown[team] === 0) {
         charClass.skillQ();
@@ -391,7 +378,6 @@ setInterval(function () {
         players[team].hp[1] += Math.floor((players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10) / 10;
     if (gameObjects[nexusIndex[team][0]].isCollide(players[team].selector)) {
         players[team].hp[1] += players[team].hp[0] / 40;
-        shopOpen(true);
     }
     ;
     if (deathCoolDown[team] > 0) {
@@ -426,22 +412,18 @@ function onhit(type) {
             cooldownItem.kraken.count = 0;
             cooldownItem.kraken.damage = 0;
         }
-        console.log(cooldownItem.kraken.count, cooldownItem.kraken.damage);
     }
     if (hasItem('3_navori')) {
         var decreasePercent = findItem('3_navori').body.extra[0] / 100;
-        console.log(decreasePercent);
         charClass.cooldown.q -= charClass.cooldownINIT.q * decreasePercent;
         charClass.cooldown.e -= charClass.cooldownINIT.e * decreasePercent;
         charClass.cooldown.shift -= charClass.cooldownINIT.shift * decreasePercent;
     }
     if ((hasItem('2_sheen') || hasItem('3_tfo')) && cooldownItem.sheen.isActive) {
-        console.log('비활');
         cooldownItem.sheen.isActive = false;
         aaA.ad = 0;
     }
     if ((hasItem('2_sheen') || hasItem('3_tfo')) && !cooldownItem.sheen.isActive && type == 'skill') {
-        console.log('활');
         aaA.ad += players[team].spec.ad;
         cooldownItem.sheen.isActive = true;
     }

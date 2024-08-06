@@ -17,13 +17,15 @@ const toTitleBtn: HTMLDivElement = document.querySelector('#back');
 const charKr = {
     sniper: "스나이퍼",
     ezreal: "이즈리얼",
-    samira: "사미라"
+    samira: "사미라",
+    vayne: "베인",
+    exponent: "엑스포넨트",
 }
 
 if (result == 'win') {
     console.log('win');
     //  "win", "lose", "items", "dmgs", "projectileHit"
-    fetch(`http://kimchi-game.kro.kr:1973/addPlay?data=${ params.get('game') }`).then(r => r.json())
+    fetch(`http://kimchi-game.kro.kr:1973/addPlay?data=${ params.get('game') }`).then(r => r.json());
 }
 
 if (result == 'win') { resultPar.innerHTML = '결과 - <span style="color: rgb(0, 150, 255)">승리</span>'; };

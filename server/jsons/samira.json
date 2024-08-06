@@ -16,7 +16,9 @@
         "criticP": 0,
         "health": 380,
         "healthBoost": 1.6,
-        "vamp": 0
+        "vamp": 0,
+        "projectileSize": [20, 20],
+        "damageType": "melee"
     },
     "skills": {
         "passive": {
@@ -49,7 +51,7 @@
             "cooldown": 500,
             "damage": 1,
             "ad": 0.45,
-            "range": 350,
+            "range": 250,
             "moveSpd": 1.7,
             "type": "melee"
         }

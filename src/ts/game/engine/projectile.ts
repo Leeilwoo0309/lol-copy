@@ -28,20 +28,24 @@ class Projectile {
         _bullet.style.height = `${ this.size.height }px`;
         _bullet.style.rotate = `${ -this.angle + Math.PI / 2 }rad`;
 
-        if (this.style.color !== undefined) _bullet.style.backgroundColor  = `${ this.style.color }`;
+
+        let offsetX = players[team].size / 2 - this.size.width / 2;
+        // let offsetY = players[team].size / 2 - this.size.height / 1.5
+        // let offsetX = 4;
+        let offsetY = -players[type].size / 2 + this.size.height / 2;
 
         if (type === team) {
-            _bullet.style.top = `${ -absolutePosition[team].y - cameraPosition.y + 4}px`;
-            _bullet.style.left = `${ absolutePosition[team].x - cameraPosition.x + 4}px`;
+            _bullet.style.left = `${ absolutePosition[team].x - cameraPosition.x + offsetX}px`;
+            _bullet.style.top = `${ -absolutePosition[team].y - cameraPosition.y - offsetY}px`;
 
-            this.absPos.x = absolutePosition[team].x + 4;
-            this.absPos.y = absolutePosition[team].y + 4;
+            this.absPos.x = absolutePosition[team].x + offsetX;
+            this.absPos.y = absolutePosition[team].y - offsetY;
         } else {
-            _bullet.style.top = `${ -absolutePosition[getEnemyTeam()].y - cameraPosition.y + 4}px`;
-            _bullet.style.left = `${ absolutePosition[getEnemyTeam()].x - cameraPosition.x + 4}px`;
+            _bullet.style.left = `${ absolutePosition[getEnemyTeam()].x - cameraPosition.x + offsetX}px`;
+            _bullet.style.top = `${ -absolutePosition[getEnemyTeam()].y - cameraPosition.y - offsetY}px`;
 
-            this.absPos.x = absolutePosition[getEnemyTeam()].x + 4;
-            this.absPos.y = absolutePosition[getEnemyTeam()].y + 4;
+            this.absPos.x = absolutePosition[getEnemyTeam()].x + offsetX;
+            this.absPos.y = absolutePosition[getEnemyTeam()].y - offsetY;
         }
 
         if (this.damage == 0) {
@@ -49,16 +53,18 @@ class Projectile {
             _bullet.style.backgroundColor = `black`;
         }
         
+        if (this.style.color !== undefined) _bullet.style.backgroundColor  = `${ this.style.color }`;
         _main.appendChild(_bullet);
 
         const update = setInterval(() => {
+            // clearInterval(update);
             this._movedDistance += this.speed;
 
             let enemyTar: 'red' | 'blue' = this.targetEnemy[1] == 'blue' ? 'red' : 'blue';
             let totalDamage = {melee: 0, magic: 0};
 
             if (this.targetEnemy[0]) {
-                this.angle = Math.atan2(absolutePosition[enemyTar].y - this.absPos.y, absolutePosition[enemyTar].x - this.absPos.x);
+                this.angle = Math.atan2(absolutePosition[enemyTar].y - this.absPos.y - offsetY, absolutePosition[enemyTar].x - this.absPos.x + offsetX);
                 this.absPos.x += this.speed * Math.cos(this.angle);
                 this.absPos.y += this.speed * Math.sin(this.angle);
             } else {
@@ -67,8 +73,8 @@ class Projectile {
             }
 
 
-            _bullet.style.left = `${ this.absPos.x - cameraPosition.x }px`;
-            _bullet.style.top = `${ -this.absPos.y - cameraPosition.y }px`;
+            _bullet.style.left = `${ this.absPos.x - cameraPosition.x + offsetX }px`;
+            _bullet.style.top = `${ -this.absPos.y - cameraPosition.y - 2 * offsetY }px`;
 
             // on-hit
             let isCritical: boolean = Math.random() <= this.critical[0] / 100;
@@ -260,7 +266,6 @@ class Projectile {
                         }
 
                         if (this.onhit?.includes('bondage')) {
-                            console.log('묶는다');
                             canMove = false;
 
                             setTimeout(() => {
@@ -271,10 +276,8 @@ class Projectile {
 
                     if (this.onhit?.includes('skill')) {
                         socket.send(JSON.stringify({body: {msg: "onhit", target: 'enemy', type: "skill"}}));
-                        console.log("ㄴ");
                     } else {
                         socket.send(JSON.stringify({body: {msg: "onhit", target: 'enemy', type: "aa"}}));
-                        console.log("ㅇ");
                     }
                 }
 
