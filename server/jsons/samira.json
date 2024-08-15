@@ -18,7 +18,8 @@
         "healthBoost": 1.6,
         "vamp": 0,
         "projectileSize": [20, 20],
-        "damageType": "melee"
+        "damageType": "melee",
+        "defaultAAType": "long"
     },
     "skills": {
         "passive": {
@@ -49,7 +50,7 @@
         },
         "Wheel": {
             "cooldown": 500,
-            "damage": 1,
+            "damage": 5,
             "ad": 0.45,
             "range": 250,
             "moveSpd": 1.7,

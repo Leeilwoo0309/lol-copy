@@ -23,8 +23,8 @@ function makeSniper() {
     sniper.skillLShift = function () {
         sniper.cooldown.shift = sniper.cooldownINIT.shift;
         players[team].status.invisible = true;
-        charClass.cooldown.q += skillInfo.shift.duration + skillInfo.shift.ap * players[team].spec.ap * 100;
-        charClass.cooldown.e += skillInfo.shift.duration + skillInfo.shift.ap * players[team].spec.ap * 100;
+        // charClass.cooldown.q += skillInfo.shift.duration + skillInfo.shift.ap * players[team].spec.ap * 100
+        // charClass.cooldown.e += skillInfo.shift.duration + skillInfo.shift.ap * players[team].spec.ap * 100
         charClass.cooldown.wheel += skillInfo.shift.duration + skillInfo.shift.ap * players[team].spec.ap * 100;
         atkWait += skillInfo.shift.duration + skillInfo.shift.ap * players[team].spec.ap * 100;
         charClass.isActive.shift = true;

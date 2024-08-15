@@ -156,6 +156,7 @@ function makeSamira() {
                         .setStyle('rgb(128, 59, 24)')
                         .onHit("skill samira wheel")
                         .setTarget()
+                        .ignoreObj()
                         .build(team));
                 }
             }, 200);
@@ -230,8 +231,8 @@ function samiraWheelMotion(_team) {
         index += 1;
         // let range = char[_team] == 'samira' ? skillInfo.wheel.range * 3 : enemySkillInfo.wheel.range * 3
         var range = 750;
-        eff.style.top = "".concat(-absolutePosition[_team].y - cameraPosition.y - (range / 2) + players[_team].size, "px");
-        eff.style.left = "".concat(absolutePosition[_team].x - cameraPosition.x - (range / 2) + players[_team].size, "px");
+        eff.style.top = "".concat(-absolutePosition[_team].y - cameraPosition.y - (range / 2) + players[_team].size / 2, "px");
+        eff.style.left = "".concat(absolutePosition[_team].x - cameraPosition.x - (range / 2) + players[_team].size / 2, "px");
         eff.style.position = 'absolute';
         eff.style.height = "".concat(range, "px");
         eff.style.width = "".concat(range, "px");

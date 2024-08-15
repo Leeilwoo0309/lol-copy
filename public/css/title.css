@@ -1,4 +1,5 @@
 @import url("https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Khitan+Small+Script&display=swap');
 
 body {
     background: linear-gradient(135deg, rgb(251, 253, 255), rgb(218, 228, 240));
@@ -23,14 +24,32 @@ main {
     /* display: grid;; */
 }
 
+#title {
+    display: flex;
+    
+    justify-content: center;
+    
+    font-family: serif;
+    text-align: center;
+}
+
+#title>span {
+    padding-top: 7px;
+}
+
+img {
+    height: 40px;
+    margin-top: auto; margin-bottom: auto;
+}
+
 .char-btn {
     display: grid;
     
     height: 40px; width: 100px;
     margin: 20px;
     padding: 15px;
-    border: 4px solid black;
-    border-radius: 10px;
+    /* border: 4px solid black; */
+    border-radius: 30px;
 
     font-size: 20px;
     color: white;
@@ -49,13 +68,31 @@ main {
 
 .char-btn:hover {
     /* background: linear-gradient(150deg, rgb(119, 119, 119), rgb(10, 75, 255)); */
-    background: rgb(0, 46, 197);
-    box-shadow: rgb(5, 0, 68) 0px 0px 10px;
+    background: rgb(13, 39, 124);
+    box-shadow: rgb(21, 9, 185) 0px 0px 10px;
 }
 
 .char-btn.selected {
-    background: rgb(0, 60, 255);
+    background: rgb(18, 59, 194);
     box-shadow: rgb(5, 0, 68) 0px 0px 10px;
+    /* font-size: 40px; */
+    
+    animation: selected 300ms ease-out;
+}
+
+@keyframes selected {
+    from {
+        font-size: 25px;
+        color: rgb(7, 154, 212);
+        width: 120px;
+        margin-left: 10px;
+    }
+    to {
+        font-size: 20px;
+        color: white;
+        width: 100px;
+        margin-left: 20px;
+    }
 }
 
 .selected-display {
@@ -84,6 +121,8 @@ main {
 
     border: 3px solid black;
     border-radius: 10px;
+
+    box-shadow: 0px 0px 5px black;
 
     background-color: white;
 }
@@ -120,7 +159,7 @@ main {
 #ready-btn {
     position: absolute;
 
-    top: 665px;
+    top: 660px;
     right: 250px;
 
     height: 50px;
@@ -140,6 +179,27 @@ main {
     font-size: 30px;
     
     /* color:rgb(97, 20, 20) */
+}
+@keyframes readyTrue {
+    from {
+        font-size: 40px;
+        top: 650px;
+    }
+    to {
+        font-size: 30px;
+        top: 660px;
+    }
+}
+
+@keyframes readyFalse {
+    from {
+        font-size: 20px;
+        top: 670px;
+    }
+    to {
+        font-size: 30px;
+        top: 660px;
+    }
 }
 
 .header {

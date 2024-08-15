@@ -1,5 +1,5 @@
 class Item {
-    public name: [string, string];
+    public name: [string, ItemNamesEnglish];
     public price: number;
     public ability: Ability;
     public lower: string[];
@@ -21,7 +21,7 @@ class ItemBuilder {
         this.item = new Item();
     }
 
-    public setName(name: string, imgName: string): ItemBuilder {
+    public setName(name: string, imgName: ItemNamesEnglish): ItemBuilder {
         this.item.name = [name, imgName];
         return this;
     }

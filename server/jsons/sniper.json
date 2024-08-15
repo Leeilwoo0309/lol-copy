@@ -2,23 +2,24 @@
     "cn": "sniper",
     "name": "스나이퍼",
     "defaultSpec": {
-        "ad": 18,
+        "ad": 28,
         "ap": 0,
-        "atkspd": 1.2,
+        "atkspd": 1.3,
         "armor": 28,
         "ignoreArmor": 0,
         "magicRegist": 24,
         "skillHaste": 0,
-        "range": 600,
+        "range": 620,
         "projectileSpd": 25,
-        "moveSpd": 4.75,
+        "moveSpd": 4.8,
         "criticD": 0,
         "criticP": 0,
         "health": 390,
         "healthBoost": 1.2,
         "vamp": 0,
         "projectileSize": [20, 20],
-        "damageType": "melee"
+        "damageType": "melee",
+        "defaultAAType": "long"
     },
     "skills": {
         "passive": {
@@ -28,7 +29,7 @@
         "Q": {
             "cooldown": 500,
             "damage": 8,
-            "ad": 1.2
+            "ad": 0.8
         },
         "E": {
             "cooldown": 1500,
@@ -44,7 +45,7 @@
         "Wheel": {
             "cooldown": 7500,
             "damage": 10,
-            "ad": 2.3,
+            "ad": 1.7,
             "type": "melee"
         }
     },

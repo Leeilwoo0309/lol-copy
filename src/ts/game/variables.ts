@@ -63,7 +63,7 @@ const players: Players = {
         status: {
             invisible: false,
         },
-        gold: 50000,
+        gold: 500,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
     },
     red: {
@@ -118,7 +118,7 @@ const players: Players = {
         status: {
             invisible: false,
         },
-        gold: 50000,
+        gold: 500,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
     },
 
@@ -129,12 +129,13 @@ let aaA: Ability = {
 
 const socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 const params = new URLSearchParams(window.location.search);
-let char: {blue: string, red: string} = {blue: undefined, red: undefined};
+let char: {blue: ChampionNames, red: ChampionNames} = {blue: undefined, red: undefined};
 let charClass: Char = undefined;
 let readyStatus = {blue: false, red: false};
 let playerDistance: number = 0;
 //@ts-ignore
 const team: 'red' | 'blue' = params.get('team');
+//@ts-ignore
 char[team] = params.get('char');
 
 let skillInfo: {passive: SkillAbility, q: SkillAbility, e: SkillAbility, shift: SkillAbility, wheel: SkillAbility} = {
@@ -185,8 +186,8 @@ let keyDown: KeyDown = {
 let absolutePosition: AbsolutePosition = {
     // blue: {x: 4100, y: -430},
     blue: {x: 200, y: -430},
-    // red : {x: 4170, y: -430}
-    red : {x: 800, y: -430}
+    red : {x: 4170, y: -430}
+    // red : {x: 800, y: -430}
 }
 let absolutePointerPosition: Position = {x: 0, y: 0};
 let cameraPosition: Position = { x: 0, y: 0 };
@@ -216,6 +217,7 @@ let gameObjects: GameObject[] = [
 let itemData: Item[] = [];
 
 let projectiles: {blue: Projectile[], red: Projectile[]} = {blue: [], red: []};
+let nonProjectiles: {blue: NonProjectile[], red: NonProjectile[]} = {blue: [], red: []};
 const getEnemyTeam = () => team == "blue" ? "red" : "blue";
 
 hpProgressBars = document.querySelectorAll('.hp-progress');

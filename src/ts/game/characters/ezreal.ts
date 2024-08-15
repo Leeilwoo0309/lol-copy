@@ -17,7 +17,7 @@ function makeEzreal() {
                 .setSpeed(30)
                 .setSize({height: 50, width: 25})
                 .setStyle('rgb(14, 144, 177)')
-                .onHit('skill')
+                .onHit('ezreal skill q')
                 .build(team)
         )
     }
@@ -36,7 +36,7 @@ function makeEzreal() {
                 .setSpeed(25)
                 .setSize({height: 30, width: 30})
                 .setStyle('yellow')
-                .onHit('ezreal skill')
+                .onHit('ezreal skill e')
                 .build(team)
         )
     }
@@ -73,7 +73,7 @@ function makeEzreal() {
                 .setSpeed(20)
                 .setSize({height: 40, width: 200})
                 .setStyle('yellow')
-                .onHit('skill')
+                .onHit('ezreal skill wheel')
                 .ignoreObj()
                 .canPass()
                 .build(team)

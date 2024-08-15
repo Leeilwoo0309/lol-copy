@@ -63,7 +63,7 @@ var players = {
         status: {
             invisible: false,
         },
-        gold: 50000,
+        gold: 500,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
     },
     red: {
@@ -118,7 +118,7 @@ var players = {
         status: {
             invisible: false,
         },
-        gold: 50000,
+        gold: 500,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
     },
 };
@@ -133,6 +133,7 @@ var readyStatus = { blue: false, red: false };
 var playerDistance = 0;
 //@ts-ignore
 var team = params.get('team');
+//@ts-ignore
 char[team] = params.get('char');
 var skillInfo = {
     passive: { cooldown: 0 },
@@ -182,8 +183,8 @@ var keyDown = {
 var absolutePosition = {
     // blue: {x: 4100, y: -430},
     blue: { x: 200, y: -430 },
-    // red : {x: 4170, y: -430}
-    red: { x: 800, y: -430 }
+    red: { x: 4170, y: -430 }
+    // red : {x: 800, y: -430}
 };
 var absolutePointerPosition = { x: 0, y: 0 };
 var cameraPosition = { x: 0, y: 0 };
@@ -212,5 +213,6 @@ var gameObjects = [
 ];
 var itemData = [];
 var projectiles = { blue: [], red: [] };
+var nonProjectiles = { blue: [], red: [] };
 var getEnemyTeam = function () { return team == "blue" ? "red" : "blue"; };
 hpProgressBars = document.querySelectorAll('.hp-progress');

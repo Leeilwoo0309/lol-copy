@@ -174,6 +174,7 @@ async function getData() {
     makeSamira();
     makeVayne();
     makeExponent();
+    makeAssassin();
 
     if (char[team] == 'ezreal') {
         charClass = ezreal;
@@ -185,6 +186,8 @@ async function getData() {
         charClass = vayne;
     } else if (char[team] == 'exponent') {
         charClass = exponent;
+    } else if (char[team] == 'assassin') {
+        charClass = assassin;
     }
 
     let fetchedItemData: ItemData[] = await getItemInfo();
@@ -212,5 +215,5 @@ function reload() {
 
     socket.send(JSON.stringify({
         body: {msg: "reload"}
-    }))
+    }));
 }

@@ -27,6 +27,7 @@ resultItem.addEventListener('click', function () {
     function upgradeLower() {
         var lower = __spreadArray([], itemData[itemInfo].lower, true);
         players[team].items.forEach(function (e, i) {
+            console.log(lower);
             if (e !== undefined) {
                 if (lower.includes(e.name[1])) {
                     if (e.ability.ad)
@@ -59,7 +60,7 @@ resultItem.addEventListener('click', function () {
                         players[team].specItem.manaR -= e.ability.manaR;
                     if (e.ability.vamp)
                         players[team].specItem.vamp -= e.ability.vamp;
-                    lower = lower = lower.filter(function (element) { return element !== e.name[1]; });
+                    lower.splice(lower.indexOf(e.name[1]), 1);
                     players[team].items[i] = undefined;
                 }
             }
@@ -299,7 +300,8 @@ function getPrice(index) {
     players[team].items.forEach(function (e) {
         if (e !== undefined) {
             if (lower.includes(e.name[1])) {
-                lower = lower.filter(function (element) { return element !== e.name[1]; });
+                // lower = lower.filter((element) => element !== e.name[1]);
+                lower.splice(lower.indexOf(e.name[1]), 1);
                 price -= e.price;
             }
         }

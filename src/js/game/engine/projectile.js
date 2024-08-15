@@ -50,7 +50,7 @@ var Projectile = /** @class */ (function () {
             _bullet.style.backgroundColor = "".concat(this.style.color);
         _main.appendChild(_bullet);
         var update = setInterval(function () {
-            var _a, _b, _c, _d, _e, _f, _g, _h;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j;
             // clearInterval(update);
             _this._movedDistance += _this.speed;
             var enemyTar = _this.targetEnemy[1] == 'blue' ? 'red' : 'blue';
@@ -83,12 +83,12 @@ var Projectile = /** @class */ (function () {
                     if (isCritical) {
                         players[team].hp[1] -= criticalDamage * damageCoefficient_1[_this.damageType];
                         totalDamage[_this.damageType] += criticalDamage * damageCoefficient_1[_this.damageType];
-                        damageAlert(_this.damageType, damageCoefficient_1[_this.damageType] * criticalDamage, true, type == 'blue' ? 'red' : 'blue');
+                        // damageAlert(this.damageType, damageCoefficient[this.damageType] * criticalDamage, true, type == 'blue' ? 'red' : 'blue');
                     }
                     else {
                         players[team].hp[1] -= _this.damage * damageCoefficient_1[_this.damageType];
                         totalDamage[_this.damageType] += _this.damage * damageCoefficient_1[_this.damageType];
-                        damageAlert(_this.damageType, _this.damage * damageCoefficient_1[_this.damageType], false, type == 'blue' ? 'red' : 'blue');
+                        // damageAlert(this.damageType, this.damage * damageCoefficient[this.damageType], false, type == 'blue' ? 'red' : 'blue');
                     }
                     ;
                     // 아이템 감지
@@ -97,53 +97,41 @@ var Projectile = /** @class */ (function () {
                         if ((e === null || e === void 0 ? void 0 : e.name[1]) == '3_molwang' && !((_a = _this.onhit) === null || _a === void 0 ? void 0 : _a.includes('skill'))) {
                             players[team].hp[1] -= players[team].hp[1] * (e.extra[0] / 100) * damageCoefficient_1.melee;
                             totalDamage.melee += players[team].hp[1] * (e.extra[0] / 100) * damageCoefficient_1.melee;
-                            socket.send(JSON.stringify({
-                                body: {
-                                    msg: 'damageAlert',
-                                    info: [
-                                        "melee",
-                                        players[team].hp[1] * (e.extra[0] / 100) * damageCoefficient_1.melee,
-                                        false,
-                                        type == 'blue' ? 'red' : 'blue'
-                                    ]
-                                }
-                            }));
-                            damageAlert("melee", players[team].hp[1] * (e.extra[0] / 100) * damageCoefficient_1.melee, false, type == 'blue' ? 'red' : 'blue');
+                            // socket.send(JSON.stringify({
+                            //     body: {
+                            //         msg: 'damageAlert',
+                            //         info: [
+                            //             "melee",
+                            //             players[team].hp[1] * (e.extra[0] / 100) * damageCoefficient.melee,
+                            //             false,
+                            //             type == 'blue' ? 'red' : 'blue'
+                            //         ]
+                            //     }
+                            // }));
+                            // damageAlert("melee", players[team].hp[1] * (e.extra[0] / 100) * damageCoefficient.melee, false, type == 'blue' ? 'red' : 'blue');
                         }
                         if ((e === null || e === void 0 ? void 0 : e.name[1]) == '3_nashor' && !((_b = _this.onhit) === null || _b === void 0 ? void 0 : _b.includes('skill'))) {
                             players[team].hp[1] -= e.extra[0] * damageCoefficient_1.magic;
                             totalDamage.magic += e.extra[0] * damageCoefficient_1.magic;
-                            socket.send(JSON.stringify({
-                                body: {
-                                    msg: 'damageAlert',
-                                    info: [
-                                        "magic",
-                                        e.extra[0] * damageCoefficient_1.magic,
-                                        false,
-                                        type == 'blue' ? 'red' : 'blue'
-                                    ]
-                                }
-                            }));
-                            damageAlert("magic", e.extra[0] * damageCoefficient_1.magic, false, type == 'blue' ? 'red' : 'blue');
+                            // socket.send(JSON.stringify({
+                            //     body: {
+                            //         msg: 'damageAlert',
+                            //         info: [
+                            //             "magic",
+                            //             e.extra[0] * damageCoefficient.magic,
+                            //             false,
+                            //             type == 'blue' ? 'red' : 'blue'
+                            //         ]
+                            //     }
+                            // }));
+                            // damageAlert("magic", e.extra[0] * damageCoefficient.magic, false, type == 'blue' ? 'red' : 'blue');
                         }
                         if ((e === null || e === void 0 ? void 0 : e.name[1]) == '3_rapid_firecannon') {
-                            var alphaDamage = playerDistance / 500;
-                            if (alphaDamage > 1.5)
-                                alphaDamage = 1.5;
+                            var alphaDamage = playerDistance / 400;
+                            if (alphaDamage > findItem('3_rapid_firecannon').body.extra[0])
+                                alphaDamage = findItem('3_rapid_firecannon').body.extra[0];
                             players[team].hp[1] -= _this.damage * alphaDamage * damageCoefficient_1.melee;
                             totalDamage.melee += _this.damage * alphaDamage * damageCoefficient_1.melee;
-                            socket.send(JSON.stringify({
-                                body: {
-                                    msg: 'damageAlert',
-                                    info: [
-                                        "melee",
-                                        _this.damage * playerDistance / 3000 * damageCoefficient_1.melee,
-                                        false,
-                                        type == 'blue' ? 'red' : 'blue'
-                                    ]
-                                }
-                            }));
-                            damageAlert("melee", e.extra[0] * _this.damage * playerDistance / 3000 * damageCoefficient_1.melee, false, type == 'blue' ? 'red' : 'blue');
                         }
                         if ((e === null || e === void 0 ? void 0 : e.name[1]) == '3_collector') {
                             if (players[team].hp[1] / players[team].hp[0] <= findItem('3_collector').body.extra[0] / 100) {
@@ -173,36 +161,38 @@ var Projectile = /** @class */ (function () {
                         totalDamage.magic += (players[getEnemyTeam()].spec.ap * enemySkillInfo.passive.ap +
                             players[getEnemyTeam()].spec.ad * enemySkillInfo.passive.ad +
                             enemySkillInfo.passive.damage) * damageCoefficient_1.magic;
-                        damageAlert("magic", (players[getEnemyTeam()].spec.ap * enemySkillInfo.passive.ap +
-                            players[getEnemyTeam()].spec.ad * enemySkillInfo.passive.ad +
-                            enemySkillInfo.passive.damage) * damageCoefficient_1.magic, false, type == 'blue' ? 'red' : 'blue');
-                        socket.send(JSON.stringify({
-                            body: {
-                                msg: 'damageAlert',
-                                info: [
-                                    "magic",
-                                    (players[getEnemyTeam()].spec.ap * enemySkillInfo.passive.ap +
-                                        players[getEnemyTeam()].spec.ad * enemySkillInfo.passive.ad +
-                                        enemySkillInfo.passive.damage) * damageCoefficient_1.magic,
-                                    false,
-                                    type == 'blue' ? 'red' : 'blue'
-                                ]
-                            }
-                        }));
+                        // damageAlert("magic", (
+                        //     players[getEnemyTeam()].spec.ap * enemySkillInfo.passive.ap +
+                        //     players[getEnemyTeam()].spec.ad * enemySkillInfo.passive.ad +
+                        //     enemySkillInfo.passive.damage) * damageCoefficient.magic
+                        // , false, type == 'blue' ? 'red' : 'blue');
+                        // socket.send(JSON.stringify({
+                        //     body: {
+                        //         msg: 'damageAlert',
+                        //         info: [
+                        //             "magic",
+                        //             (players[getEnemyTeam()].spec.ap * enemySkillInfo.passive.ap +
+                        //             players[getEnemyTeam()].spec.ad * enemySkillInfo.passive.ad +
+                        //             enemySkillInfo.passive.damage) * damageCoefficient.magic,
+                        //             false,
+                        //             type == 'blue' ? 'red' : 'blue'
+                        //         ]
+                        //     }
+                        // }));
                     }
                     // 캐릭터별 온힛 효과
-                    if ((_b = _this.onhit) === null || _b === void 0 ? void 0 : _b.includes("ezreal")) {
+                    if (((_b = _this.onhit) === null || _b === void 0 ? void 0 : _b.includes("ezreal")) && ((_c = _this.onhit) === null || _c === void 0 ? void 0 : _c.includes(" e"))) {
                         absolutePosition[team].x -= 3;
                         absolutePosition[team].y += 3;
                         players[team].marker.ezreal = true;
                     }
-                    else if ((_c = _this.onhit) === null || _c === void 0 ? void 0 : _c.includes("samira")) {
+                    else if ((_d = _this.onhit) === null || _d === void 0 ? void 0 : _d.includes("samira")) {
                         socket.send(JSON.stringify({
                             body: {
-                                msg: "samiraOnhit", damageType: (_d = _this.onhit) === null || _d === void 0 ? void 0 : _d.split(' ')[_this.onhit.split(' ').length - 1]
+                                msg: "samiraOnhit", damageType: (_e = _this.onhit) === null || _e === void 0 ? void 0 : _e.split(' ')[_this.onhit.split(' ').length - 1]
                             }
                         }));
-                        if ((_e = _this.onhit) === null || _e === void 0 ? void 0 : _e.includes(" e")) {
+                        if ((_f = _this.onhit) === null || _f === void 0 ? void 0 : _f.includes(" e")) {
                             canMove = false;
                             setTimeout(function () {
                                 canMove = true;
@@ -216,36 +206,59 @@ var Projectile = /** @class */ (function () {
                         if (players[team].marker.vayne === undefined)
                             players[team].marker.vayne = 0;
                         players[team].marker.vayne += 1;
-                        console.log(players[team].marker.vayne);
                         if (players[team].marker.vayne == 3) {
                             players[team].marker.vayne = 0;
-                            players[team].hp[1] -= players[team].hp[0] * enemySkillInfo.passive.damage / 100;
+                            players[team].hp[1] -= players[team].hp[0] * (enemySkillInfo.passive.damage + enemySkillInfo.passive.ap * players[getEnemyTeam()].spec.ap) / 100;
                             socket.send(JSON.stringify({
                                 body: {
                                     msg: 'damageAlert',
                                     info: [
                                         "true",
-                                        players[team].hp[0] * enemySkillInfo.passive.damage / 100,
+                                        players[team].hp[0] * (enemySkillInfo.passive.damage + enemySkillInfo.passive.ap * players[getEnemyTeam()].spec.ap) / 100,
                                         false,
                                         type == 'blue' ? 'red' : 'blue'
                                     ]
                                 }
                             }));
-                            damageAlert("true", players[team].hp[0] * enemySkillInfo.passive.damage / 100, false, type == 'blue' ? 'red' : 'blue');
+                            damageAlert("true", players[team].hp[0] * (enemySkillInfo.passive.damage + enemySkillInfo.passive.ap * players[getEnemyTeam()].spec.ap) / 100, false, type == 'blue' ? 'red' : 'blue');
                         }
-                        if ((_f = _this.onhit) === null || _f === void 0 ? void 0 : _f.includes('bondage')) {
+                        if ((_g = _this.onhit) === null || _g === void 0 ? void 0 : _g.includes('bondage')) {
                             canMove = false;
                             setTimeout(function () {
                                 canMove = true;
                             }, enemySkillInfo.shift.duration * 10);
                         }
                     }
-                    if ((_g = _this.onhit) === null || _g === void 0 ? void 0 : _g.includes('skill')) {
+                    if ((_h = _this.onhit) === null || _h === void 0 ? void 0 : _h.includes('skill')) {
                         socket.send(JSON.stringify({ body: { msg: "onhit", target: 'enemy', type: "skill" } }));
                     }
                     else {
                         socket.send(JSON.stringify({ body: { msg: "onhit", target: 'enemy', type: "aa" } }));
                     }
+                    socket.send(JSON.stringify({
+                        body: {
+                            msg: 'damageAlert',
+                            info: [
+                                "melee",
+                                totalDamage.melee,
+                                isCritical,
+                                type == 'blue' ? 'red' : 'blue'
+                            ]
+                        }
+                    }));
+                    socket.send(JSON.stringify({
+                        body: {
+                            msg: 'damageAlert',
+                            info: [
+                                "magic",
+                                totalDamage.magic,
+                                isCritical,
+                                type == 'blue' ? 'red' : 'blue'
+                            ]
+                        }
+                    }));
+                    damageAlert("melee", totalDamage.melee, isCritical, type == 'blue' ? 'red' : 'blue');
+                    damageAlert("magic", totalDamage.magic, isCritical, type == 'blue' ? 'red' : 'blue');
                 }
                 var nexusIndex = { blue: [7, 8], red: [9, 10] };
                 if (_this.isCollideWithNexus(gameObjects[nexusIndex[team][1]].objSelector, _bullet) && gameObjects[nexusIndex[team][0]].isCollide(players[getEnemyTeam()].selector) && !_this.isCollide) {
@@ -267,23 +280,25 @@ var Projectile = /** @class */ (function () {
                         damageCoefficient = 1;
                     if (isCritical) {
                         var criticalDamage = _this.damage * (1.75 + _this.critical[1] / 100);
-                        damageAlert(_this.damageType, damageCoefficient * criticalDamage, true, type == 'blue' ? 'red' : 'blue');
+                        // damageAlert(this.damageType, damageCoefficient * criticalDamage, true, type == 'blue' ? 'red' : 'blue');
                     }
                     else {
-                        damageAlert(_this.damageType, _this.damage * damageCoefficient, isCritical, type == 'blue' ? 'red' : 'blue');
+                        // damageAlert(this.damageType, this.damage * damageCoefficient, isCritical, type == 'blue' ? 'red' : 'blue');
                     }
                     ;
                     if (_this.damage > 0)
                         onhitCount[type] += 1;
                     if (!_this.canPass)
                         _this.isArrive = false;
-                    if (char[team] == 'ezreal' && ((_h = _this.onhit) === null || _h === void 0 ? void 0 : _h.includes('skill'))) {
+                    if (char[team] == 'ezreal' && ((_j = _this.onhit) === null || _j === void 0 ? void 0 : _j.includes('skill'))) {
                         _this.isCollide = true;
                         charClass.cooldown.q -= skillInfo.passive.skillHaste;
                         charClass.cooldown.e -= skillInfo.passive.skillHaste;
                         charClass.cooldown.shift -= skillInfo.passive.skillHaste;
                         charClass.cooldown.wheel -= skillInfo.passive.skillHaste;
                     }
+                    if (char[team] == 'sniper' && charClass.isActive.q)
+                        charClass.isActive.q = false;
                 }
             }
             // 화면 밖으로 나가면 탄환 제거

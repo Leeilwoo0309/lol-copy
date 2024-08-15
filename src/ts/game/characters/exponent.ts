@@ -3,16 +3,15 @@ let exponentPassiveStack: number = 0;
 let exponentIsPassiveOn: boolean = false;
 
 function makeExponent() {
-    if (char[team] == 'exponent') {
-        document.querySelector('.passive-btn').innerHTML = `${ exponentPassiveStack }`;
-    }
-
+    
     setInterval(() => {
-        document.querySelector('.passive-btn').innerHTML = `${ exponentPassiveStack }`;
-        if (exponentPassiveStack >= 40) {
-            players[team].specINIT.projectileSize = [20, 100];
-            players[team].specINIT.projectileSpd = 20;
-            players[team].specINIT.damageType = "magic";
+        if (char[team] == 'exponent') {
+            document.querySelector('.passive-btn').innerHTML = `${ exponentPassiveStack }`;
+            if (exponentPassiveStack >= 40) {
+                players[team].specINIT.projectileSize = [20, 100];
+                players[team].specINIT.projectileSpd = 20;
+                players[team].specINIT.damageType = "magic";
+            }
         }
     }, 16);
 

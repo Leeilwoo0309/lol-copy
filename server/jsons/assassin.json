@@ -1,37 +1,51 @@
 {
-    "cn": "vampire",
-    "name": "블라디미르",
+    "cn": "assassin",
+    "name": "어쌔신",
     "defaultSpec": {
-        "ad": 3,
+        "ad": 16,
         "ap": 0,
         "atkspd": 0.75,
-        "armor": 27,
-        "magicRegist": 30,
+        "armor": 34,
+        "magicRegist": 32,
         "skillHaste": 0,
-        "range": 300,
+        "range": 125,
         "projectileSpd": 7,
-        "moveSpd": 5,
+        "moveSpd": 5.2,
         "criticD": 0,
         "criticP": 0,
-        "health": 125,
-        "healthBoost": 3,
+        "health": 475,
+        "healthBoost": 4.2,
         "vamp": 0,
+        "projectileSize": [80, 5],
+        "damageType": "melee",
         "defaultAAType": "long"
     },
     "skills": {
         "passive": {
+            "moveSpd": 1.25,
+            "duration": 150
         },
         "Q": {
-            "cooldown": 500
+            "cooldown": 500,
+            "damage": 8,
+            "ad": 1.2
         },
         "E": {
-            "cooldown": 1500
+            "cooldown": 1500,
+            "atkspd": 0.6,
+            "ap": 0.45,
+            "duration": 500
         },
         "Shift": {
-            "cooldown": 1500
+            "cooldown": 1500,
+            "ap": 0.005,
+            "duration": 150
         },
         "Wheel": {
-            "cooldown": 7500
+            "cooldown": 7500,
+            "damage": 10,
+            "ad": 2.3,
+            "type": "melee"
         }
     },
     "des": {

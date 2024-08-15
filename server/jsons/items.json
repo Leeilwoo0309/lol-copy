@@ -28,12 +28,22 @@
     },
     {
         "name": ["장화", "b_1"], "price": 300,
-        "ability": { "moveSpd": 1 }, "enable": true
+        "ability": { "moveSpd": 0.7 }, "enable": true
+    },
+    {
+        "name": ["신속의 장화", "b_2spd"], "price": 1000,
+        "lower": ["b_1"],
+        "ability": { "moveSpd": 1.4 }, "enable": true
+    },
+    {
+        "name": ["명석함의 아이오니아 장화", "b_2skill_haste"], "price": 1000,
+        "lower": ["b_1", "1_glowing_mote"],
+        "ability": { "moveSpd": 1, "skillHaste": 15 }, "enable": true
     },
     {
         "name": ["광전사의 군화", "b_2atkspd"], "price": 1100, "grade": "boots",
         "lower": ["b_1", "1_short_sword"],
-        "ability": { "moveSpd": 1.4, "atkspd": 70 }, "enable": true
+        "ability": { "moveSpd": 1, "atkspd": 70 }, "enable": true
     },
     {
         "name": ["빛나는 티끌", "1_glowing_mote"], "price": 250,
@@ -99,6 +109,11 @@
         "ability": { "health": 200, "healthBoost": 100 }, "enable": true
     },
     {
+        "name": ["에테르 환영", "2_aether"], "price": 850,
+        "lower": ["1_tome"],
+        "ability": { "ap": 20, "moveSpd": 0.12 }, "enable": true
+    },
+    {
         "name": ["광휘의 검", "2_sheen"], "price": 900,
         "lower": ["1_glowing_mote"],
         "ability": { "skillHaste": 10 }, "enable": true,
@@ -123,6 +138,11 @@
         "name": ["톱날 단검", "2_dirk"], "price": 1000,
         "lower": ["1_long_sword", "1_long_sword"],
         "ability": { "ad": 10, "ignoreArmor": 10 }, "enable": true
+    },
+    {
+        "name": ["마법공학 교류발전기", "2_hextech"], "price": 1100,
+        "lower": ["1_tome", "1_tome"],
+        "ability": { "ap": 35 }, "enable": true
     },
     {
         "name": ["열성의 검", "2_zeal"], "price": 1100,
@@ -165,7 +185,7 @@
         "name": ["구인수의 격노검", "3_guinsu"], "price": 3000,
         "lower": ["1_tome", "2_recurve_bow", "1_pickaxe"],
         "ability": { "ap": 20, "ad": 20, "atkspd": 80 }, "enable": true,
-        "des": "기본 공격 시 공격 속도가 $e1% 증가합니다. 해당 효과는 $e3번까지 중첩되어 최대 공격 속도가 $e4%까지 증가합니다.", "extra": [12, 400, 10, 120]
+        "des": "기본 공격 시 공격 속도가 $e1% 증가합니다. 해당 효과는 $e3번까지 중첩되어 최대 공격 속도가 $e4%까지 증가합니다. (지속 시간: $e2초)", "extra": [12, 400, 8, 96]
     },
     {
         "name": ["내셔의 이빨", "3_nashor"], "price": 3000,
@@ -177,13 +197,19 @@
         "name": ["고속연사포", "3_rapid_firecannon"], "price": 3000,
         "lower": ["2_recurve_bow", "2_zeal", "1_pickaxe"],
         "ability": { "ad": 20, "criticP": 25, "atkspd": 150 }, "enable": true,
-        "des": "상대방과 거리가 멀수록 더욱 강한 피해를 입힙니다. (피해량: 공격력 * 1.5)", "extra": [1.5, 3000, 0, 0]
+        "des": "상대방과 거리가 멀수록 더욱 강한 피해를 입힙니다. (최대 피해량: 800의 거리에서 12%의 추가 물리 피해)", "extra": [1.2, 3000, 0, 0]
     },
     {
         "name": ["불멸의 철갑궁", "3_shieldbow"], "price": 3000,
         "lower": ["1_pickaxe", "2_vampiric_scepter", "2_noonquiver"],
         "ability": { "ad": 30, "criticP": 25, "vamp": 10 }, "enable": true,
         "des": "체력이 30% 이하로 떨어지면 입으면 최대체력의 $e1%를 체력을 즉시 회복합니다. (재사용 대기시간: $e2초)", "extra": [20, 3000, 0, 0]
+    },
+    {
+        "name": ["리치베인", "3_lich_bane"], "price": 3000,
+        "lower": ["2_sheen", "2_aether", "2_hextech"],
+        "ability": { "ap": 90, "moveSpd": 0.18, "skillHaste": 15 }, "enable": true,
+        "des": "스킬을 사용하고 나면 다음 기본 공격 적중 시 공격력의 $e1% + 주문력의 $e3%의 마법 피해를 추가로 입힙니다", "extra": [75, 0, 45, 0]
     },
     {
         "name": ["해신 작쇼", "3_jaksho"], "price": 3200,
@@ -217,7 +243,7 @@
         "name": ["삼위일체", "3_tfo"], "price": 3333,
         "lower": ["2_sheen", "2_phage", "2_onpildo"],
         "ability": { "ad": 30, "atkspd": 45, "health": 150, "skillHaste": 20 }, "enable": true,
-        "extra": [100, 0, 0, 0], "des": "스킬을 사용하고 나면 다음 기본 공격 적중 시 공격력의 $e1%의 물리 피해를 추가로 입힙니다"
+        "extra": [100, 0, 0, 0], "des": "스킬을 사용하고 나면 다음 기본 공격 적중 시 공격력의 $e1%의 물리 피해를 추가로 입힙니다."
     },
     {
         "name": ["무한의 대검", "3_infinity_edge"], "price": 3400,

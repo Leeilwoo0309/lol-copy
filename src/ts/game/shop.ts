@@ -19,6 +19,7 @@ resultItem.addEventListener('click', () => {
         let lower: string[] = [...itemData[itemInfo].lower];
 
         players[team].items.forEach((e, i) => {
+            console.log(lower);
             if (e !== undefined) {
                 if (lower.includes(e.name[1])) {
                     if (e.ability.ad) players[team].specItem.ad -= e.ability.ad;
@@ -40,7 +41,7 @@ resultItem.addEventListener('click', () => {
                     if (e.ability.manaR) players[team].specItem.manaR -= e.ability.manaR;
                     if (e.ability.vamp) players[team].specItem.vamp -= e.ability.vamp;
                     
-                    lower = lower = lower.filter((element) => element !== e.name[1]);
+                    lower.splice(lower.indexOf(e.name[1]), 1);
                     players[team].items[i] = undefined;
                 }
             }
@@ -246,10 +247,10 @@ function refreshShop(element, index) {
     
 
 
-    itemData[index].lower?.forEach((e, i) => {
+    itemData[index].lower?.forEach((e: ItemNamesEnglish, i) => {
         underItem.style.display = '';
         aText.style.display = '';
-        
+
         underItem.innerHTML += `<div id="need-item-${i}" class="item need itid-${ findItem(e).index }" style="background-image: url(./assets/items/${ e }.png)">
         <p class="price">G${ findItem(e).body.price }</p>
         </div>`;
@@ -276,7 +277,8 @@ function getPrice(index) {
     players[team].items.forEach((e) => {
         if (e !== undefined) {
             if (lower.includes(e.name[1])) {
-                lower = lower.filter((element) => element !== e.name[1]);
+                // lower = lower.filter((element) => element !== e.name[1]);
+                lower.splice(lower.indexOf(e.name[1]), 1);
                 price -= e.price;
             }
         }
@@ -296,7 +298,7 @@ function hasItem(name: string) {
     return ret;
 }
 
-function findItem(engName: string): {body: Item, index: number} {
+function findItem(engName: ItemNamesEnglish): {body: Item, index: number} {
     let ret: {body: Item, index: number} = {body: undefined, index: undefined};
 
     itemData.forEach((e, i) => {

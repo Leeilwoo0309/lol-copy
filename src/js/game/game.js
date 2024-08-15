@@ -203,6 +203,7 @@ function getData() {
                     makeSamira();
                     makeVayne();
                     makeExponent();
+                    makeAssassin();
                     if (char[team] == 'ezreal') {
                         charClass = ezreal;
                     }
@@ -217,6 +218,9 @@ function getData() {
                     }
                     else if (char[team] == 'exponent') {
                         charClass = exponent;
+                    }
+                    else if (char[team] == 'assassin') {
+                        charClass = assassin;
                     }
                     return [4 /*yield*/, getItemInfo()];
                 case 4:

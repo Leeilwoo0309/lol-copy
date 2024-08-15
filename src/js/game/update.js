@@ -16,6 +16,9 @@ setInterval(function () {
         socket.send(JSON.stringify({ body: { msg: "ready" } }));
     if (char[team] !== undefined && char[getEnemyTeam()] !== undefined && ((_a = players.blue.specINIT) === null || _a === void 0 ? void 0 : _a.range) === 0)
         getData();
+    if (isOpen) {
+        atkWait = 2;
+    }
     if (!readyStatus[getEnemyTeam()])
         document.querySelector('#loading').innerHTML = "\uC0C1\uB300\uBC29 \uAE30\uB2E4\uB9AC\uB294 \uC911..";
     else if (deathCoolDown[team] > 0) {
@@ -31,6 +34,8 @@ setInterval(function () {
         inf.style.display = '';
         document.querySelector('#inf-blue>.inf-kda').innerHTML = "KILL: ".concat(kda.blue[0], " / DEATH: ").concat(kda.blue[1]);
         document.querySelector('#inf-red>.inf-kda').innerHTML = "KILL: ".concat(kda.red[0], " / DEATH: ").concat(kda.red[1]);
+        document.querySelector("#inf-blue>h2").innerHTML = "BLUE (".concat(char.blue.toUpperCase(), ")");
+        document.querySelector("#inf-red>h2").innerHTML = "(".concat(char.red.toUpperCase(), ") RED");
         players.blue.items.forEach(function (e, i) {
             if (e !== undefined) {
                 var item = document.querySelector("#inf-item-b>#vault-".concat(i + 1));
@@ -197,16 +202,30 @@ setInterval(function () {
         atkWait = 1 / players[team].spec.atkspd * 100;
         var angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
         players[team].status.invisible = false;
-        projectiles[team].push(new ProjectileBuilder()
-            .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, players[team].specINIT.damageType)
-            .setCritical(players[team].spec.criticP, players[team].spec.criticD)
-            .setDegree(angle)
-            .setReach(players[team].spec.range)
-            .setSpeed(players[team].spec.projectileSpd)
-            .setSize({ height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1] })
-            .onHit("".concat(char[team], " aa"))
-            .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
-            .build(team));
+        if (players[team].specINIT.defaultAAType == "long") {
+            projectiles[team].push(new ProjectileBuilder()
+                .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
+                .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                .setDegree(angle)
+                .setReach(players[team].spec.range)
+                .setSpeed(players[team].spec.projectileSpd)
+                .setSize({ height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1] })
+                .onHit("".concat(char[team], " aa"))
+                .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
+                .build(team));
+        }
+        else if (players[team].specINIT.defaultAAType === "short") {
+            nonProjectiles[team].push(new NonProjectileBuilder()
+                .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, players[team].specINIT.damageType)
+                .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                .setDegree(angle)
+                .setReach(players[team].spec.range)
+                .setSpeed(players[team].spec.projectileSpd)
+                .setSize({ height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1] })
+                .onHit("".concat(char[team], " aa"))
+                .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
+                .build(team));
+        }
     }
     if (keyDown.q && charClass.cooldown.q === 0 && deathCoolDown[team] === 0) {
         charClass.skillQ();
@@ -419,12 +438,17 @@ function onhit(type) {
         charClass.cooldown.e -= charClass.cooldownINIT.e * decreasePercent;
         charClass.cooldown.shift -= charClass.cooldownINIT.shift * decreasePercent;
     }
-    if ((hasItem('2_sheen') || hasItem('3_tfo')) && cooldownItem.sheen.isActive) {
+    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && cooldownItem.sheen.isActive) {
         cooldownItem.sheen.isActive = false;
         aaA.ad = 0;
+        aaA.damageType = undefined;
     }
-    if ((hasItem('2_sheen') || hasItem('3_tfo')) && !cooldownItem.sheen.isActive && type == 'skill') {
+    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && !cooldownItem.sheen.isActive && type == 'skill') {
         aaA.ad += players[team].spec.ad;
+        if (hasItem('3_lich_bane')) {
+            aaA.ad += players[team].spec.ad * (findItem('3_lich_bane').body.extra[0] / 100) + players[team].spec.ap * (findItem('3_lich_bane').body.extra[2] / 100);
+            aaA.damageType = 'magic';
+        }
         cooldownItem.sheen.isActive = true;
     }
     if (aaA.ad > 0 && !cooldownItem.sheen.isActive) {

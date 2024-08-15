@@ -360,7 +360,7 @@ body {
 }
 
 .boots {
-    grid-column: span 10;
+    grid-column: span 8;
 }
 
 .item1 {
@@ -368,7 +368,7 @@ body {
 }
 
 .item2 {
-    grid-column: span 11;
+    grid-column: span 9;
 }
 
 .item3 {
@@ -545,6 +545,19 @@ body {
 }
 
 .blue.bullet {
+    background-color: rgb(0, 0, 180);
+}
+
+.sword {
+    position: absolute;
+    transform-origin: top center;
+}
+
+.red.sword {
+    background-color: rgb(180, 0, 0);
+}
+
+.blue.sword {
     background-color: rgb(0, 0, 180);
 }
 

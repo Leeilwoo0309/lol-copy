@@ -2,7 +2,7 @@
     "cn": "ezreal",
     "name": "이즈리얼",
     "defaultSpec": {
-        "ad": 17,
+        "ad": 19,
         "ap": 0,
         "atkspd": 0.8,
         "armor": 24,
@@ -18,11 +18,12 @@
         "healthBoost": 0.8,
         "vamp": 0,
         "projectileSize": [20, 20],
-        "damageType": "melee"
+        "damageType": "melee",
+        "defaultAAType": "long"
     },
     "skills": {
         "passive": {
-            "ap": 0.3,
+            "ap": 0.8,
             "ad": 1.2,
             "skillHaste": 200,
             "damage": 10
@@ -37,8 +38,8 @@
             "cooldown": 800,
             "type": "magic",
             "damage": 3,
-            "ad": 0.5,
-            "ap": 0.6
+            "ad": 0.2,
+            "ap": 0.3
         },
         "Shift": {
             "cooldown": 2000,

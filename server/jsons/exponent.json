@@ -18,7 +18,8 @@
         "healthBoost": 3,
         "vamp": 0,
         "projectileSize": [20, 20],
-        "damageType": "melee"
+        "damageType": "melee",
+        "defaultAAType": "long"
     },
     "skills": {
         "passive": {

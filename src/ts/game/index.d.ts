@@ -47,7 +47,7 @@ type AbsolutePosition = {
 
 type ItemData = {
     cooldown: number,
-    name: [string, string],
+    name: [string, ItemNamesEnglish],
     price: number,
     ability: Ability,
     lower?: string[],
@@ -76,7 +76,8 @@ type Ability = {
     magicRegist?: number,
     skillHaste?: number,
     projectileSize?: [number, number],
-    damageType?: 'magic' | 'melee'
+    damageType?: 'magic' | 'melee',
+    defaultAAType?: "short" | "long"
 }
 
 type SkillAbility = {
@@ -102,3 +103,64 @@ type SkillAbility = {
     magicRegist?: number,
     skillHaste?: number,
 }
+
+type ItemNamesEnglish =
+    "0_doran_shield" |
+    "0_doran_blade" |
+    "0_cull" |
+    "b_1" |
+    "b_2spd" |
+    "b_2skill_haste" |
+    "b_2atkspd" |
+    "1_glowing_mote" |
+    "1_short_sword" |
+    "1_bead" |
+    "1_cloth_armor" |
+    "1_long_sword" |
+    "1_tome" |
+    "1_ruby_c" |
+    "1_mantle" |
+    "1_pickaxe" |
+    "1_blasting_wang" |
+    "1_cloak" |
+    "1_bf_sword" |
+    "2_recurve_bow" |
+    "2_chain_vest" |
+    "2_bracer" |
+    "2_aether" |
+    "2_sheen" |
+    "2_vampiric_scepter" |
+    "2_codex" |
+    "2_negatron_cloak" |
+    "2_dirk" |
+    "2_hextech" |
+    "2_zeal" |
+    "2_phage" |
+    "2_onpildo" |
+    "2_noonquiver" |
+    "3_navori" |
+    "3_phantom_dance" |
+    "3_wits_end" |
+    "3_guinsu" |
+    "3_nashor" |
+    "3_rapid_firecannon" |
+    "3_shieldbow" |
+    "3_lich_bane" |
+    "3_jaksho" |
+    "3_molwang" |
+    "3_collector" |
+    "3_kraken" |
+    "3_bloodthir" |
+    "3_tfo" |
+    "3_infinity_edge";
+
+type ChampionNames = 
+    "ezreal" |
+    "sniper" |
+    "samira" |
+    "vayne" |
+    "exponent" |
+    "assassin" |
+    "vampire" |
+    "teacher"
+    ;

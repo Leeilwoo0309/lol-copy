@@ -2,15 +2,14 @@ var exponent = new Char();
 var exponentPassiveStack = 0;
 var exponentIsPassiveOn = false;
 function makeExponent() {
-    if (char[team] == 'exponent') {
-        document.querySelector('.passive-btn').innerHTML = "".concat(exponentPassiveStack);
-    }
     setInterval(function () {
-        document.querySelector('.passive-btn').innerHTML = "".concat(exponentPassiveStack);
-        if (exponentPassiveStack >= 40) {
-            players[team].specINIT.projectileSize = [20, 100];
-            players[team].specINIT.projectileSpd = 20;
-            players[team].specINIT.damageType = "magic";
+        if (char[team] == 'exponent') {
+            document.querySelector('.passive-btn').innerHTML = "".concat(exponentPassiveStack);
+            if (exponentPassiveStack >= 40) {
+                players[team].specINIT.projectileSize = [20, 100];
+                players[team].specINIT.projectileSpd = 20;
+                players[team].specINIT.damageType = "magic";
+            }
         }
     }, 16);
     exponent.cooldownINIT = calculateSkillHaste();

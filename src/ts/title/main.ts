@@ -6,8 +6,8 @@ const _socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 
 let selected: {ally: number, enemy: number} = {ally: undefined, enemy: undefined};
 let chars: CharData = undefined;
-let charName: string[] = ['teacher', 'sniper', 'ezreal', 'samira', 'vayne', 'exponent', 'vampire'];
-let charNameKr: string[] = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '베인', '엑스포넨트', '블라디미르'];
+let charName: string[] = ['teacher', 'sniper', 'ezreal', 'samira', 'vayne', 'exponent', 'assassin', 'vampire'];
+let charNameKr: string[] = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '베인', '엑스포넨트', '어쌔신','블라디미르'];
 let readyStatus: [boolean, boolean] = [false, false];
 
 async function getCharInfo(name: string) {
@@ -39,7 +39,7 @@ readyBtn.addEventListener('click', () => {
         return;
     }
 
-    if (selected.ally === 0 || selected.ally === 6) {
+    if (selected.ally === 0 || selected.ally === 7) {
         alert("그챔 아직 안만듦~~");
         return;
     }
@@ -192,17 +192,22 @@ setInterval(() => {
         readyBtn.style.background = 'linear-gradient(60deg, rgb(165, 0, 0), rgb(63, 0, 6))';
         readyBtn.style.boxShadow = '0px 0px 5px rgb(128, 15, 0)';
     } else if (readyStatus[0]) {
-        readyBtn.innerHTML = `준비완료`
+        readyBtn.innerHTML = `준비취소`
         readyBtn.style.fontSize = '30px';
         readyBtn.style.top = `660px`;
         readyBtn.style.background = 'linear-gradient(60deg, rgb(0, 0, 65), rgb(6, 0, 20))';
         readyBtn.style.boxShadow = '0px 0px 5px rgb(0, 15, 64)';
+        readyBtn.style.borderRadius = '30px'
+        readyBtn.style.animation = 'readyTrue 500ms cubic-bezier(0, 0.79, 0.47, 1.01)'
     } else {
         readyBtn.innerHTML = `준비하기`
         readyBtn.style.fontSize = '30px';
         readyBtn.style.top = `660px`;
         readyBtn.style.background = 'linear-gradient(60deg, rgb(0, 71, 165), rgb(6, 31, 63))';
         readyBtn.style.boxShadow = '0px 0px 5px rgb(0, 15, 128)';
+        readyBtn.style.borderRadius = '10px';
+        readyBtn.style.animation = ''
+        readyBtn.style.animation = 'readyFalse 500ms cubic-bezier(0, 0.79, 0.47, 1.01)'
     }
 }, 16);
 

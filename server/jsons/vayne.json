@@ -4,7 +4,7 @@
     "defaultSpec": {
         "ad": 6,
         "ap": 0,
-        "atkspd": 0.6,
+        "atkspd": 1.1,
         "armor": 18,
         "ignoreArmor": 0,
         "magicRegist": 17,
@@ -18,11 +18,13 @@
         "healthBoost": 1.5,
         "vamp": 0,
         "projectileSize": [20, 20],
-        "damageType": "melee"
+        "damageType": "melee",
+        "defaultAAType": "long"
     },
     "skills": {
         "passive": {
-            "damage": 9
+            "damage": 15,
+            "ap": 0.08
         },
         "Q": {
             "cooldown": 300,
