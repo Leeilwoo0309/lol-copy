@@ -364,11 +364,11 @@ body {
 }
 
 .item1 {
-    grid-column: span 11;
+    grid-column: span 10;
 }
 
 .item2 {
-    grid-column: span 9;
+    grid-column: span 8;
 }
 
 .item3 {

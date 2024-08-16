@@ -134,6 +134,8 @@ setInterval(() => {
     if (cooldownItem.guinsu.time > 0) {
         players[team].spec.atkspd *= 1 + findItem('3_guinsu').body.extra[0] / 100 * cooldownItem.guinsu.count;
     }
+    if (hasItem('3_decap')) players[team].spec.ap *= findItem('3_decap').body.extra[0];
+    if (hasItem('3_riftmaker')) players[team].spec.ap += Math.floor(players[team].spec.health * findItem('3_riftmaker').body.extra[0] / 100);
 
     players[team].spec.atkspd = Math.floor(players[team].spec.atkspd * 100) / 100;
 

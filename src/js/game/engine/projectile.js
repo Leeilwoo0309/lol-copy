@@ -150,6 +150,10 @@ var Projectile = /** @class */ (function () {
                                 damageAlert("melee", e.extra[0] * _this.damage * playerDistance / 3000 * damageCoefficient_1.melee, false, type == 'blue' ? 'red' : 'blue');
                             }
                         }
+                        if ((e === null || e === void 0 ? void 0 : e.name[1]) == '3_shadowflame' && _this.damageType == 'magic' && isCritical) {
+                            players[team].hp[1] -= _this.damage * players[getEnemyTeam()].spec.criticD * damageCoefficient_1.magic;
+                            totalDamage.magic += _this.damage * players[getEnemyTeam()].spec.criticD * damageCoefficient_1.magic;
+                        }
                     });
                     if (((_a = players[team].marker) === null || _a === void 0 ? void 0 : _a.ezreal) == true) {
                         absolutePosition[team].x += 3;

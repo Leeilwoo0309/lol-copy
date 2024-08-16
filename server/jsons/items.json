@@ -90,6 +90,10 @@
         "ability": { "criticP": 15 }, "enable": true
     },
     {
+        "name": ["쓸데없이 큰 지팡이", "1_large_rod"], "price": 1250,
+        "ability": { "ap": 55 }, "enable": true
+    },
+    {
         "name": ["B.F. 대검", "1_bf_sword"], "price": 1300, "grade": "item1",
         "ability": { "ad": 25 }, "enable": true
     },
@@ -155,6 +159,11 @@
         "ability": { "ad": 7, "health": 100 }, "enable": true
     },
     {
+        "name": ["기괴한 가면", "2_guise"], "price": 1300,
+        "lower": ["1_tome", "1_ruby_c"],
+        "ability": { "ap": 20, "health": 100 }, "enable": true
+    },
+    {
         "name": ["온기가 필요한 자의 도끼", "2_onpildo"], "price": 1300,
         "lower": ["1_long_sword", "1_short_sword","1_long_sword"],
         "ability": { "ad": 10, "atkspd": 40 }, "enable": true
@@ -208,8 +217,15 @@
     {
         "name": ["리치베인", "3_lich_bane"], "price": 3000,
         "lower": ["2_sheen", "2_aether", "2_hextech"],
-        "ability": { "ap": 90, "moveSpd": 0.18, "skillHaste": 15 }, "enable": true,
+        "ability": { "ap": 80, "moveSpd": 0.18, "skillHaste": 15 }, "enable": true,
         "des": "스킬을 사용하고 나면 다음 기본 공격 적중 시 공격력의 $e1% + 주문력의 $e3%의 마법 피해를 추가로 입힙니다", "extra": [75, 0, 45, 0]
+    },
+    {
+        "name": ["균열 생성기", "3_riftmaker"], "price": 3100,
+        "lower": ["2_guise", "2_codex"],
+        "ability": { "ap": 65, "health": 150, "skillHaste": 15, "vamp": 8 }, "enable": true,
+        "des": "추가 체력의 $e1%만큼 주문력을 얻습니다.", "extra": [4, 0, 0, 0]
+
     },
     {
         "name": ["해신 작쇼", "3_jaksho"], "price": 3200,
@@ -235,6 +251,12 @@
         "extra": [30, 0, 0.6, 0], "des": "세 번째 기본 공격을 가할 때마다 $e1 + 공격력 * 0.6의 추가 물리 피해를 입힙니다."
     },
     {
+        "name": ["그림자불꽃", "3_shadowflame"], "price": 3200,
+        "lower": ["2_hextech", "1_large_rod"],
+        "ability": { "ap": 100 }, "enable": true,
+        "extra": [30, 0, 0.6, 0], "des": "마법 피해에 치명타가 적용됩니다."
+    },
+    {
         "name": ["피바라기", "3_bloodthir"], "price": 3300,
         "lower": ["1_pickaxe", "1_cloak", "2_vampiric_scepter"],
         "ability": { "ad": 40, "vamp": 18, "criticP": 25 }, "enable": true
@@ -247,7 +269,12 @@
     },
     {
         "name": ["무한의 대검", "3_infinity_edge"], "price": 3400,
-        "lower": ["1_bf_sword", "1_pickaxe", "1_cloak"], "grade": "item3",
+        "lower": ["1_bf_sword", "1_pickaxe", "1_cloak"],
         "ability": { "ad": 55, "criticP": 25, "criticD": 40 }, "enable": true
+    },
+    {
+        "name": ["라바돈의 죽음모자", "3_decap"], "price": 3600,
+        "lower": ["1_large_rod", "1_large_rod"], "grade": "item3",
+        "ability": { "ap": 110 }, "enable": true, "des": "총 주문력의 30%가 증가합니다.", "extra": [1.3, 0, 0, 0]
     }
 ]

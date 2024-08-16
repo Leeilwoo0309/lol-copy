@@ -123,6 +123,7 @@ type ItemNamesEnglish =
     "1_pickaxe" |
     "1_blasting_wang" |
     "1_cloak" |
+    "1_large_rod" |
     "1_bf_sword" |
     "2_recurve_bow" |
     "2_chain_vest" |
@@ -136,6 +137,7 @@ type ItemNamesEnglish =
     "2_hextech" |
     "2_zeal" |
     "2_phage" |
+    "2_guise" |
     "2_onpildo" |
     "2_noonquiver" |
     "3_navori" |
@@ -145,14 +147,17 @@ type ItemNamesEnglish =
     "3_nashor" |
     "3_rapid_firecannon" |
     "3_shieldbow" |
+    "3_riftmaker" |
     "3_lich_bane" |
     "3_jaksho" |
     "3_molwang" |
     "3_collector" |
     "3_kraken" |
+    "3_shadowflame" |
     "3_bloodthir" |
     "3_tfo" |
-    "3_infinity_edge";
+    "3_infinity_edge" |
+    "3_decap";
 
 type ChampionNames = 
     "ezreal" |

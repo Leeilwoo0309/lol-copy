@@ -137,6 +137,7 @@ function updateSelected() {
             ?.replace(/\$ecd/g, (chars.skills.E?.cooldown / 100)?.toString())
             ?.replace(/\$eas/g, (chars.skills.E?.atkspd * 100)?.toString())
             ?.replace(/\$ear/g, (chars.skills.E?.armor)?.toString())
+            ?.replace(/\$emv/g, (chars.skills.E?.moveSpd)?.toString())
             
             ?.replace(/\$sdu/g, (chars.skills.Shift?.duration / 100)?.toString())
             ?.replace(/\$sd/g, chars.skills.Shift?.damage?.toString())

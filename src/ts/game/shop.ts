@@ -19,7 +19,6 @@ resultItem.addEventListener('click', () => {
         let lower: string[] = [...itemData[itemInfo].lower];
 
         players[team].items.forEach((e, i) => {
-            console.log(lower);
             if (e !== undefined) {
                 if (lower.includes(e.name[1])) {
                     if (e.ability.ad) players[team].specItem.ad -= e.ability.ad;
@@ -286,7 +285,7 @@ function getPrice(index) {
     return price;
 }
 
-function hasItem(name: string) {
+function hasItem(name: ItemNamesEnglish) {
     let ret: boolean = false;
 
     players[team].items.forEach(e => {

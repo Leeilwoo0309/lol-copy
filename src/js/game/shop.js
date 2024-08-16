@@ -27,7 +27,6 @@ resultItem.addEventListener('click', function () {
     function upgradeLower() {
         var lower = __spreadArray([], itemData[itemInfo].lower, true);
         players[team].items.forEach(function (e, i) {
-            console.log(lower);
             if (e !== undefined) {
                 if (lower.includes(e.name[1])) {
                     if (e.ability.ad)
