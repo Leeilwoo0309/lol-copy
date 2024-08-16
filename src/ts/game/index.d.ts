@@ -162,5 +162,6 @@ type ChampionNames =
     "exponent" |
     "assassin" |
     "vampire" |
-    "teacher"
+    "teacher" |
+    "graves"
     ;

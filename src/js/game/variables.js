@@ -63,7 +63,7 @@ var players = {
         status: {
             invisible: false,
         },
-        gold: 500,
+        gold: 50000,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
     },
     red: {
@@ -118,7 +118,7 @@ var players = {
         status: {
             invisible: false,
         },
-        gold: 500,
+        gold: 50000,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
     },
 };

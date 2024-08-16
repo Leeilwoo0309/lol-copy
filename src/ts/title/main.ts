@@ -6,8 +6,8 @@ const _socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 
 let selected: {ally: number, enemy: number} = {ally: undefined, enemy: undefined};
 let chars: CharData = undefined;
-let charName: string[] = ['teacher', 'sniper', 'ezreal', 'samira', 'vayne', 'exponent', 'assassin', 'vampire'];
-let charNameKr: string[] = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '베인', '엑스포넨트', '어쌔신','블라디미르'];
+let charName: string[] = ['teacher', 'sniper', 'ezreal', 'samira', 'vayne', 'exponent', 'graves', 'assassin', 'vampire'];
+let charNameKr: string[] = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '베인', '엑스포넨트', '그레이브즈', '어쌔신','블라디미르'];
 let readyStatus: [boolean, boolean] = [false, false];
 
 async function getCharInfo(name: string) {
@@ -128,6 +128,7 @@ function updateSelected() {
             ?.replace(/\$qap/g, chars.skills.Q?.ap?.toString())
             ?.replace(/\$qcd/g, (chars.skills.Q?.cooldown / 100)?.toString())
             ?.replace(/\$qas/g, (chars.skills.Q?.atkspd * 100)?.toString())
+            ?.replace(/\$qar/g, (chars.skills.Q?.armor)?.toString())
             
             ?.replace(/\$edu/g, (chars.skills.E?.duration / 100)?.toString())
             ?.replace(/\$ed/g, chars.skills.E?.damage?.toString())
@@ -135,6 +136,7 @@ function updateSelected() {
             ?.replace(/\$eap/g, chars.skills.E?.ap?.toString())
             ?.replace(/\$ecd/g, (chars.skills.E?.cooldown / 100)?.toString())
             ?.replace(/\$eas/g, (chars.skills.E?.atkspd * 100)?.toString())
+            ?.replace(/\$ear/g, (chars.skills.E?.armor)?.toString())
             
             ?.replace(/\$sdu/g, (chars.skills.Shift?.duration / 100)?.toString())
             ?.replace(/\$sd/g, chars.skills.Shift?.damage?.toString())
@@ -143,6 +145,7 @@ function updateSelected() {
             ?.replace(/\$scd/g, (chars.skills.Shift?.cooldown / 100)?.toString())
             ?.replace(/\$sas/g, (chars.skills.Shift?.atkspd * 100)?.toString())
             ?.replace(/\$sra/g, (chars.skills.Shift?.range)?.toString())
+            ?.replace(/\$sar/g, (chars.skills.Shift?.armor)?.toString())
             
             ?.replace(/\$wdu/g, (chars.skills.Wheel?.duration / 100)?.toString())
             ?.replace(/\$wd/g, chars.skills.Wheel?.damage?.toString())
@@ -150,16 +153,17 @@ function updateSelected() {
             ?.replace(/\$wap/g, chars.skills.Wheel?.ap?.toString())
             ?.replace(/\$wcd/g, (chars.skills.Wheel?.cooldown / 100)?.toString())
             ?.replace(/\$was/g, (chars.skills.Wheel?.atkspd * 100)?.toString())
-
-            ?.replace("물리 피해", `<b style="color: rgb(243, 117, 0)">물리 피해</b>`)
-            ?.replace("공격력", `<b style="color: rgb(243, 117, 0)">공격력</b>`)
-            ?.replace("마법 피해", `<b style="color: rgb(0, 162, 255)">마법 피해</b>`)
-            ?.replace("주문력", `<b style="color: rgb(0, 162, 255)">주문력</b>`)
-            ?.replace("이동 속도", `<b style="color: gray">이동 속도</b>`)
-            ?.replace("체력", `<b style="color: rgb(0, 190, 0)">체력</b>`)
-            ?.replace("방어력", `<b style="color: rgb(255, 190, 0)">방어력</b>`)
-            ?.replace("마법 저항력", `<b style="color: rgb(0, 190, 255)">마법 저항력</b>`)
-            ?.replace("사거리", `<b>사거리</b>`)
+            ?.replace(/\$war/g, (chars.skills.Wheel?.armor)?.toString())
+            
+            ?.replace(/물리 피해/g, `<b style="color: rgb(243, 117, 0)">물리 피해</b>`)
+            ?.replace(/공격력/g, `<b style="color: rgb(243, 117, 0)">공격력</b>`)
+            ?.replace(/마법 피해/g, `<b style="color: rgb(0, 162, 255)">마법 피해</b>`)
+            ?.replace(/주문력/g, `<b style="color: rgb(0, 162, 255)">주문력</b>`)
+            ?.replace(/이동 속도/g, `<b style="color: gray">이동 속도</b>`)
+            ?.replace(/체력/g, `<b style="color: rgb(0, 190, 0)">체력</b>`)
+            ?.replace(/방어력/g, `<b style="color: rgb(255, 190, 0)">방어력</b>`)
+            ?.replace(/마법 저항력/g, `<b style="color: rgb(0, 190, 255)">마법 저항력</b>`)
+            ?.replace(/사거리/g, `<b>사거리</b>`)
     }
     if (chars) {
 

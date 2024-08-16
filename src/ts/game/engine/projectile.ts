@@ -100,7 +100,6 @@ class Projectile {
                         // damageAlert(this.damageType, damageCoefficient[this.damageType] * criticalDamage, true, type == 'blue' ? 'red' : 'blue');
                     } else {
                         players[team].hp[1] -= this.damage * damageCoefficient[this.damageType];
-                        
                         totalDamage[this.damageType] += this.damage * damageCoefficient[this.damageType];
                         // damageAlert(this.damageType, this.damage * damageCoefficient[this.damageType], false, type == 'blue' ? 'red' : 'blue');
                     };
@@ -143,7 +142,7 @@ class Projectile {
                             // damageAlert("magic", e.extra[0] * damageCoefficient.magic, false, type == 'blue' ? 'red' : 'blue');
                         }
                         if (e?.name[1] == '3_rapid_firecannon') {
-                            let alphaDamage = playerDistance / 400
+                            let alphaDamage = playerDistance / 4000
 
                             if (alphaDamage > findItem('3_rapid_firecannon').body.extra[0])  alphaDamage = findItem('3_rapid_firecannon').body.extra[0]
 

@@ -127,7 +127,7 @@ var Projectile = /** @class */ (function () {
                             // damageAlert("magic", e.extra[0] * damageCoefficient.magic, false, type == 'blue' ? 'red' : 'blue');
                         }
                         if ((e === null || e === void 0 ? void 0 : e.name[1]) == '3_rapid_firecannon') {
-                            var alphaDamage = playerDistance / 400;
+                            var alphaDamage = playerDistance / 4000;
                             if (alphaDamage > findItem('3_rapid_firecannon').body.extra[0])
                                 alphaDamage = findItem('3_rapid_firecannon').body.extra[0];
                             players[team].hp[1] -= _this.damage * alphaDamage * damageCoefficient_1.melee;

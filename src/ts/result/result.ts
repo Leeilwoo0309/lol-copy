@@ -20,6 +20,7 @@ const charKr = {
     samira: "사미라",
     vayne: "베인",
     exponent: "엑스포넨트",
+    graves: "그레이브즈"
 }
 
 if (result == 'win') {

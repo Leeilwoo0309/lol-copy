@@ -231,18 +231,35 @@ setInterval(() => {
         players[team].status.invisible = false;
         
         if (players[team].specINIT.defaultAAType == "long") {
-            projectiles[team].push(
-                new ProjectileBuilder()
-                    .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
-                    .setCritical(players[team].spec.criticP, players[team].spec.criticD)
-                    .setDegree(angle)
-                    .setReach(players[team].spec.range)
-                    .setSpeed(players[team].spec.projectileSpd)
-                    .setSize({height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1]})
-                    .onHit(`${ char[team] } aa`)
-                    .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
-                    .build(team)
-            );
+            if (char[team] == "graves") {
+                for (let i = -1; i < 2; i++) {
+                    projectiles[team].push(
+                        new ProjectileBuilder()
+                            .setDamage((players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage) * 0.7, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
+                            .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                            .setDegree(angle + i * 0.2)
+                            .setReach(players[team].spec.range)
+                            .setSpeed(players[team].spec.projectileSpd)
+                            .setSize({height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1]})
+                            // .setStyle('gray')
+                            .onHit(`graves aa`)
+                            .build(team)
+                        );
+                }
+            } else {
+                projectiles[team].push(
+                    new ProjectileBuilder()
+                        .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
+                        .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                        .setDegree(angle)
+                        .setReach(players[team].spec.range)
+                        .setSpeed(players[team].spec.projectileSpd)
+                        .setSize({height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1]})
+                        .onHit(`${ char[team] } aa`)
+                        .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
+                        .build(team)
+                );
+            }
         } else if (players[team].specINIT.defaultAAType === "short") {
             nonProjectiles[team].push(
                 new NonProjectileBuilder()

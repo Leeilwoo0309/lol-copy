@@ -1,0 +1,60 @@
+{
+    "cn": "graves",
+    "name": "그레이브즈",
+    "defaultSpec": {
+        "ad": 13,
+        "ap": 0,
+        "atkspd": 1.3,
+        "armor": 29,
+        "ignoreArmor": 0,
+        "magicRegist": 26,
+        "skillHaste": 0,
+        "range": 320,
+        "projectileSpd": 13,
+        "moveSpd": 5,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 485,
+        "healthBoost": 1.8,
+        "vamp": 0,
+        "projectileSize": [25, 25],
+        "damageType": "melee",
+        "defaultAAType": "long"
+    },
+    "skills": {
+        "passive": {
+        },
+        "Q": {
+            "cooldown": 800,
+            "damage": 12,
+            "type": "melee",
+            "ad": 0.7,
+            "atkspd": 300
+        },
+        "E": {
+            "cooldown": 1200,
+            "moveSpd": 0.7,
+            "duration": 400
+        },
+        "Shift": {
+            "cooldown": 1750,
+            "duration": 300,
+            "armor": 30,
+            "range": 40
+        },
+        "Wheel": {
+            "cooldown": 3500,
+            "damage": 40,
+            "ad": 0.6,
+            "armor": 16,
+            "type": "melee"
+        }
+    },
+    "des": {
+        "passive": "기본 공격이 분산되는 세 발이 됩니다. 대신 기본 공격의 피해량이 30% 감소합니다.",
+        "Q": "마우스 방향으로 산탄총을 빠르게 2회 발사합니다.<br/>(피해량: $qd + 공격력 * $qad, 재사용 대기시간: $qcd초)",
+        "E": "$edu초동안 이동 속도가 증가합니다.<br/>(이동 속도 증가량: $emv 재사용 대기시간: $ecd초)",
+        "Shift": "마우스 방향으로 돌진하여 $sdu초 동안 방어력과 마법 저항력을 얻습니다.<br/>(방어력/마법 저항력 증가량: $sar, 재사용 대기시간: $scd초)",
+        "Wheel": "모든 방향으로 탄약을 총 $war개 발사합니다.<br/>(피해량: $wd + 공격력 * $wad, 재사용 대기시간: $wcd초)"
+    }
+}
