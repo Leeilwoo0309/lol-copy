@@ -24,7 +24,7 @@
     "skills": {
         "passive": {
             "damage": 15,
-            "ap": 0.06
+            "ap": 0.02
         },
         "Q": {
             "cooldown": 300,

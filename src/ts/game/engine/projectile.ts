@@ -169,8 +169,8 @@ class Projectile {
 
                         }
                         if (e?.name[1] == '3_shadowflame' && this.damageType == 'magic' && isCritical) {
-                            players[team].hp[1] -= this.damage * players[getEnemyTeam()].spec.criticD * damageCoefficient.magic;
-                            totalDamage.magic += this.damage * players[getEnemyTeam()].spec.criticD * damageCoefficient.magic;
+                            players[team].hp[1] -= this.damage * criticalDamage * damageCoefficient.magic;
+                            totalDamage.magic += this.damage * criticalDamage * damageCoefficient.magic;
                         }
 
                     });

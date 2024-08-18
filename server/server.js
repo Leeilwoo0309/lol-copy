@@ -152,7 +152,7 @@ app.get('/addPlay', async (req, res) => {
 
 app.get('/get/char/:name', async (req, res) => {
     const charName = req.params.name;
-    const charList = ["sniper", "ezreal", "samira", "vayne", "exponent"];
+    const charList = ["sniper", "ezreal", "samira", "vayne", "exponent", "graves"];
 
     const db = await open({
         filename: './db/playdata.db',
@@ -180,6 +180,16 @@ app.get('/get/char/:name', async (req, res) => {
         return res.send(data);
     }
 });
+
+app.get('/get/image/:name', (req, res) => {
+    const type = req.params.name;
+
+    if (type == 'item') {
+        const itemName = req.query.item;
+
+        return res.sendFile(`C:\\Users\\leeil\\OneDrive\\바탕 화면\\loljjapr\\public\\assets\\items\\${itemName}.png`);
+    }
+})
 
 app.listen(PORT.api, () => {
     console.log(`API server is running in: http://localhost:${ PORT.api }`);

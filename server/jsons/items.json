@@ -14,6 +14,10 @@
         "extra": [], "enable": false
     },
     {
+        "name": ["도란의 반지", "0_doran_ring"], "price": 400,
+        "ability": { "ap": 15, "health": 40 }, "enable": true
+    },
+    {
         "name": ["도란의 방패", "0_doran_shield"], "price": 400,
         "ability": { "healthBoost": 200, "health": 110 }, "enable": true
     },
@@ -41,9 +45,19 @@
         "ability": { "moveSpd": 1, "skillHaste": 15 }, "enable": true
     },
     {
-        "name": ["광전사의 군화", "b_2atkspd"], "price": 1100, "grade": "boots",
+        "name": ["광전사의 군화", "b_2atkspd"], "price": 1100,
         "lower": ["b_1", "1_short_sword"],
         "ability": { "moveSpd": 1, "atkspd": 70 }, "enable": true
+    },
+    {
+        "name": ["판금 장화", "b_2armor"], "price": 1100,
+        "lower": ["b_1", "1_cloth_armor"],
+        "ability": { "moveSpd": 1, "armor": 35 }, "enable": true
+    },
+    {
+        "name": ["헤르메스의 발걸음", "b_2magic_regis"], "price": 1100, "grade": "boots",
+        "lower": ["b_1", "1_mantle"],
+        "ability": { "moveSpd": 1, "magicRegist": 30 }, "enable": true
     },
     {
         "name": ["빛나는 티끌", "1_glowing_mote"], "price": 250,

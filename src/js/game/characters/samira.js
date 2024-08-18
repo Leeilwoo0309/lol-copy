@@ -77,7 +77,7 @@ function makeSamira() {
         ;
         var dash = setInterval(function () {
             dashLength += 1;
-            if (!checkCollideSamira(absolutePosition[team], angle) && dashLength < skillInfo.shift.range) {
+            if (!checkCollideSamira(absolutePosition[team], angle, dash) && dashLength < skillInfo.shift.range) {
                 absolutePosition[team].x -= 5 * Math.cos(angle);
                 absolutePosition[team].y -= 5 * Math.sin(angle);
                 var rect1 = players[team].selector.getBoundingClientRect();
@@ -189,16 +189,20 @@ function makeSamira() {
             }, 20);
         }
     };
-    function checkCollideSamira(position, angle) {
+    function checkCollideSamira(position, angle, dash) {
         var collideChecker = document.querySelector('.checker-dash.player');
         var ret = false;
         collideChecker.style.position = 'absolute';
         collideChecker.style.backgroundColor = 'green';
-        collideChecker.style.left = "".concat(position.x - cameraPosition.x - 6 * Math.cos(angle), "px");
-        collideChecker.style.top = "".concat(-position.y - cameraPosition.y + 14 * Math.sin(angle), "px");
+        collideChecker.style.left = "".concat(absolutePosition[team].x - 35 - cameraPosition.x - 5 * Math.cos(angle), "px");
+        collideChecker.style.top = "".concat(-absolutePosition[team].y - 35 - cameraPosition.y + 5 * Math.sin(angle), "px");
+        collideChecker.style.height = '80px';
+        collideChecker.style.width = '80px';
         gameObjects.forEach(function (e, i) {
             if (e.isCollide(collideChecker) && e.extra.canCollide) {
                 ret = true;
+                clearInterval(dash);
+                return;
             }
         });
         return ret;

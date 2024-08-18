@@ -32,7 +32,8 @@
             "cooldown": 500,
             "type": "melee",
             "damage": 15,
-            "ad": 1.2
+            "ad": 1.2,
+            "ap": 0.15
         },
         "E": {
             "cooldown": 800,
@@ -50,7 +51,7 @@
             "type": "melee",
             "damage": 20,
             "ad": 1.4,
-            "ap": 0.4
+            "ap": 0.9
         }
     },
     "des": {

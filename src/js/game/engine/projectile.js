@@ -75,14 +75,14 @@ var Projectile = /** @class */ (function () {
                         magic: (1 / (1 + players[team].spec.magicRegist * 0.01)),
                         true: 1
                     };
-                    var criticalDamage = _this.damage * (1.75 + _this.critical[1] / 100);
+                    var criticalDamage_1 = _this.damage * (1.75 + _this.critical[1] / 100);
                     _this.isCollide = true;
                     if (!_this.canPass)
                         _this.isArrive = false;
                     // 크리티컬 데미지
                     if (isCritical) {
-                        players[team].hp[1] -= criticalDamage * damageCoefficient_1[_this.damageType];
-                        totalDamage[_this.damageType] += criticalDamage * damageCoefficient_1[_this.damageType];
+                        players[team].hp[1] -= criticalDamage_1 * damageCoefficient_1[_this.damageType];
+                        totalDamage[_this.damageType] += criticalDamage_1 * damageCoefficient_1[_this.damageType];
                         // damageAlert(this.damageType, damageCoefficient[this.damageType] * criticalDamage, true, type == 'blue' ? 'red' : 'blue');
                     }
                     else {
@@ -151,8 +151,8 @@ var Projectile = /** @class */ (function () {
                             }
                         }
                         if ((e === null || e === void 0 ? void 0 : e.name[1]) == '3_shadowflame' && _this.damageType == 'magic' && isCritical) {
-                            players[team].hp[1] -= _this.damage * players[getEnemyTeam()].spec.criticD * damageCoefficient_1.magic;
-                            totalDamage.magic += _this.damage * players[getEnemyTeam()].spec.criticD * damageCoefficient_1.magic;
+                            players[team].hp[1] -= _this.damage * criticalDamage_1 * damageCoefficient_1.magic;
+                            totalDamage.magic += _this.damage * criticalDamage_1 * damageCoefficient_1.magic;
                         }
                     });
                     if (((_a = players[team].marker) === null || _a === void 0 ? void 0 : _a.ezreal) == true) {

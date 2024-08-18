@@ -14,7 +14,7 @@
         "moveSpd": 4.75,
         "criticD": 0,
         "criticP": 0,
-        "health": 320,
+        "health": 280,
         "healthBoost": 3,
         "vamp": 0,
         "projectileSize": [20, 20],
@@ -24,24 +24,25 @@
     "skills": {
         "passive": {
             "cooldown": 2000,
-            "ad": 4,
+            "ad": 2,
             "ap": 5,
-            "health": 30,
-            "armor": 2.1,
-            "range": 15,
-            "magicRegist": 1.5
+            "health": 20,
+            "armor": 1.4,
+            "range": 10,
+            "magicRegist": 1.2
         },
         "Q": {
             "cooldown": 900,
             "type": "magic",
             "damage": 10,
             "ad": 0.6,
-            "ap": 0.5
+            "ap": 1
         },
         "E": {
             "cooldown": 1500,
+            "des": "burf-heal",
             "damage": 30,
-            "ap": 1.2,
+            "ap": 1.7,
             "duration": 200,
             "moveSpd": 0.75
         },
