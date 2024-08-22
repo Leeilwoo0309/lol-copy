@@ -48,6 +48,8 @@ function makeSniper() {
     }
     
     sniper.skillWheel = () => {
+        if (deathCoolDown[getEnemyTeam()] > 0) return;
+        
         sniper.cooldown.wheel = sniper.cooldownINIT.wheel;
         const angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
 

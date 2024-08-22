@@ -45,6 +45,7 @@ function makeVayne() {
     }
     
     vayne.skillLShift = () => {
+        if (deathCoolDown[getEnemyTeam()] > 0) return;
         if (playerDistance > 400) return;
         vayne.cooldown.shift = vayne.cooldownINIT.shift;
 

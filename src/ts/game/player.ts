@@ -137,13 +137,14 @@ function animation(_team: 'red' | 'blue') {
     }
 }
 
-function damageAlert(type: 'melee' | 'magic' | 'true', dmg: number, isCritical: boolean, target: 'blue' | 'red') {
+function damageAlert(type: 'melee' | 'magic' | 'true' | 'heal', dmg: number, isCritical: boolean, target: 'blue' | 'red') {
     const parent: HTMLDivElement = document.querySelector(`.${target}-d`);
     const alerter: HTMLDivElement = document.createElement('div');
     const textColor = {
         melee: 'rgb(227, 106, 14)',
         magic: 'rgb(14, 124, 227)',
-        true: 'white'
+        true: 'white',
+        heal: 'rgb(0, 180, 0)'
     }
 
     if (Math.floor(dmg) == 0) return;
@@ -168,7 +169,7 @@ function damageAlert(type: 'melee' | 'magic' | 'true', dmg: number, isCritical: 
 
     if (dmg == 9999 && type == 'true' && target != team) {
         players[team].gold += findItem('3_collector').body.extra[2];
-        console.log(`${findItem('3_collector').body.extra[2]}원 들어옴ㅅㅅ`);
+        // console.log(`${findItem('3_collector').body.extra[2]}원 들어옴ㅅㅅ`);
     } else if (dmg == 9999 && type == 'true' && target == team) {
         death();
         socket.send(JSON.stringify({body: {msg: "death"}}));

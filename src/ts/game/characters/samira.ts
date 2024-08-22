@@ -88,6 +88,7 @@ function makeSamira() {
     
     samira.skillLShift = () => {
         if (playerDistance >= skillInfo.shift.range * 5) return;
+        if (deathCoolDown[getEnemyTeam()] > 0) return;
         samira.cooldown.shift = samira.cooldownINIT.shift;
 
         const angle = Math.atan2(absolutePosition[team].y - absolutePosition[getEnemyTeam()].y, absolutePosition[team].x - absolutePosition[getEnemyTeam()].x);
@@ -182,6 +183,7 @@ function makeSamira() {
                 const angel = Math.atan2(absolutePosition[team].y - absolutePosition[getEnemyTeam()].y, absolutePosition[team].x - absolutePosition[getEnemyTeam()].x)
 
                 if (playerDistance <= skillInfo.wheel.range * 1.5) {
+                    if (deathCoolDown[getEnemyTeam()] > 0) return;
                     projectiles[team].push(
                         new ProjectileBuilder()
                             .setDamage(skillInfo.wheel.damage + players[team].spec.ad * skillInfo.wheel.ad, skillInfo.wheel.type)

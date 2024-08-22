@@ -131,6 +131,9 @@ var char = { blue: undefined, red: undefined };
 var charClass = undefined;
 var readyStatus = { blue: false, red: false };
 var playerDistance = 0;
+var skillHit = {
+    vampire: false,
+};
 //@ts-ignore
 var team = params.get('team');
 //@ts-ignore
@@ -183,8 +186,8 @@ var keyDown = {
 var absolutePosition = {
     // blue: {x: 4100, y: -430},
     blue: { x: 200, y: -430 },
-    red: { x: 4170, y: -430 }
-    // red : {x: 800, y: -430}
+    // red : {x: 4170, y: -430}
+    red: { x: 800, y: -430 }
 };
 var absolutePointerPosition = { x: 0, y: 0 };
 var cameraPosition = { x: 0, y: 0 };

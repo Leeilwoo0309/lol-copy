@@ -137,6 +137,8 @@ setInterval(() => {
     if (hasItem('3_decap')) players[team].spec.ap *= findItem('3_decap').body.extra[0];
     if (hasItem('3_riftmaker')) players[team].spec.ap += Math.floor(players[team].spec.health * findItem('3_riftmaker').body.extra[0] / 100);
 
+    if (char[team] === 'vampire') players[team].spec.vamp = Math.floor(players[team].spec.vamp * skillInfo.passive.vamp);
+
     players[team].spec.atkspd = Math.floor(players[team].spec.atkspd * 100) / 100;
 
     document.querySelector('#now-hp').innerHTML = `${ Math.floor(players[team].hp[1]) } / ${ players[team].hp[0] }`;

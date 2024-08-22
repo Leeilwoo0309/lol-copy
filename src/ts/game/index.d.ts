@@ -168,5 +168,6 @@ type ChampionNames =
     "assassin" |
     "vampire" |
     "teacher" |
-    "graves"
+    "graves" |
+    "vampire"
     ;

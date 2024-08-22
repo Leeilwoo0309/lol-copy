@@ -50,7 +50,7 @@ var Projectile = /** @class */ (function () {
             _bullet.style.backgroundColor = "".concat(this.style.color);
         _main.appendChild(_bullet);
         var update = setInterval(function () {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
             // clearInterval(update);
             _this._movedDistance += _this.speed;
             var enemyTar = _this.targetEnemy[1] == 'blue' ? 'red' : 'blue';
@@ -79,6 +79,8 @@ var Projectile = /** @class */ (function () {
                     _this.isCollide = true;
                     if (!_this.canPass)
                         _this.isArrive = false;
+                    if (skillHit.vampire == true)
+                        return;
                     // 크리티컬 데미지
                     if (isCritical) {
                         players[team].hp[1] -= criticalDamage_1 * damageCoefficient_1[_this.damageType];
@@ -127,7 +129,8 @@ var Projectile = /** @class */ (function () {
                             // damageAlert("magic", e.extra[0] * damageCoefficient.magic, false, type == 'blue' ? 'red' : 'blue');
                         }
                         if ((e === null || e === void 0 ? void 0 : e.name[1]) == '3_rapid_firecannon') {
-                            var alphaDamage = playerDistance / 4000;
+                            var alphaDamage = playerDistance / findItem('3_rapid_firecannon').body.extra[1] / 2; // 1000에서 1.2가 나오도록
+                            console.log(alphaDamage, playerDistance);
                             if (alphaDamage > findItem('3_rapid_firecannon').body.extra[0])
                                 alphaDamage = findItem('3_rapid_firecannon').body.extra[0];
                             players[team].hp[1] -= _this.damage * alphaDamage * damageCoefficient_1.melee;
@@ -233,7 +236,13 @@ var Projectile = /** @class */ (function () {
                             }, enemySkillInfo.shift.duration * 10);
                         }
                     }
-                    if ((_h = _this.onhit) === null || _h === void 0 ? void 0 : _h.includes('skill')) {
+                    else if ((_h = _this.onhit) === null || _h === void 0 ? void 0 : _h.includes('vampire skill e')) {
+                        skillHit.vampire = true;
+                        setTimeout(function () {
+                            skillHit.vampire = false;
+                        }, 100);
+                    }
+                    if ((_j = _this.onhit) === null || _j === void 0 ? void 0 : _j.includes('skill')) {
                         socket.send(JSON.stringify({ body: { msg: "onhit", target: 'enemy', type: "skill" } }));
                     }
                     else {
@@ -261,14 +270,27 @@ var Projectile = /** @class */ (function () {
                             ]
                         }
                     }));
+                    socket.send(JSON.stringify({
+                        body: {
+                            msg: 'damageAlert',
+                            info: [
+                                "heal",
+                                (totalDamage.melee + totalDamage.magic) * players[type].spec.vamp / 100,
+                                false,
+                                type
+                            ]
+                        }
+                    }));
                     damageAlert("melee", totalDamage.melee, isCritical, type == 'blue' ? 'red' : 'blue');
                     damageAlert("magic", totalDamage.magic, isCritical, type == 'blue' ? 'red' : 'blue');
+                    damageAlert("heal", (totalDamage.melee + totalDamage.magic) * players[type].spec.vamp / 100, false, type);
                 }
                 var nexusIndex = { blue: [7, 8], red: [9, 10] };
                 if (_this.isCollideWithNexus(gameObjects[nexusIndex[team][1]].objSelector, _bullet) && gameObjects[nexusIndex[team][0]].isCollide(players[getEnemyTeam()].selector) && !_this.isCollide) {
                     if (nexusHp[team][1] <= 0)
                         return;
                     nexusHp[team][1] -= _this.damage;
+                    nexusHp[team][1] -= players[getEnemyTeam()].spec.ap * 0.7;
                     _this.isCollide = true;
                     socket.send(JSON.stringify({ body: { msg: 'onhit', target: 'nexus' } }));
                 }
@@ -294,7 +316,7 @@ var Projectile = /** @class */ (function () {
                         onhitCount[type] += 1;
                     if (!_this.canPass)
                         _this.isArrive = false;
-                    if (char[team] == 'ezreal' && ((_j = _this.onhit) === null || _j === void 0 ? void 0 : _j.includes('skill'))) {
+                    if (char[team] == 'ezreal' && ((_k = _this.onhit) === null || _k === void 0 ? void 0 : _k.includes('skill'))) {
                         _this.isCollide = true;
                         charClass.cooldown.q -= skillInfo.passive.skillHaste;
                         charClass.cooldown.e -= skillInfo.passive.skillHaste;

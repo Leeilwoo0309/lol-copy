@@ -176,6 +176,7 @@ async function getData() {
     makeExponent();
     makeAssassin();
     makeGraves();
+    makeVampire();
 
     if (char[team] == 'ezreal') {
         charClass = ezreal;
@@ -191,6 +192,8 @@ async function getData() {
         charClass = assassin;
     } else if (char[team] == 'graves') {
         charClass = graves;
+    } else if (char[team] == 'vampire') {
+        charClass = vampire;
     }
 
     let fetchedItemData: ItemData[] = await getItemInfo();

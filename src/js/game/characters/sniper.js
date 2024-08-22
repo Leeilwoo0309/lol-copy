@@ -34,6 +34,8 @@ function makeSniper() {
         }, skillInfo.shift.duration * 10 + skillInfo.shift.ap * players[team].spec.ap * 1000);
     };
     sniper.skillWheel = function () {
+        if (deathCoolDown[getEnemyTeam()] > 0)
+            return;
         sniper.cooldown.wheel = sniper.cooldownINIT.wheel;
         var angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
         atkWait += 100;

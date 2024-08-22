@@ -7,8 +7,14 @@ socket.onopen = () => {
     ));
     readyStatus[team] = true;
 
+    socket.send(JSON.stringify({body: {msg: "char", char: char[team]}}));
+
     socket.onmessage = (event) => {
         const blob = event.data;
+        if (!readyStatus[getEnemyTeam()]) {
+            readyStatus[getEnemyTeam()] = true;
+            socket.send(JSON.stringify({body: {msg: "char", char: char[team]}}));
+        }
 
         const reader = new FileReader();
         reader.onload = function() {
@@ -73,6 +79,13 @@ socket.onopen = () => {
                         samiraWheelMotion(getEnemyTeam());
                     } else if (message == 'samiraOnhit') {
                         currentAttackType = sentJson.body.damageType;
+                    } else if (message == 'vampire-q') {
+                        let damage = (enemySkillInfo.q.damage + players[getEnemyTeam()].spec.ap * enemySkillInfo.q.ap );
+                        
+                        if (sentJson.body.critic) damage *= players[getEnemyTeam()].spec.criticD / 100 + 1.75
+                        players[team].hp[1] -= damage * (1 / (1 + players[team].spec.magicRegist * 0.01)) * sentJson.body.wd;
+
+                        damageAlert('magic', damage * (1 / (1 + players[team].spec.magicRegist * 0.01)) * sentJson.body.wd, sentJson.body.critic, team);
                     } else if (message == 'collideDash') {
                         let dashDamage: number = enemySkillInfo.shift.damage;
 

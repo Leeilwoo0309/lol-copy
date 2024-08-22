@@ -133,6 +133,9 @@ let char: {blue: ChampionNames, red: ChampionNames} = {blue: undefined, red: und
 let charClass: Char = undefined;
 let readyStatus = {blue: false, red: false};
 let playerDistance: number = 0;
+let skillHit = {
+    vampire: false,
+}
 //@ts-ignore
 const team: 'red' | 'blue' = params.get('team');
 //@ts-ignore
@@ -186,8 +189,8 @@ let keyDown: KeyDown = {
 let absolutePosition: AbsolutePosition = {
     // blue: {x: 4100, y: -430},
     blue: {x: 200, y: -430},
-    red : {x: 4170, y: -430}
-    // red : {x: 800, y: -430}
+    // red : {x: 4170, y: -430}
+    red : {x: 800, y: -430}
 }
 let absolutePointerPosition: Position = {x: 0, y: 0};
 let cameraPosition: Position = { x: 0, y: 0 };

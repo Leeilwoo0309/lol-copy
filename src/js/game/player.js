@@ -138,7 +138,8 @@ function damageAlert(type, dmg, isCritical, target) {
     var textColor = {
         melee: 'rgb(227, 106, 14)',
         magic: 'rgb(14, 124, 227)',
-        true: 'white'
+        true: 'white',
+        heal: 'rgb(0, 180, 0)'
     };
     if (Math.floor(dmg) == 0)
         return;
@@ -160,7 +161,7 @@ function damageAlert(type, dmg, isCritical, target) {
     }
     if (dmg == 9999 && type == 'true' && target != team) {
         players[team].gold += findItem('3_collector').body.extra[2];
-        console.log("".concat(findItem('3_collector').body.extra[2], "\uC6D0 \uB4E4\uC5B4\uC634\u3145\u3145"));
+        // console.log(`${findItem('3_collector').body.extra[2]}원 들어옴ㅅㅅ`);
     }
     else if (dmg == 9999 && type == 'true' && target == team) {
         death();

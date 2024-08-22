@@ -92,6 +92,8 @@ class Projectile {
                     
                     if (!this.canPass) this.isArrive = false;
 
+                    if (skillHit.vampire == true) return;
+
                     // 크리티컬 데미지
                     if (isCritical) {
                         players[team].hp[1] -= criticalDamage * damageCoefficient[this.damageType];
@@ -142,9 +144,11 @@ class Projectile {
                             // damageAlert("magic", e.extra[0] * damageCoefficient.magic, false, type == 'blue' ? 'red' : 'blue');
                         }
                         if (e?.name[1] == '3_rapid_firecannon') {
-                            let alphaDamage = playerDistance / 4000
+                            let alphaDamage = playerDistance / findItem('3_rapid_firecannon').body.extra[1] / 2// 1000에서 1.2가 나오도록
 
-                            if (alphaDamage > findItem('3_rapid_firecannon').body.extra[0])  alphaDamage = findItem('3_rapid_firecannon').body.extra[0]
+                            console.log(alphaDamage, playerDistance);
+
+                            if (alphaDamage > findItem('3_rapid_firecannon').body.extra[0]) alphaDamage = findItem('3_rapid_firecannon').body.extra[0]
 
                             players[team].hp[1] -= this.damage * alphaDamage * damageCoefficient.melee;
                             totalDamage.melee += this.damage * alphaDamage * damageCoefficient.melee;
@@ -262,6 +266,12 @@ class Projectile {
                                 canMove = true;
                             }, enemySkillInfo.shift.duration * 10);
                         }
+                    } else if (this.onhit?.includes('vampire skill e')) {
+                        skillHit.vampire = true;
+                        
+                        setTimeout(() => {
+                            skillHit.vampire = false;
+                        }, 100);
                     }
 
                     if (this.onhit?.includes('skill')) {
@@ -292,8 +302,20 @@ class Projectile {
                             ]
                         }
                     }));
+                    socket.send(JSON.stringify({
+                        body: {
+                            msg: 'damageAlert',
+                            info: [
+                                "heal",
+                                (totalDamage.melee + totalDamage.magic) * players[type].spec.vamp / 100 ,
+                                false,
+                                type
+                            ]
+                        }
+                    }));
                     damageAlert("melee", totalDamage.melee, isCritical, type == 'blue' ? 'red' : 'blue');
                     damageAlert("magic", totalDamage.magic, isCritical, type == 'blue' ? 'red' : 'blue');
+                    damageAlert("heal", (totalDamage.melee + totalDamage.magic) * players[type].spec.vamp / 100, false, type);
                 }
 
                 let nexusIndex = {blue: [7, 8], red: [9, 10]};
@@ -302,6 +324,7 @@ class Projectile {
                     if (nexusHp[team][1] <= 0) return;
                     
                     nexusHp[team][1] -= this.damage;
+                    nexusHp[team][1] -= players[getEnemyTeam()].spec.ap * 0.7;
                     this.isCollide = true;
 
                     socket.send(JSON.stringify({body: {msg: 'onhit', target: 'nexus'}}));
