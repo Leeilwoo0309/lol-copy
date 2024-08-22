@@ -28,8 +28,8 @@
         },
         "Q": {
             "cooldown": 500,
-            "damage": 8,
-            "ad": 0.8
+            "damage": 3,
+            "ad": 0.6
         },
         "E": {
             "cooldown": 1500,
@@ -45,7 +45,7 @@
         "Wheel": {
             "cooldown": 7500,
             "damage": 10,
-            "ad": 1.7,
+            "ad": 1.4,
             "type": "melee"
         }
     },

@@ -2,43 +2,56 @@
     "cn": "vampire",
     "name": "블라디미르",
     "defaultSpec": {
-        "ad": 3,
+        "ad": 8,
         "ap": 0,
-        "atkspd": 0.75,
-        "armor": 27,
-        "magicRegist": 30,
+        "atkspd": 0.8,
+        "armor": 26,
+        "ignoreArmor": 0,
+        "magicRegist": 24,
         "skillHaste": 0,
-        "range": 300,
-        "projectileSpd": 7,
+        "range": 400,
+        "projectileSpd": 16,
         "moveSpd": 5,
         "criticD": 0,
         "criticP": 0,
-        "health": 125,
-        "healthBoost": 3,
-        "vamp": 0,
+        "health": 450,
+        "healthBoost": 0.7,
+        "vamp": 5,
+        "projectileSize": [20, 20],
+        "damageType": "melee",
         "defaultAAType": "long"
     },
     "skills": {
         "passive": {
+            "vamp": 1.2
         },
         "Q": {
-            "cooldown": 500
+            "cooldown": 400,
+            "damage": 10,
+            "ap": 1.1,
+            "vamp": 0.9
         },
         "E": {
-            "cooldown": 1500
+            "cooldown": 1500,
+            "damage": 15,
+            "ap": 1.7
         },
         "Shift": {
-            "cooldown": 1500
+            "cooldown": 1500,
+            "skillHaste": 0.75
         },
         "Wheel": {
-            "cooldown": 7500
+            "cooldown": 7500,
+            "damage": 27,
+            "ap": 0.7,
+            "duration": 400
         }
     },
     "des": {
-        "passive": "기본 공격이나 스킬 적중 시, $pdu초 동안 이동 속도가 $pmv 증가합니다.",
-        "Q": "다음 적중하는 기본 공격에 추가 물리 피해를 입힙니다. <br/>(피해량: $qd + 공격력 * $qad, 재사용 대기시간: $qcd초)",
-        "E": "사용 시 공격속도가 $edu초 동안 $eas%가 추가로 증가합니다. <br/>(공격속도 증가량: $eas% + 주문력 * $eap, 재사용 대기시간: $ecd초)",
-        "Shift": "사용 시 $sdu초동안 은신 상태가 됩니다. 은신 상태에서는 기본 공격과 스킬을 사용할 수 없습니다. <br/>(은신 시간: 1.5 + 주문력 * $sap, 재사용 대기시간: $scd초)",
-        "Wheel": "적에게 사격을 하여 물리 피해를 입힙니다. <br/>(피해량: $wd + 공격력 * $wad, 재사용 대기시간: $wcd초)"
+        "passive": "모든 흡혈 효과를 20% 더 받습니다.",
+        "Q": "기본 공격 사거리 이내에 있는 상대방의 체력을 흡수하며 마법 피해를 입히고 체력을 회복합니다. <br/>(피해량: $qd + 공격력 * $qap, 재사용 대기시간: $qcd초)",
+        "E": "주변에 투사체를 급류처럼 방출해 마법 피해를 입힙니다 <br/>(피해량: $ed + 주문력 * $eap, 재사용 대기시간: $ecd초)",
+        "Shift": "남은 스킬 재사용 대기시간이 25% 감소합니다. <br/>(재사용 대기시간: $scd초)",
+        "Wheel": "적에게 마법 피해를 입히고 4초간 모든 피해 흡혈이 30% 증가하며 적이 받는 피해가 10% 증가합니다. <br/>(피해량: $wd + 주문력 * $wap, 재사용 대기시간: $wcd초)"
     }
 }

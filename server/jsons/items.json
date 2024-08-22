@@ -220,7 +220,7 @@
         "name": ["고속연사포", "3_rapid_firecannon"], "price": 3000,
         "lower": ["2_recurve_bow", "2_zeal", "1_pickaxe"],
         "ability": { "ad": 20, "criticP": 25, "atkspd": 150 }, "enable": true,
-        "des": "상대방과 거리가 멀수록 더욱 강한 피해를 입힙니다. (최대 피해량: 800의 거리에서 12%의 추가 물리 피해)", "extra": [0.2, 3000, 0, 0]
+        "des": "상대방과 거리가 멀수록 더욱 강한 피해를 입힙니다. (최대 피해량: 800의 거리에서 20%의 추가 물리 피해)", "extra": [0.2, 3200, 0, 0]
     },
     {
         "name": ["불멸의 철갑궁", "3_shieldbow"], "price": 3000,
