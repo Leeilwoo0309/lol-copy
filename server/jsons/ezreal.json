@@ -11,7 +11,7 @@
         "skillHaste": 0,
         "range": 500,
         "projectileSpd": 18,
-        "moveSpd": 5.15,
+        "moveSpd": 3.75,
         "criticD": 0,
         "criticP": 0,
         "health": 420,
@@ -21,9 +21,14 @@
         "damageType": "melee",
         "defaultAAType": "long"
     },
+    "growth": [
+        {"health": 30, "armor": 2, "magicRegist": 2},
+        {"health": 80, "armor": 6, "magicRegist": 6},
+        {"health": 300, "armor": 25, "magicRegist": 25}
+    ],
     "skills": {
         "passive": {
-            "ap": 0.95,
+            "ap": 1,
             "ad": 1.2,
             "skillHaste": 200,
             "damage": 10
@@ -32,8 +37,8 @@
             "cooldown": 500,
             "type": "melee",
             "damage": 15,
-            "ad": 1.2,
-            "ap": 0.15
+            "ad": 1.1,
+            "ap": 0.3
         },
         "E": {
             "cooldown": 800,
@@ -51,7 +56,7 @@
             "type": "melee",
             "damage": 20,
             "ad": 1.4,
-            "ap": 0.9
+            "ap": 0.95
         }
     },
     "des": {

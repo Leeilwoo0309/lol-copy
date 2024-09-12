@@ -59,7 +59,13 @@ const players: Players = {
             mana: 0,
             manaR: 0
         },
-        marker: {},
+        marker: {
+            aphelios: {
+                Calibrum: false,
+                CalibrumWheel: false,
+                Gravitum: false
+            }
+        },
         status: {
             invisible: false,
         },
@@ -114,7 +120,13 @@ const players: Players = {
             mana: 0,
             manaR: 0
         },
-        marker: {},
+        marker: {
+            aphelios: {
+                Calibrum: false,
+                CalibrumWheel: false,
+                Gravitum: false
+            }
+        },
         status: {
             invisible: false,
         },
@@ -131,22 +143,34 @@ const socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 const params = new URLSearchParams(window.location.search);
 let char: {blue: ChampionNames, red: ChampionNames} = {blue: undefined, red: undefined};
 let charClass: Char = undefined;
+let charApehlios: Aphelios = undefined;
 let readyStatus = {blue: false, red: false};
 let playerDistance: number = 0;
 let skillHit = {
     vampire: false,
 }
+let slowTime: number = 0;
+let slowness: number = 0;
 //@ts-ignore
 const team: 'red' | 'blue' = params.get('team');
 //@ts-ignore
 char[team] = params.get('char');
 
-let skillInfo: {passive: SkillAbility, q: SkillAbility, e: SkillAbility, shift: SkillAbility, wheel: SkillAbility} = {
+let skillInfo: {passive: SkillAbility, q: SkillAbility, e: SkillAbility, shift: SkillAbility, wheel: SkillAbility, growth: {health: number, armor: number, magicRegist: number}[]} = {
     passive: { cooldown: 0 },
     q: { cooldown: 0 },
     e: { cooldown: 0 },
     shift: { cooldown: 0 },
-    wheel: { cooldown: 0 }
+    wheel: { cooldown: 0 },
+    growth: [{health: 0, armor: 0, magicRegist: 0}, {health: 0, armor: 0, magicRegist: 0}, {health: 0, armor: 0, magicRegist: 0}]
+};
+let apheliosSkillInfo: {passive: SkillAbility, q: ApheliosQSkillInfo, e: SkillAbility, shift: SkillAbility, wheel: SkillAbility, growth: {health: number, armor: number, magicRegist: number}[]} = {
+    passive: { cooldown: 0 },
+    q: { Calibrum: { cooldown: 0 }, Crescendum: { cooldown: 0 }, Gravitum: { cooldown: 0 }, Infernum: { cooldown: 0 }, Severum: { cooldown: 0 } },
+    e: { cooldown: 0 },
+    shift: { cooldown: 0 },
+    wheel: { cooldown: 0 },
+    growth: [{health: 0, armor: 0, magicRegist: 0}, {health: 0, armor: 0, magicRegist: 0}, {health: 0, armor: 0, magicRegist: 0}]
 };
 let enemySkillInfo: {passive: SkillAbility, q: SkillAbility, e: SkillAbility, shift: SkillAbility, wheel: SkillAbility} = {
     passive: { cooldown: 0 },

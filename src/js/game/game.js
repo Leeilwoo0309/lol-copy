@@ -184,14 +184,23 @@ function getData() {
                     skillInfo.e = fetched.skills.E;
                     skillInfo.shift = fetched.skills.Shift;
                     skillInfo.wheel = fetched.skills.Wheel;
+                    skillInfo.growth = fetched.growth;
+                    if (char[team] === 'aphelios') {
+                        apheliosSkillInfo.q.Calibrum = fetched.skills.Q.Calibrum;
+                        apheliosSkillInfo.q.Severum = fetched.skills.Q.Severum;
+                        apheliosSkillInfo.q.Infernum = fetched.skills.Q.Infernum;
+                        apheliosSkillInfo.q.Gravitum = fetched.skills.Q.Gravitum;
+                        apheliosSkillInfo.q.Crescendum = fetched.skills.Q.Crescendum;
+                        skillInfo.q = fetched.skills.Q.Calibrum;
+                    }
                     return [4 /*yield*/, getCharInfo(char[getEnemyTeam()])];
                 case 2:
                     fetched2 = _b.sent();
+                    enemySkillInfo.wheel = fetched2.skills.Wheel;
                     enemySkillInfo.passive = fetched2.skills.passive;
                     enemySkillInfo.q = fetched2.skills.Q;
                     enemySkillInfo.e = fetched2.skills.E;
                     enemySkillInfo.shift = fetched2.skills.Shift;
-                    enemySkillInfo.wheel = fetched2.skills.Wheel;
                     _a = players[getEnemyTeam()];
                     return [4 /*yield*/, getCharInfo(char[getEnemyTeam()])];
                 case 3:
@@ -206,6 +215,7 @@ function getData() {
                     makeAssassin();
                     makeGraves();
                     makeVampire();
+                    makeAphelios();
                     if (char[team] == 'ezreal') {
                         charClass = ezreal;
                     }
@@ -229,6 +239,9 @@ function getData() {
                     }
                     else if (char[team] == 'vampire') {
                         charClass = vampire;
+                    }
+                    else if (char[team] == 'aphelios') {
+                        charClass = aphelios;
                     }
                     return [4 /*yield*/, getItemInfo()];
                 case 4:

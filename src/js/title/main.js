@@ -41,8 +41,8 @@ var readyBtn = document.querySelector('#ready-btn');
 var _socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 var selected = { ally: undefined, enemy: undefined };
 var chars = undefined;
-var charName = ['teacher', 'sniper', 'ezreal', 'samira', 'vayne', 'exponent', 'graves', 'vampire', 'assassin'];
-var charNameKr = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '베인', '엑스포넨트', '그레이브즈', '블라디미르', '어쌔신'];
+var charName = ['teacher', 'sniper', 'ezreal', 'samira', 'vayne', 'exponent', 'graves', 'vampire', 'aphelios', 'assassin'];
+var charNameKr = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '베인', '엑스포넨트', '그레이브즈', '블라디미르', '아펠리오스', '어쌔신'];
 var readyStatus = [false, false];
 function getCharInfo(name) {
     return __awaiter(this, void 0, void 0, function () {

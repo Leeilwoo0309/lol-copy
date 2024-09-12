@@ -9,9 +9,9 @@
         "ignoreArmor": 0,
         "magicRegist": 17,
         "skillHaste": 0,
-        "range": 315,
+        "range": 345,
         "projectileSpd": 15,
-        "moveSpd": 5.25,
+        "moveSpd": 3.75,
         "criticD": 0,
         "criticP": 0,
         "health": 360,
@@ -21,9 +21,14 @@
         "damageType": "melee",
         "defaultAAType": "long"
     },
+    "growth": [
+        {"health": 12, "armor": 1.3, "magicRegist": 1},
+        {"health": 40, "armor": 4, "magicRegist": 4},
+        {"health": 150, "armor": 15, "magicRegist": 13}
+    ],
     "skills": {
         "passive": {
-            "damage": 15,
+            "damage": 8,
             "ap": 0.02
         },
         "Q": {

@@ -114,6 +114,15 @@ function animation(_team: 'red' | 'blue') {
         players[_team].selector.style.border = ``;
     }
 
+    if (players[_team].marker?.aphelios?.Calibrum ===  true) {
+        players[_team].selector.style.boxShadow = `darkturquoise 0px 0px 10px 5px`;
+    } else if (players[_team].marker?.aphelios?.Gravitum ===  true) {
+        players[_team].selector.style.boxShadow = `purple 0px 0px 10px 5px`;
+    } else if (players[_team].marker?.aphelios?.Gravitum === false && players[_team].marker?.aphelios?.Calibrum === false && char[_team == 'blue' ? 'red' : 'blue'] === 'aphelios') {
+        players[_team].selector.style.boxShadow = ``;
+        players[_team].selector.style.border = ``;
+    }
+
     if (players[_team].status.invisible && _team == team) {
         players[_team].selector.style.opacity = '20%'
     } else if (players[_team].status.invisible && _team !== team) {

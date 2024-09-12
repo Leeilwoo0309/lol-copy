@@ -59,7 +59,13 @@ var players = {
             mana: 0,
             manaR: 0
         },
-        marker: {},
+        marker: {
+            aphelios: {
+                Calibrum: false,
+                CalibrumWheel: false,
+                Gravitum: false
+            }
+        },
         status: {
             invisible: false,
         },
@@ -114,7 +120,13 @@ var players = {
             mana: 0,
             manaR: 0
         },
-        marker: {},
+        marker: {
+            aphelios: {
+                Calibrum: false,
+                CalibrumWheel: false,
+                Gravitum: false
+            }
+        },
         status: {
             invisible: false,
         },
@@ -129,11 +141,14 @@ var socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 var params = new URLSearchParams(window.location.search);
 var char = { blue: undefined, red: undefined };
 var charClass = undefined;
+var charApehlios = undefined;
 var readyStatus = { blue: false, red: false };
 var playerDistance = 0;
 var skillHit = {
     vampire: false,
 };
+var slowTime = 0;
+var slowness = 0;
 //@ts-ignore
 var team = params.get('team');
 //@ts-ignore
@@ -143,7 +158,16 @@ var skillInfo = {
     q: { cooldown: 0 },
     e: { cooldown: 0 },
     shift: { cooldown: 0 },
-    wheel: { cooldown: 0 }
+    wheel: { cooldown: 0 },
+    growth: [{ health: 0, armor: 0, magicRegist: 0 }, { health: 0, armor: 0, magicRegist: 0 }, { health: 0, armor: 0, magicRegist: 0 }]
+};
+var apheliosSkillInfo = {
+    passive: { cooldown: 0 },
+    q: { Calibrum: { cooldown: 0 }, Crescendum: { cooldown: 0 }, Gravitum: { cooldown: 0 }, Infernum: { cooldown: 0 }, Severum: { cooldown: 0 } },
+    e: { cooldown: 0 },
+    shift: { cooldown: 0 },
+    wheel: { cooldown: 0 },
+    growth: [{ health: 0, armor: 0, magicRegist: 0 }, { health: 0, armor: 0, magicRegist: 0 }, { health: 0, armor: 0, magicRegist: 0 }]
 };
 var enemySkillInfo = {
     passive: { cooldown: 0 },

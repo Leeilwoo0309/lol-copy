@@ -93,7 +93,7 @@ function checkCollide(position) {
     return ret;
 }
 function animation(_team) {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
     if (((_a = players[_team].marker) === null || _a === void 0 ? void 0 : _a.ezreal) == true) {
         players[_team].selector.style.boxShadow = "rgb(235, 201, 54) 0px 0px 10px";
         players[_team].selector.style.border = "3px solid rgb(235, 201, 54)";
@@ -109,6 +109,16 @@ function animation(_team) {
         players[_team].selector.style.boxShadow = "rgb(255, 0, 0) 0px 0px 10px";
     }
     else if (((_e = players[_team].marker) === null || _e === void 0 ? void 0 : _e.vayne) == 0) {
+        players[_team].selector.style.boxShadow = "";
+        players[_team].selector.style.border = "";
+    }
+    if (((_g = (_f = players[_team].marker) === null || _f === void 0 ? void 0 : _f.aphelios) === null || _g === void 0 ? void 0 : _g.Calibrum) === true) {
+        players[_team].selector.style.boxShadow = "darkturquoise 0px 0px 10px 5px";
+    }
+    else if (((_j = (_h = players[_team].marker) === null || _h === void 0 ? void 0 : _h.aphelios) === null || _j === void 0 ? void 0 : _j.Gravitum) === true) {
+        players[_team].selector.style.boxShadow = "purple 0px 0px 10px 5px";
+    }
+    else if (((_l = (_k = players[_team].marker) === null || _k === void 0 ? void 0 : _k.aphelios) === null || _l === void 0 ? void 0 : _l.Gravitum) === false && ((_o = (_m = players[_team].marker) === null || _m === void 0 ? void 0 : _m.aphelios) === null || _o === void 0 ? void 0 : _o.Calibrum) === false && char[_team == 'blue' ? 'red' : 'blue'] === 'aphelios') {
         players[_team].selector.style.boxShadow = "";
         players[_team].selector.style.border = "";
     }

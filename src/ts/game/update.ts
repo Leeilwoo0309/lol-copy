@@ -78,7 +78,10 @@ setInterval(() => {
         }
     });
 
-    players[team].hp[0] = players[team].specItem.health + players[team].specINIT.health + legendItem * 300 + seosaItem * 80 + commonItem * 30;
+    players[team].hp[0] = players[team].specItem.health + players[team].specINIT.health
+        + legendItem * skillInfo.growth[2].health
+        + seosaItem * skillInfo.growth[1].health
+        + commonItem * skillInfo.growth[0].health
 
     // if (!isFocus) {
     //     keyDown.w = false;
@@ -116,12 +119,18 @@ setInterval(() => {
         ad: players[team].specINIT.ad + players[team].specItem.ad,
         ap: players[team].specINIT.ap + players[team].specItem.ap,
         atkspd: Math.floor(players[team].specINIT.atkspd * (1 + Math.floor(players[team].specItem.atkspd) / 100) * 100) / 100,
-        armor: players[team].specINIT.armor + players[team].specItem.armor + legendItem * 25 + seosaItem * 6 + commonItem * 2,
+        armor: players[team].specINIT.armor + players[team].specItem.armor
+            + legendItem * skillInfo.growth[2].armor
+            + seosaItem * skillInfo.growth[1].armor
+            + commonItem * skillInfo.growth[0].armor,
         ignoreArmor: players[team].specINIT.ignoreArmor + players[team].specItem.ignoreArmor,
-        magicRegist: players[team].specINIT.magicRegist + players[team].specItem.magicRegist + legendItem * 25 + seosaItem * 6 + commonItem * 2,
+        magicRegist: players[team].specINIT.magicRegist + players[team].specItem.magicRegist
+            + legendItem * skillInfo.growth[2].magicRegist
+            + seosaItem * skillInfo.growth[1].magicRegist
+            + commonItem * skillInfo.growth[0].magicRegist,
         skillHaste: players[team].specItem.skillHaste,
         range: players[team].specINIT.range + players[team].specItem.range,
-        moveSpd: players[team].specINIT.moveSpd + players[team].specItem.moveSpd + alphaMoveSpd,
+        moveSpd: players[team].specINIT.moveSpd + players[team].specItem.moveSpd + alphaMoveSpd - slowness,
         criticD: players[team].specINIT.criticD + players[team].specItem.criticD,
         criticP: players[team].specINIT.criticP + players[team].specItem.criticP,
         health: players[team].specINIT.health + players[team].specItem.health,
@@ -250,6 +259,53 @@ setInterval(() => {
                             .build(team)
                         );
                 }
+            } else if (char[team] == "aphelios") {
+                apheliosAmmo[0] -= 1;
+
+                projectiles[team].push(
+                    new ProjectileBuilder()
+                        .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage + (players[getEnemyTeam()].marker.aphelios.CalibrumWheel ? 30 : 0), aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
+                        .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                        .setDegree(angle)
+                        .setStyle(weaponColor[apheliosWeapon[players[getEnemyTeam()].marker.aphelios.Calibrum ? apheliosWeapon[1] === 'Calibrum' ? 0 : 1 : 0]])
+                        .setReach(players[team].spec.range)
+                        .setSpeed(players[team].spec.projectileSpd)
+                        .setTarget(players[getEnemyTeam()].marker.aphelios.Calibrum)
+                        .setSize({height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1]})
+                        // .setStyle('gray')
+                        .onHit(`aphelios aa Cali-${ players[getEnemyTeam()].marker.aphelios.Calibrum } ${ players[getEnemyTeam()].marker.aphelios.Calibrum ? apheliosWeapon[1] === 'Calibrum' ? apheliosWeapon[0] : apheliosWeapon[1] : apheliosWeapon[0] }`)
+                        .build(team)
+                    );
+
+                if ((players[getEnemyTeam()].marker.aphelios.Calibrum || players[getEnemyTeam()].marker.aphelios.CalibrumWheel) && apheliosWeapon.includes('Crescendum')) {
+                    crescendumAmount += 1;
+                    crescendumAa(angle, true);
+
+                }
+
+                if (apheliosWeapon[0] === 'Crescendum') {
+                    crescendumAa(angle);
+                }
+
+                    // || (apheliosWeapon[1] === 'Infernum' && players[getEnemyTeam()].marker.aphelios.Calibrum)
+                if (apheliosWeapon[0] === 'Infernum') {
+                    for (let i = -1; i <= 1; i += 2) {
+                        projectiles[team].push(
+                            new ProjectileBuilder()
+                                .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
+                                .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                                .setDegree(angle + i * 0.1)
+                                .setStyle(weaponColor[apheliosWeapon[0]])
+                                .setReach(players[team].spec.range)
+                                .setSpeed(players[team].spec.projectileSpd)
+                                .setTarget(players[getEnemyTeam()].marker.aphelios.Calibrum)
+                                .setSize({height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1]})
+                                // .setStyle('gray')
+                                .onHit(`aphelios aa ${ apheliosWeapon[0] }`)
+                                .build(team)
+                        )
+                    }
+                }
             } else {
                 projectiles[team].push(
                     new ProjectileBuilder()
@@ -293,6 +349,7 @@ setInterval(() => {
 
     function skillUpdate(skillKey: string, index: number) {
         if (charClass.isActive[skillKey]) {
+            // 활성화 상태일 떄
             skillBtns[index].style.backgroundColor = 'yellow';
             skillBtns[index].style.color = 'black';
             skillBtns[index].style.border = '1px solid white';
@@ -300,17 +357,81 @@ setInterval(() => {
             if (charClass.cooldown[skillKey] > 0) skillBtns[index].innerHTML = `${ Math.floor(charClass.cooldown[skillKey] / 10) / 10  }`;
             else skillBtns[index].innerHTML = `${ skillKey.toUpperCase() }`;
         } else if (charClass.cooldown[skillKey] > 0) {
+            // 쿨타임일 때
             skillBtns[index].style.backgroundColor = 'black';
             skillBtns[index].style.color = 'white';
             skillBtns[index].style.border = '1px solid white';
     
-            skillBtns[index].innerHTML = `${ Math.floor(charClass.cooldown[skillKey] / 10) / 10  }`
+            skillBtns[index].innerHTML = `${ Math.floor(charClass.cooldown[skillKey] / 10) / 10  }`;
+            
+            if (char[team] === 'aphelios' && skillKey === 'q') {
+                skillBtns[index].innerHTML = `${ Math.floor(charClass.cooldown[skillKey] / 10) / 10  } <br/> (${ apheliosAmmo[0] })`;
+            } else if (char[team] === 'aphelios' && skillKey === 'e') {
+                skillBtns[index].innerHTML = `${ Math.floor(charClass.cooldown[skillKey] / 10) / 10  } <br/> (${ apheliosAmmo[1] })`;
+            }
         } else if (charClass.cooldown[skillKey] == 0) {
+            //그냥
             skillBtns[index].style.backgroundColor = 'rgb(144, 148, 167)';
             skillBtns[index].style.color = 'black';
             skillBtns[index].style.border = '';
     
             skillBtns[index].innerHTML = `${ skillKey.toUpperCase() }`;
+
+            if (char[team] === 'aphelios' && skillKey == 'e') {
+                let fontColor = {
+                    Calibrum: 'white',
+                    Severum: 'white',
+                    Gravitum: 'white',
+                    Infernum: 'white',
+                    Crescendum: 'black'
+                };
+                
+                skillBtns[index].innerHTML = `${ skillKey.toUpperCase() } (${ apheliosAmmo[1] }) <br/> CHANGE ${ apheliosSkillCooldown[1] > 0 ? `<br /> ${Math.floor(apheliosSkillCooldown[1] / 10) / 10}` : '' }`;
+                skillBtns[index].style.backgroundColor = weaponColor[apheliosWeapon[1]];
+                skillBtns[index].style.fontSize = '15px';
+                skillBtns[index].style.color = fontColor[apheliosWeapon[1]];
+            } else if (char[team] === 'aphelios' && skillKey == 'q') {
+                let fontColor = {
+                    Calibrum: 'white',
+                    Severum: 'white',
+                    Gravitum: 'white',
+                    Infernum: 'white',
+                    Crescendum: 'black'
+                };
+                
+                skillBtns[index].innerHTML = `${ skillKey.toUpperCase() } <br />(${ apheliosAmmo[0] })`;
+                skillBtns[index].style.backgroundColor = weaponColor[apheliosWeapon[0]];
+                skillBtns[index].style.fontSize = '15px';
+                skillBtns[index].style.color = fontColor[apheliosWeapon[0]];
+
+                if (apheliosWeapon[0] === 'Crescendum') {
+                    skillBtns[index].innerHTML = `x${ crescendumAmount } <br />(${ apheliosAmmo[0] })`;
+                }
+            } else if (char[team] === 'aphelios' && skillKey === 'shift') {
+                let fontColor = {
+                    Calibrum: 'white',
+                    Severum: 'white',
+                    Gravitum: 'white',
+                    Infernum: 'white',
+                    Crescendum: 'black'
+                };
+                skillBtns[index].style.backgroundColor = `${ weaponColor[apheliosWeaponOrder[0]] }`;
+                skillBtns[index].style.color = fontColor[apheliosWeapon[0]];
+                skillBtns[index].style.borderRadius = '100%'
+                skillBtns[index].innerHTML = `NEXT`;
+            } else if (char[team] === 'aphelios' && skillKey === 'wheel') {
+                let fontColor = {
+                    Calibrum: 'white',
+                    Severum: 'white',
+                    Gravitum: 'white',
+                    Infernum: 'white',
+                    Crescendum: 'black'
+                };
+                skillBtns[index].style.backgroundColor = `${ weaponColor[apheliosWeapon[0]] }`;
+                skillBtns[index].style.color = fontColor[apheliosWeapon[0]];
+                // skillBtns[index].style.borderRadius = '100%'
+                // skillBtns[index].innerHTML = `NEXT`;
+            }
         }
     }
 
@@ -439,6 +560,15 @@ setInterval(() => {
             }
         });
     }
+
+    if (slowTime > 0) slowTime -= 1;
+    if (slowTime === 0) {
+        if (char[getEnemyTeam()] === 'aphelios') {
+            players[team].marker.aphelios.Gravitum = false;
+
+            slowness = 0;
+        }
+    }
 }, 10);
 
 setInterval(() => {
@@ -449,7 +579,7 @@ setInterval(() => {
     }
 
     if (readyStatus[getEnemyTeam()]) {
-        players[team].gold += 1;
+        players[team].gold += 3;
     }
 }, 200);
 
@@ -475,7 +605,7 @@ setInterval(() => {
 
 // 내가 쏜걸 상대방이 맞았을 때
 function onhit(type) {
-    players[team].gold += 3;
+    players[team].gold += 10;
     players[team].hp[1] += players[team].spec.ad * players[team].spec.vamp / 100;
     
     if (hasItem('0_cull')) {
@@ -528,6 +658,10 @@ function onhit(type) {
         charClass.passive();
     } else if (char[team] == 'samira') {
         samira.passive();
+    } else if (char[team] === 'aphelios') {
+        if (apheliosWeapon[0] === 'Crescendum') {
+            atkWait *= 0.9;
+        }
     }
 }
 
@@ -570,7 +704,7 @@ function enemyDeath() {
     kda[team][0] += 1;
 
     players[getEnemyTeam()].selector.style.display = 'none';
-    players[team].gold += 300;
+    players[team].gold += 700;
     
     setTimeout(() => {
         players[getEnemyTeam()].selector.style.display = '';

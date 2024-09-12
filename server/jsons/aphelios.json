@@ -1,0 +1,89 @@
+{
+    "cn": "aphelios",
+    "name": "아펠리오스",
+    "defaultSpec": {
+        "ad": 12,
+        "ap": 0,
+        "atkspd": 1.1,
+        "armor": 23,
+        "ignoreArmor": 0,
+        "magicRegist": 19,
+        "skillHaste": 0,
+        "range": 500,
+        "projectileSpd": 20,
+        "moveSpd": 3.4,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 480,
+        "healthBoost": 1.4,
+        "vamp": 0,
+        "projectileSize": [20, 20],
+        "damageType": "melee",
+        "defaultAAType": "long"
+    },
+    "growth": [
+        {"health": 30, "armor": 2, "magicRegist": 2},
+        {"health": 80, "armor": 6, "magicRegist": 6},
+        {"health": 300, "armor": 25, "magicRegist": 25}
+    ],
+    "skills": {
+        "passive": {
+        },
+        "Q": {
+            "Calibrum": {
+                "cooldown": 700,
+                "damage": 15,
+                "ad": 1.2,
+                "ap": 1.0,
+                "type": "melee"
+            },
+            "Severum": {
+                "cooldown": 850,
+                "damage": 8,
+                "ad": 0.5,
+                "vamp": 0.075,
+                "moveSpd" : 0.4,
+                "range": 400,
+                "type": "melee"
+            },
+            "Gravitum": {
+                "cooldown": 1000,
+                "damage": 20,
+                "ad": 0.5,
+                "ap": 1.7,
+                "duration": 150
+            },
+            "Infernum": {
+                "cooldown": 720,
+                "damage": 15,
+                "ad": 0.7,
+                "ap": 0.7
+            },
+            "Crescendum": {
+                "cooldown": 1200
+            }
+        },
+        "E": {
+            "cooldown": 50
+        },
+        "Shift": {
+            "cooldown": 1500,
+            "skillHaste": 0.75
+        },
+        "Wheel": {
+            "cooldown": 3000,
+            "damage": 55,
+            "range": 800,
+            "ad": 1.3,
+            "ap": 1,
+            "type": "melee"
+        }
+    },
+    "des": {
+        "passive": "무기 5개ㅇ",
+        "Q": "얘 설명 어떻게 써야되냐 <br/>(피해량: $qd + 공격력 * $qap, 재사용 대기시간: $qcd초)",
+        "E": "무기 서로 바꿈ㅎㅎ <br/>(재사용 대기시간: $ecd초)",
+        "Shift": "없음",
+        "Wheel": "월광포화 <br/>(피해량: $wd + 공격력 * $wad + 주문력 * $wap, 재사용 대기시간: $wcd초)"
+    }
+}

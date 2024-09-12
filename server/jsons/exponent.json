@@ -11,7 +11,7 @@
         "skillHaste": 0,
         "range": 150,
         "projectileSpd": 12,
-        "moveSpd": 4.75,
+        "moveSpd": 3.35,
         "criticD": 0,
         "criticP": 0,
         "health": 280,
@@ -21,6 +21,11 @@
         "damageType": "melee",
         "defaultAAType": "long"
     },
+    "growth": [
+        {"health": 5, "armor": 0.6, "magicRegist": 0.3},
+        {"health": 17, "armor": 2, "magicRegist": 1},
+        {"health": 55, "armor": 6.5, "magicRegist": 3.2}
+    ],
     "skills": {
         "passive": {
             "cooldown": 2000,

@@ -11,6 +11,7 @@ body {
     overflow: hidden;
     /* background-image: url(../assets/imgs/stone-patch.png); */
     background-color: rgb(223, 223, 223);
+    /* color: rgb(20, 143, 145); */
     height: 900px;
 }
 
@@ -172,7 +173,7 @@ body {
 }
 
 .skill-btn.smalls {
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .passive-btn {

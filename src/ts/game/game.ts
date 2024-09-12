@@ -151,19 +151,32 @@ async function getData() {
     players[team].specINIT = fetched.defaultSpec;
     players[team].hp[0] = players[team].specINIT.health;
     players[team].hp[1] = players[team].specINIT.health;
+
     
     skillInfo.passive = fetched.skills.passive;
     skillInfo.q = fetched.skills.Q;
     skillInfo.e = fetched.skills.E;
     skillInfo.shift = fetched.skills.Shift;
     skillInfo.wheel = fetched.skills.Wheel;
+    skillInfo.growth = fetched.growth;
     
+    if (char[team] === 'aphelios') {
+        apheliosSkillInfo.q.Calibrum = fetched.skills.Q.Calibrum;
+        apheliosSkillInfo.q.Severum = fetched.skills.Q.Severum;
+        apheliosSkillInfo.q.Infernum = fetched.skills.Q.Infernum;
+        apheliosSkillInfo.q.Gravitum = fetched.skills.Q.Gravitum;
+        apheliosSkillInfo.q.Crescendum = fetched.skills.Q.Crescendum;
+
+        skillInfo.q = fetched.skills.Q.Calibrum;
+        
+    }
+
     let fetched2 = await getCharInfo(char[getEnemyTeam()])
+    enemySkillInfo.wheel = fetched2.skills.Wheel;
     enemySkillInfo.passive = fetched2.skills.passive;
     enemySkillInfo.q = fetched2.skills.Q;
     enemySkillInfo.e = fetched2.skills.E;
     enemySkillInfo.shift = fetched2.skills.Shift;
-    enemySkillInfo.wheel = fetched2.skills.Wheel;
 
     players[getEnemyTeam()].specINIT = await getCharInfo(char[getEnemyTeam()]);
     players[getEnemyTeam()].hp[0] = players[getEnemyTeam()].specINIT.health;
@@ -177,6 +190,7 @@ async function getData() {
     makeAssassin();
     makeGraves();
     makeVampire();
+    makeAphelios();
 
     if (char[team] == 'ezreal') {
         charClass = ezreal;
@@ -194,6 +208,8 @@ async function getData() {
         charClass = graves;
     } else if (char[team] == 'vampire') {
         charClass = vampire;
+    } else if (char[team] == 'aphelios') {
+        charClass = aphelios;
     }
 
     let fetchedItemData: ItemData[] = await getItemInfo();
@@ -213,7 +229,7 @@ async function getData() {
                 item.build()
             );
         }
-    })
+    });
 }
 
 function reload() {

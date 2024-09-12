@@ -11,7 +11,8 @@ class Projectile {
     public reach: number = -1;
     public size: ObjSize;
     public style = {
-        color: undefined
+        color: undefined,
+        opacity: undefined,
     };
     public ignoreObj: boolean = false;
     public onhit: string = undefined;
@@ -54,6 +55,7 @@ class Projectile {
         }
         
         if (this.style.color !== undefined) _bullet.style.backgroundColor  = `${ this.style.color }`;
+        if (this.style.opacity !== undefined) _bullet.style.opacity  = `${ this.style.opacity }%`;
         _main.appendChild(_bullet);
 
         const update = setInterval(() => {
@@ -272,6 +274,49 @@ class Projectile {
                         setTimeout(() => {
                             skillHit.vampire = false;
                         }, 100);
+                    } else if (this.onhit?.includes('aphelios')) {
+                        if (players[team].marker.aphelios.Calibrum && this.onhit.includes('aa') && this.onhit.includes('Cali-true')) {
+                            players[team].marker.aphelios.Calibrum = false;
+                            players[team].marker.aphelios.CalibrumWheel = false;
+
+                            //@ts-ignore
+                            totalDamage.melee += (4 + 0.3 * players[getEnemyTeam()].spec.ad) * damageCoefficient.melee;
+                            //@ts-ignore
+                            players[team].hp[0] -= (4 + 0.3 * players[getEnemyTeam()].spec.ad) * damageCoefficient.melee;
+                        }
+                        // if (players[team].marker.aphelios === undefined) players[team].marker.aphelios = {Calibrum: false, Gravitum: false};
+
+                        if (this.onhit?.includes('sub-Calibrum')) {
+                            players[team].marker.aphelios.Calibrum = true;
+                            
+                            if (this.onhit?.includes('wheel')) {
+                                players[team].marker.aphelios.CalibrumWheel = true;
+                            }
+                        } else if (this.onhit?.includes('ravitum')) {
+                            players[team].marker.aphelios.Gravitum = true;
+                            slowness = (players[team].specINIT.moveSpd + players[team].specItem.moveSpd) * 0.25;
+                            
+                            slowTime = 400;
+                            if (this.onhit.includes('wheel')) {
+                                slowness = (players[team].specINIT.moveSpd + players[team].specItem.moveSpd) * 0.7;
+                                
+                                setTimeout(() => {
+                                    slowness = (players[team].specINIT.moveSpd + players[team].specItem.moveSpd) * 0.25;
+                                }, 150);
+                            }
+                        } else if (this.onhit?.includes('sub-Crescendum')) {
+                            socket.send(JSON.stringify({body: {msg: "aphlios-crescendum"}}));
+                            
+                            if (this.onhit?.includes('wheel')) {
+                                socket.send(JSON.stringify({body: {msg: "aphlios-crescendum"}}));
+                                socket.send(JSON.stringify({body: {msg: "aphlios-crescendum"}}));
+                                socket.send(JSON.stringify({body: {msg: "aphlios-crescendum"}}));
+                                socket.send(JSON.stringify({body: {msg: "aphlios-crescendum"}}));
+                                socket.send(JSON.stringify({body: {msg: "aphlios-crescendum"}}));
+                                socket.send(JSON.stringify({body: {msg: "aphlios-crescendum"}}));
+                                socket.send(JSON.stringify({body: {msg: "aphlios-crescendum"}}));
+                            }
+                        }
                     }
 
                     if (this.onhit?.includes('skill')) {
@@ -358,6 +403,13 @@ class Projectile {
                         charClass.cooldown.wheel -= skillInfo.passive.skillHaste
                     }
                     if (char[team] == 'sniper' && charClass.isActive.q) charClass.isActive.q = false;
+                    if (char[team] === 'aphelios' && this.onhit.includes('wheel')) {
+                        if (apheliosWeapon[0] === 'Severum') {
+                            let heal: number = players[team].hp[0] * 0.3 + 20
+                            players[team].hp[1] += heal
+                            damageAlert("heal", heal, false, team)
+                        }
+                    }
                 }
             }
 
@@ -468,8 +520,9 @@ class ProjectileBuilder {
         return this;
     }
 
-    public setStyle(color: string): ProjectileBuilder {
+    public setStyle(color: string, opacity?: number): ProjectileBuilder {
         this.projectile.style.color = color;
+        this.projectile.style.opacity = opacity;
         return this;
     }
 

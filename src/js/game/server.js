@@ -11,6 +11,7 @@ socket.onopen = function () {
         }
         var reader = new FileReader();
         reader.onload = function () {
+            var _a;
             //@ts-ignore
             var sentJson = JSON.parse(reader.result);
             if (sentJson.body) {
@@ -18,8 +19,8 @@ socket.onopen = function () {
                     absolutePosition[getEnemyTeam()] = sentJson.body.pos;
                     projectiles[getEnemyTeam()] = sentJson.body.projectiles;
                     nexusHp[getEnemyTeam()] = sentJson.body.nexus;
-                    sentJson.body.projectiles.forEach(function (e) {
-                        if (e.isArrive && !e.isSent)
+                    (_a = sentJson.body.projectiles) === null || _a === void 0 ? void 0 : _a.forEach(function (e) {
+                        if (e.isArrive && !e.isSent && e !== undefined)
                             new ProjectileBuilder()
                                 .setDegree(e.angle)
                                 .setPos(e.absPos.x, e.absPos.y)
@@ -28,7 +29,7 @@ socket.onopen = function () {
                                 .setReach(e.reach)
                                 .setSpeed(e.speed)
                                 .setSize(e.size)
-                                .setStyle(e.style.color)
+                                .setStyle(e.style.color, e.style.opacity)
                                 .onHit(e.onhit)
                                 .ignoreObj(e.ignoreObj)
                                 .setTarget(e.targetEnemy[0], e.targetEnemy[1])
@@ -64,7 +65,7 @@ socket.onopen = function () {
                         if (sentJson.body.target == 'enemy')
                             onhit(sentJson.body.type);
                         if (sentJson.body.target == 'nexus')
-                            players[team].gold += 10;
+                            players[team].gold += 50;
                     }
                     else if (message == 'death') {
                         enemyDeath();
@@ -84,6 +85,29 @@ socket.onopen = function () {
                             damage *= players[getEnemyTeam()].spec.criticD / 100 + 1.75;
                         players[team].hp[1] -= damage * (1 / (1 + players[team].spec.magicRegist * 0.01)) * sentJson.body.wd;
                         damageAlert('magic', damage * (1 / (1 + players[team].spec.magicRegist * 0.01)) * sentJson.body.wd, sentJson.body.critic, team);
+                    }
+                    else if (message == 'aphelios-change') {
+                        apheliosWeaponEnemy = [apheliosWeaponEnemy[1], apheliosWeaponEnemy[0]];
+                    }
+                    else if (message == 'aphelios-new') {
+                        apheliosWeaponEnemy = sentJson.body.info;
+                    }
+                    else if (message == 'aphelios-gravitum-q') {
+                        //@ts-ignore
+                        var damage = enemySkillInfo.q.Gravitum.damage + enemySkillInfo.q.Gravitum.ad * players[getEnemyTeam()].spec.ad + enemySkillInfo.q.Gravitum.ap * players[getEnemyTeam()].spec.ap;
+                        canMove = false;
+                        players[team].marker.aphelios.Gravitum = false;
+                        players[team].hp[1] -= damage * (1 / (1 + players[team].spec.magicRegist * 0.01));
+                        damageAlert('magic', damage * (1 / (1 + players[team].spec.magicRegist * 0.01)), sentJson.body.critic, team);
+                        setTimeout(function () {
+                            canMove = true;
+                        }, 1500);
+                    }
+                    else if (message == 'aphlios-crescendum') {
+                        crescendumAmount += 1;
+                    }
+                    else if (message == 'aphelios-wheel') {
+                        apheliosWheelWheelMotion(getEnemyTeam(), { x: absolutePosition[getEnemyTeam()].x, y: absolutePosition[getEnemyTeam()].y });
                     }
                     else if (message == 'collideDash') {
                         var dashDamage = enemySkillInfo.shift.damage;
@@ -133,6 +157,7 @@ socket.onopen = function () {
                     else if (message == 'damageAlert') {
                         damageAlert(sentJson.body.info[0], sentJson.body.info[1], sentJson.body.info[2], sentJson.body.info[3]);
                     }
+                    console.log(message);
                 }
             }
         };

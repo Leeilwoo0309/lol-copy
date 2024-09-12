@@ -11,7 +11,8 @@ var Projectile = /** @class */ (function () {
         this.critical = [0, 0];
         this.reach = -1;
         this.style = {
-            color: undefined
+            color: undefined,
+            opacity: undefined,
         };
         this.ignoreObj = false;
         this.onhit = undefined;
@@ -48,9 +49,11 @@ var Projectile = /** @class */ (function () {
         }
         if (this.style.color !== undefined)
             _bullet.style.backgroundColor = "".concat(this.style.color);
+        if (this.style.opacity !== undefined)
+            _bullet.style.opacity = "".concat(this.style.opacity, "%");
         _main.appendChild(_bullet);
         var update = setInterval(function () {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
             // clearInterval(update);
             _this._movedDistance += _this.speed;
             var enemyTar = _this.targetEnemy[1] == 'blue' ? 'red' : 'blue';
@@ -242,7 +245,47 @@ var Projectile = /** @class */ (function () {
                             skillHit.vampire = false;
                         }, 100);
                     }
-                    if ((_j = _this.onhit) === null || _j === void 0 ? void 0 : _j.includes('skill')) {
+                    else if ((_j = _this.onhit) === null || _j === void 0 ? void 0 : _j.includes('aphelios')) {
+                        if (players[team].marker.aphelios.Calibrum && _this.onhit.includes('aa') && _this.onhit.includes('Cali-true')) {
+                            players[team].marker.aphelios.Calibrum = false;
+                            players[team].marker.aphelios.CalibrumWheel = false;
+                            //@ts-ignore
+                            totalDamage.melee += (4 + 0.3 * players[getEnemyTeam()].spec.ad) * damageCoefficient_1.melee;
+                            //@ts-ignore
+                            players[team].hp[0] -= (4 + 0.3 * players[getEnemyTeam()].spec.ad) * damageCoefficient_1.melee;
+                        }
+                        // if (players[team].marker.aphelios === undefined) players[team].marker.aphelios = {Calibrum: false, Gravitum: false};
+                        if ((_k = _this.onhit) === null || _k === void 0 ? void 0 : _k.includes('sub-Calibrum')) {
+                            players[team].marker.aphelios.Calibrum = true;
+                            if ((_l = _this.onhit) === null || _l === void 0 ? void 0 : _l.includes('wheel')) {
+                                players[team].marker.aphelios.CalibrumWheel = true;
+                            }
+                        }
+                        else if ((_m = _this.onhit) === null || _m === void 0 ? void 0 : _m.includes('ravitum')) {
+                            players[team].marker.aphelios.Gravitum = true;
+                            slowness = (players[team].specINIT.moveSpd + players[team].specItem.moveSpd) * 0.25;
+                            slowTime = 400;
+                            if (_this.onhit.includes('wheel')) {
+                                slowness = (players[team].specINIT.moveSpd + players[team].specItem.moveSpd) * 0.7;
+                                setTimeout(function () {
+                                    slowness = (players[team].specINIT.moveSpd + players[team].specItem.moveSpd) * 0.25;
+                                }, 150);
+                            }
+                        }
+                        else if ((_o = _this.onhit) === null || _o === void 0 ? void 0 : _o.includes('sub-Crescendum')) {
+                            socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
+                            if ((_p = _this.onhit) === null || _p === void 0 ? void 0 : _p.includes('wheel')) {
+                                socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
+                                socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
+                                socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
+                                socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
+                                socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
+                                socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
+                                socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
+                            }
+                        }
+                    }
+                    if ((_q = _this.onhit) === null || _q === void 0 ? void 0 : _q.includes('skill')) {
                         socket.send(JSON.stringify({ body: { msg: "onhit", target: 'enemy', type: "skill" } }));
                     }
                     else {
@@ -316,7 +359,7 @@ var Projectile = /** @class */ (function () {
                         onhitCount[type] += 1;
                     if (!_this.canPass)
                         _this.isArrive = false;
-                    if (char[team] == 'ezreal' && ((_k = _this.onhit) === null || _k === void 0 ? void 0 : _k.includes('skill'))) {
+                    if (char[team] == 'ezreal' && ((_r = _this.onhit) === null || _r === void 0 ? void 0 : _r.includes('skill'))) {
                         _this.isCollide = true;
                         charClass.cooldown.q -= skillInfo.passive.skillHaste;
                         charClass.cooldown.e -= skillInfo.passive.skillHaste;
@@ -325,6 +368,13 @@ var Projectile = /** @class */ (function () {
                     }
                     if (char[team] == 'sniper' && charClass.isActive.q)
                         charClass.isActive.q = false;
+                    if (char[team] === 'aphelios' && _this.onhit.includes('wheel')) {
+                        if (apheliosWeapon[0] === 'Severum') {
+                            var heal = players[team].hp[0] * 0.3 + 20;
+                            players[team].hp[1] += heal;
+                            damageAlert("heal", heal, false, team);
+                        }
+                    }
                 }
             }
             // 화면 밖으로 나가면 탄환 제거
@@ -411,8 +461,9 @@ var ProjectileBuilder = /** @class */ (function () {
         this.projectile.size = size;
         return this;
     };
-    ProjectileBuilder.prototype.setStyle = function (color) {
+    ProjectileBuilder.prototype.setStyle = function (color, opacity) {
         this.projectile.style.color = color;
+        this.projectile.style.opacity = opacity;
         return this;
     };
     ProjectileBuilder.prototype.onHit = function (msg) {

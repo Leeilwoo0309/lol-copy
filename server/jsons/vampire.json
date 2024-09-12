@@ -11,7 +11,7 @@
         "skillHaste": 0,
         "range": 400,
         "projectileSpd": 16,
-        "moveSpd": 5,
+        "moveSpd": 3.6,
         "criticD": 0,
         "criticP": 0,
         "health": 450,
@@ -21,6 +21,11 @@
         "damageType": "melee",
         "defaultAAType": "long"
     },
+    "growth": [
+        {"health": 30, "armor": 2, "magicRegist": 2},
+        {"health": 80, "armor": 6, "magicRegist": 6},
+        {"health": 300, "armor": 25, "magicRegist": 25}
+    ],
     "skills": {
         "passive": {
             "vamp": 1.2

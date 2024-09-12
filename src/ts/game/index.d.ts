@@ -37,7 +37,12 @@ type PlayerDeclare = {
 
 type Marker = {
     ezreal?: boolean,
-    vayne?: number
+    vayne?: number,
+    aphelios?: {
+        Calibrum: boolean,
+        CalibrumWheel: boolean,
+        Gravitum: boolean
+    }
 }
 
 type AbsolutePosition = {
@@ -102,6 +107,14 @@ type SkillAbility = {
     manaR?: number,
     magicRegist?: number,
     skillHaste?: number,
+}
+
+type ApheliosQSkillInfo = {
+    Calibrum: SkillAbility,
+    Severum: SkillAbility,
+    Gravitum: SkillAbility,
+    Infernum: SkillAbility,
+    Crescendum: SkillAbility
 }
 
 type ItemNamesEnglish =
@@ -169,5 +182,6 @@ type ChampionNames =
     "vampire" |
     "teacher" |
     "graves" |
-    "vampire"
+    "vampire" |
+    "aphelios"
     ;
