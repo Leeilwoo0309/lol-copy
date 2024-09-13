@@ -28,8 +28,8 @@ var Aphelios = /** @class */ (function () {
     return Aphelios;
 }());
 var aphelios = new Char();
-// let apheliosWeapon: [ApheliosWeapon, ApheliosWeapon] = ['Calibrum', 'Severum'];
-var apheliosWeapon = ['Calibrum', 'Crescendum'];
+var apheliosWeapon = ['Calibrum', 'Severum'];
+// let apheliosWeapon: [ApheliosWeapon, ApheliosWeapon] = ['Calibrum', 'Crescendum'];
 var apheliosWeaponEnemy = ['Calibrum', 'Severum'];
 var apheliosAmmo = [50, 50];
 var apheliosSkillCooldown = [0, 0];
@@ -134,10 +134,11 @@ function makeAphelios() {
                 players[team].specINIT.vamp = 0;
             }
             else if (apheliosWeapon[0] === 'Severum') {
-                players[team].specINIT.range = 500;
+                players[team].specINIT.range = 450;
                 players[team].specINIT.vamp = 17.5;
             }
             else if (apheliosWeapon[0] === 'Gravitum') {
+                players[team].specINIT.range = 450;
                 players[team].specINIT.vamp = 0;
                 if (players[getEnemyTeam()].marker.aphelios.Gravitum) {
                     aphelios.isActive.q = true;
@@ -147,9 +148,11 @@ function makeAphelios() {
                 }
             }
             else if (apheliosWeapon[1] === 'Crescendum') {
+                players[team].specINIT.range = 450;
                 players[team].specINIT.vamp = 0;
             }
             else if (apheliosWeapon[1] === 'Infernum') {
+                players[team].specINIT.range = 450;
                 players[team].specINIT.vamp = 0;
             }
             if (apheliosWeapon[0] !== 'Gravitum') {
@@ -340,7 +343,7 @@ function makeAphelios() {
             canMove = true;
             var damage = players[team].spec.ad * skillInfo.wheel.ad + players[team].spec.ap * skillInfo.wheel.ap + skillInfo.wheel.damage;
             if (apheliosWeapon[0] === 'Infernum')
-                damage *= 1.5;
+                damage *= 4;
             projectiles[team].push(new ProjectileBuilder()
                 .setDamage(damage, skillInfo.wheel.type)
                 .setCritical(players[team].spec.criticP, players[team].spec.criticD)
@@ -420,7 +423,7 @@ function crescendumAa(angle, target) {
         else {
             index += 1;
             projectiles[team].push(new ProjectileBuilder()
-                .setDamage((players[team].spec.ad + aaA.ad) * 0.2, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
+                .setDamage((players[team].spec.ad + aaA.ad) * 0.025, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
                 .setCritical(players[team].spec.criticP, players[team].spec.criticD)
                 .setDegree(angle)
                 .setReach(players[team].spec.range)

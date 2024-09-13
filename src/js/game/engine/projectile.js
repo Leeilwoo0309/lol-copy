@@ -280,8 +280,6 @@ var Projectile = /** @class */ (function () {
                                 socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
                                 socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
                                 socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
-                                socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
-                                socket.send(JSON.stringify({ body: { msg: "aphlios-crescendum" } }));
                             }
                         }
                     }

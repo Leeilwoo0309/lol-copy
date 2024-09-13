@@ -69,7 +69,7 @@ var players = {
         status: {
             invisible: false,
         },
-        gold: 50000,
+        gold: 500,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
     },
     red: {
@@ -130,7 +130,7 @@ var players = {
         status: {
             invisible: false,
         },
-        gold: 50000,
+        gold: 500,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
     },
 };
@@ -210,8 +210,8 @@ var keyDown = {
 var absolutePosition = {
     // blue: {x: 4100, y: -430},
     blue: { x: 200, y: -430 },
-    // red : {x: 4170, y: -430}
-    red: { x: 800, y: -430 }
+    red: { x: 4170, y: -430 }
+    // red : {x: 800, y: -430}
 };
 var absolutePointerPosition = { x: 0, y: 0 };
 var cameraPosition = { x: 0, y: 0 };

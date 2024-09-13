@@ -9,7 +9,7 @@
         "ignoreArmor": 0,
         "magicRegist": 19,
         "skillHaste": 0,
-        "range": 500,
+        "range": 450,
         "projectileSpd": 20,
         "moveSpd": 3.4,
         "criticD": 0,
@@ -40,7 +40,7 @@
             "Severum": {
                 "cooldown": 850,
                 "damage": 8,
-                "ad": 0.5,
+                "ad": 0.4,
                 "vamp": 0.075,
                 "moveSpd" : 0.4,
                 "range": 400,
@@ -49,15 +49,15 @@
             "Gravitum": {
                 "cooldown": 1000,
                 "damage": 20,
-                "ad": 0.5,
+                "ad": 0.45,
                 "ap": 1.7,
                 "duration": 150
             },
             "Infernum": {
                 "cooldown": 720,
-                "damage": 15,
-                "ad": 0.7,
-                "ap": 0.7
+                "damage": 12,
+                "ad": 0.5,
+                "ap": 0.5
             },
             "Crescendum": {
                 "cooldown": 1200
@@ -71,10 +71,10 @@
             "skillHaste": 0.75
         },
         "Wheel": {
-            "cooldown": 3000,
+            "cooldown": 5450,
             "damage": 55,
             "range": 800,
-            "ad": 1.3,
+            "ad": 1.35,
             "ap": 1,
             "type": "melee"
         }

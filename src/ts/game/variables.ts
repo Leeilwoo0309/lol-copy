@@ -69,7 +69,7 @@ const players: Players = {
         status: {
             invisible: false,
         },
-        gold: 50000,
+        gold: 500,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
     },
     red: {
@@ -130,7 +130,7 @@ const players: Players = {
         status: {
             invisible: false,
         },
-        gold: 50000,
+        gold: 500,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
     },
 
@@ -213,8 +213,8 @@ let keyDown: KeyDown = {
 let absolutePosition: AbsolutePosition = {
     // blue: {x: 4100, y: -430},
     blue: {x: 200, y: -430},
-    // red : {x: 4170, y: -430}
-    red : {x: 800, y: -430}
+    red : {x: 4170, y: -430}
+    // red : {x: 800, y: -430}
 }
 let absolutePointerPosition: Position = {x: 0, y: 0};
 let cameraPosition: Position = { x: 0, y: 0 };
