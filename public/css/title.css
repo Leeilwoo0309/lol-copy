@@ -19,9 +19,12 @@ main {
 }
 
 .char-selection {
-    height: 1000px;
-    /* grid-template-rows: repeat(3, 33%); */
-    /* display: grid;; */
+    display: grid;
+    grid-template-rows: repeat(10, 10%);
+    grid-template-columns: repeat(3, 33%);
+    
+    width: 450px;
+    height: 900px;
 }
 
 #title {

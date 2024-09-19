@@ -2,9 +2,9 @@
     "cn": "vampire",
     "name": "블라디미르",
     "defaultSpec": {
-        "ad": 8,
+        "ad": 14,
         "ap": 0,
-        "atkspd": 0.8,
+        "atkspd": 1.25,
         "armor": 26,
         "ignoreArmor": 0,
         "ignoreArmorPercent": 0,
@@ -35,12 +35,12 @@
             "cooldown": 400,
             "damage": 10,
             "ap": 1.1,
-            "vamp": 0.9
+            "vamp": 0.5
         },
         "E": {
             "cooldown": 1500,
             "damage": 15,
-            "ap": 1.7
+            "ap": 2.4
         },
         "Shift": {
             "cooldown": 1500,

@@ -39,10 +39,10 @@ readyBtn.addEventListener('click', () => {
         return;
     }
 
-    // if (selected.ally === 0 || selected.ally === 7) {
-    //     alert("그챔 아직 안만듦~~");
-    //     return;
-    // }
+    if (selected.ally >= 9) {
+        alert("그챔 아직 안만듦~~");
+        return;
+    }
 
     readyStatus[0] = !readyStatus[0];
 
@@ -176,6 +176,7 @@ function updateSelected() {
                 <p>공격력: ${ chars.defaultSpec.ad }</p>
                 <p>공격 속도: ${ chars.defaultSpec.atkspd }</p>
                 <p>방어력: ${ chars.defaultSpec.armor }</p>
+                <p>마법 저항력: ${ chars.defaultSpec.magicRegist }</p>
                 <p>사거리: ${ chars.defaultSpec.range }</p>
                 <p>이동 속도: ${ chars.defaultSpec.moveSpd }</p>
                 <p><b>기본 지속 효과</b><span> - ${ generateDes(chars.des.passive, chars) }</span></p>

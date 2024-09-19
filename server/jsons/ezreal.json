@@ -30,19 +30,19 @@
     "skills": {
         "passive": {
             "ap": 1,
-            "ad": 1.7,
-            "skillHaste": 250,
+            "ad": 1.5,
+            "skillHaste": 100,
             "damage": 15
         },
         "Q": {
-            "cooldown": 480,
+            "cooldown": 550,
             "type": "melee",
             "damage": 18,
             "ad": 1.2,
             "ap": 0.3
         },
         "E": {
-            "cooldown": 800,
+            "cooldown": 850,
             "type": "magic",
             "damage": 3,
             "ad": 0.2,

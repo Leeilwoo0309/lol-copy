@@ -345,7 +345,7 @@ function makeAphelios() {
             canMove = true;
             var damage = players[team].spec.ad * skillInfo.wheel.ad + players[team].spec.ap * skillInfo.wheel.ap + skillInfo.wheel.damage;
             if (apheliosWeapon[0] === 'Infernum')
-                damage *= 2.5;
+                damage *= 2 + players[team].spec.ad * 0.008;
             projectiles[team].push(new ProjectileBuilder()
                 .setDamage(damage, skillInfo.wheel.type)
                 .setCritical(players[team].spec.criticP, players[team].spec.criticD)
