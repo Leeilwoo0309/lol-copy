@@ -7,6 +7,7 @@
         "atkspd": 1,
         "armor": 28,
         "ignoreArmor": 0,
+        "ignoreArmorPercent": 0,
         "magicRegist": 30,
         "skillHaste": 0,
         "range": 440,
@@ -38,25 +39,25 @@
             "ad": 0.95
         },
         "E": {
-            "cooldown": 2000,
-            "type": "magic",
-            "damage": 4,
-            "ad": 0.2,
-            "ap": 0.8,
-            "duration": 125
-        },
-        "Shift": {
             "cooldown": 1500,
             "type": "magic",
+            "damage": 4,
+            "ad": 0.4,
+            "ap": 1.4,
+            "duration": 150
+        },
+        "Shift": {
+            "cooldown": 1300,
+            "type": "magic",
             "damage": 3,
-            "ad": 0.25,
-            "ap": 0.45,
+            "ad": 0.55,
+            "ap": 0.95,
             "range": 60
         },
         "Wheel": {
             "cooldown": 500,
-            "damage": 10,
-            "ad": 0.45,
+            "damage": 8,
+            "ad": 0.55,
             "range": 250,
             "moveSpd": 0.4,
             "type": "melee"

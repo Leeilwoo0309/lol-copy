@@ -7,6 +7,7 @@
         "atkspd": 0.8,
         "armor": 24,
         "ignoreArmor": 0,
+        "ignoreArmorPercent": 0,
         "magicRegist": 24,
         "skillHaste": 0,
         "range": 500,
@@ -29,15 +30,15 @@
     "skills": {
         "passive": {
             "ap": 1,
-            "ad": 1.2,
-            "skillHaste": 200,
-            "damage": 10
+            "ad": 1.7,
+            "skillHaste": 250,
+            "damage": 15
         },
         "Q": {
-            "cooldown": 500,
+            "cooldown": 480,
             "type": "melee",
-            "damage": 15,
-            "ad": 1.1,
+            "damage": 18,
+            "ad": 1.2,
             "ap": 0.3
         },
         "E": {
@@ -52,10 +53,10 @@
             "range": 30
         },
         "Wheel": {
-            "cooldown": 5000,
-            "type": "melee",
-            "damage": 20,
-            "ad": 1.4,
+            "cooldown": 5500,
+            "type": "magic",
+            "damage": 15,
+            "ad": 1.8,
             "ap": 0.95
         }
     },

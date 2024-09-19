@@ -52,6 +52,7 @@ socket.onopen = () => {
                     players[getEnemyTeam()].marker = sentJson.body.marker;
                     players[getEnemyTeam()].spec = sentJson.body.spec;
                     players[getEnemyTeam()].status = sentJson.body.status;
+                    players[getEnemyTeam()].barrier = sentJson.body.barrier;
 
                 } else if (sentJson.body.msg) {
                     let message = sentJson.body.msg;
@@ -156,8 +157,6 @@ socket.onopen = () => {
                     } else if (message == 'damageAlert') {
                         damageAlert(sentJson.body.info[0], sentJson.body.info[1], sentJson.body.info[2], sentJson.body.info[3]);
                     }
-
-                    console.log(message);
                 }
             }
         };

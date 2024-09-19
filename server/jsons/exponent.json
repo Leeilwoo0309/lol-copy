@@ -7,6 +7,7 @@
         "atkspd": 1.4,
         "armor": 5,
         "ignoreArmor": 0,
+        "ignoreArmorPercent": 0,
         "magicRegist": 4,
         "skillHaste": 0,
         "range": 150,
@@ -32,9 +33,9 @@
             "ad": 2,
             "ap": 5,
             "health": 20,
-            "armor": 1.4,
+            "armor": 3,
             "range": 10,
-            "magicRegist": 1.2
+            "magicRegist": 2
         },
         "Q": {
             "cooldown": 900,

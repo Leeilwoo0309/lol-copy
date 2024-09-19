@@ -7,6 +7,19 @@ document.querySelector('.hp-bar.hp-progress').classList.add(team);
 
 console.log(team == 'red' ? "빨갱이팀" : "자본주의자팀");
 
+document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && (event.key === '+' || event.key === '-' || event.key === '0')) {
+        event.preventDefault();
+    }
+});
+
+// 마우스 휠 확대/축소 방지
+document.addEventListener('wheel', function(event) {
+    if (event.ctrlKey) {
+        event.preventDefault();
+    }
+}, { passive: false });
+
 body.addEventListener('keydown', (e) => {
     if (e.key === 'Tab') {
         e.preventDefault();

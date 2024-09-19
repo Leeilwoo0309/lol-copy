@@ -23,6 +23,10 @@ resultItem.addEventListener('click', function () {
         return;
     if (team == 'red' && absolutePosition[team].x < 3530 && deathCoolDown[team] <= 0)
         return;
+    if (hasItem(itemData[itemInfo].name[1]) && itemData[itemInfo].name[1].includes('3_'))
+        return;
+    if (hasItem(itemData[itemInfo].name[1]) && itemData[itemInfo].name[1].includes('0_'))
+        return;
     // 업그레이드하는 함수
     function upgradeLower() {
         var lower = __spreadArray([], itemData[itemInfo].lower, true);
@@ -72,7 +76,7 @@ resultItem.addEventListener('click', function () {
     if (players[team].gold >= price && players[team].items.filter(function (e) { return e !== undefined; }).length < 6 + howManyLower(itemData[itemInfo].lower)) {
         if (itemData[itemInfo].name[1].includes('b_1') && hasBoots)
             return;
-        if (itemData[itemInfo].name[1].includes('b_2') && hasItem("b_2atkspd") && hasBoots)
+        if (itemData[itemInfo].name[1].includes('b_2') && (hasItem("b_2atkspd") || hasItem('b_2skill_haste') || hasItem('b_2spd') || hasItem('b_2armor') || hasItem('b_2magic_regis')) && hasBoots)
             return;
         players[team].gold -= price;
         if (itemData[itemInfo].ability.ad)
@@ -105,6 +109,8 @@ resultItem.addEventListener('click', function () {
             players[team].specItem.healthBoost += itemData[itemInfo].ability.healthBoost;
         if (itemData[itemInfo].ability.ignoreArmor)
             players[team].specItem.ignoreArmor += itemData[itemInfo].ability.ignoreArmor;
+        if (itemData[itemInfo].ability.ignoreArmorPercent)
+            players[team].specItem.ignoreArmorPercent += itemData[itemInfo].ability.ignoreArmorPercent;
         if (itemData[itemInfo].ability.mana)
             players[team].specItem.mana += itemData[itemInfo].ability.mana;
         if (itemData[itemInfo].ability.manaR)
@@ -167,6 +173,8 @@ function sellItems() {
                         players[team].specItem.healthBoost -= sellitem.body.ability.healthBoost;
                     if (sellitem.body.ability.ignoreArmor)
                         players[team].specItem.ignoreArmor -= sellitem.body.ability.ignoreArmor;
+                    if (sellitem.body.ability.ignoreArmorPercent)
+                        players[team].specItem.ignoreArmorPercent -= sellitem.body.ability.ignoreArmorPercent;
                     if (sellitem.body.ability.vamp)
                         players[team].specItem.vamp -= sellitem.body.ability.vamp;
                     if (sellitem.body.ability.health) {
@@ -184,13 +192,24 @@ function sellItems() {
     }
 }
 function refreshPrice() {
-    listDiv.innerHTML = '';
+    listDiv.innerHTML = "";
     itemData.forEach(function (e, i) {
         if (e.grade !== "undefined") {
-            listDiv.innerHTML += "\n            <div id=\"item-selling-".concat(i, "\" class=\"item ").concat(e.grade, "\" style=\"background-image: url(./assets/items/").concat(e.name[1], ".png);\">\n                <p class=\"price\">G").concat(e.lower ? getPrice(i) : e.price, "</p>\n            </div>");
+            // let grade = {start: '기본', boots: '', item1: '', item2: '', item3: ''};
+            if (hasItem(e.name[1]) && e.name[1].includes('3_') || (hasItem(e.name[1])) && e.name[1].includes('0_')) {
+                listDiv.innerHTML += "\n                <div id=\"item-selling-".concat(i, "\" class=\"item ").concat(e.grade, "\" style=\"background-image: url(./assets/items/").concat(e.name[1], ".png);  opacity: 0.3\">\n                <p class=\"price\">\uC18C\uC720\uC911</p>\n                </div>");
+            }
+            else {
+                listDiv.innerHTML += "\n                <div id=\"item-selling-".concat(i, "\" class=\"item ").concat(e.grade, "\" style=\"background-image: url(./assets/items/").concat(e.name[1], ".png);\">\n                    <p class=\"price\">G").concat(e.lower ? getPrice(i) : e.price, "</p>\n                </div>");
+            }
         }
         else {
-            listDiv.innerHTML += "\n            <div id=\"item-selling-".concat(i, "\" class=\"item\" style=\"background-image: url(./assets/items/").concat(e.name[1], ".png);\">\n                <p class=\"price\">G").concat(e.lower ? getPrice(i) : e.price, "</p>\n            </div>");
+            if ((hasItem(e.name[1]) && e.name[1].includes('3_')) || (hasItem(e.name[1])) && e.name[1].includes('0_')) {
+                listDiv.innerHTML += "\n                <div id=\"item-selling-".concat(i, "\" class=\"item\" style=\"background-image: url(./assets/items/").concat(e.name[1], ".png); opacity: 0.3\">\n                <p class=\"price\">\uC18C\uC720\uC911</p>\n                </div>");
+            }
+            else {
+                listDiv.innerHTML += "\n                <div id=\"item-selling-".concat(i, "\" class=\"item\" style=\"background-image: url(./assets/items/").concat(e.name[1], ".png);\">\n                    <p class=\"price\">G").concat(e.lower ? getPrice(i) : e.price, "</p>\n                </div>");
+            }
         }
     });
     items = document.querySelectorAll('#list>.item');
@@ -235,13 +254,25 @@ function refreshShop(element, index) {
     var underItem = document.querySelector('#need-items');
     var des = document.querySelector('#item-des');
     resultItem.style.backgroundImage = "url(./assets/items/".concat(itemData[index].name[1], ".png)");
-    resultItem.innerHTML = "<p class=\"price\">".concat((itemData[index].name[1].includes('b_1') || itemData[index].name[1].includes('b_2')) && hasBoots ?
-        "소유중" :
-        "G" + itemData[index].price, "</p>");
+    if ((itemData[index].name[1].includes('b_1') || itemData[index].name[1].includes('b_2') && hasBoots)) {
+        resultItem.innerHTML = "<p class=\"price\">\uC18C\uC720\uC911</p>";
+    }
+    else if ((hasItem(itemData[index].name[1]) && itemData[index].name[1].includes('3_')) || (hasItem(itemData[index].name[1]) && itemData[index].name[1].includes('0_'))) {
+        resultItem.innerHTML = "<p class=\"price\">\uC18C\uC720\uC911</p>";
+    }
+    else {
+        resultItem.innerHTML = "<p class=\"price\">".concat(itemData[index].price, "G</p>");
+    }
     underItem.innerHTML = '';
     des.innerHTML = '';
     if (itemData[itemInfo].lower) {
-        resultItem.innerHTML = "<p class=\"price\">G".concat(getPrice(index), "</p>");
+        if (hasItem(itemData[index].name[1]) && itemData[index].name[1].includes('3_') || (hasItem(itemData[index].name[1]) && itemData[index].name[1].includes('0_'))) {
+            resultItem.innerHTML = "<p class=\"price\">\uC18C\uC720\uC911</p>";
+        }
+        else {
+            resultItem.innerHTML = "<p class=\"price\">G".concat(getPrice(index), "</p>");
+        }
+        // resultItem.innerHTML = `<p class="price">G${ getPrice(index) }</p>`;
     }
     des.innerHTML = "<h2>".concat(itemData[itemInfo].name[0], "</h2>");
     if (itemData[itemInfo].ability.ad)
@@ -274,6 +305,8 @@ function refreshShop(element, index) {
         des.innerHTML += "<p>\uCCB4\uB825 \uD68C\uBCF5 \uC18D\uB3C4 \uC99D\uAC00: ".concat(itemData[itemInfo].ability.healthBoost, "%</p>");
     if (itemData[itemInfo].ability.ignoreArmor)
         des.innerHTML += "<p>\uBB3C\uB9AC \uAD00\uD1B5\uB825: ".concat(itemData[itemInfo].ability.ignoreArmor, "</p>");
+    if (itemData[itemInfo].ability.ignoreArmorPercent)
+        des.innerHTML += "<p>\uBC29\uC5B4\uAD6C \uAD00\uD1B5\uB825: ".concat(itemData[itemInfo].ability.ignoreArmorPercent, "%</p>");
     if (itemData[itemInfo].des)
         des.innerHTML += "<br/><b>\uAE30\uBCF8 \uC9C0\uC18D \uD6A8\uACFC</b> - ".concat((_d = (_c = (_b = (_a = itemData[itemInfo].des) === null || _a === void 0 ? void 0 : _a.replace(/\$e1/g, (itemData[itemInfo].extra[0]).toFixed())) === null || _b === void 0 ? void 0 : _b.replace(/\$e2/g, (itemData[itemInfo].extra[1] / 100).toFixed())) === null || _c === void 0 ? void 0 : _c.replace(/\$e3/g, (itemData[itemInfo].extra[2]).toFixed())) === null || _d === void 0 ? void 0 : _d.replace(/\$e4/g, (itemData[itemInfo].extra[3]).toFixed()));
     var aText = document.querySelector('#need-items-text');

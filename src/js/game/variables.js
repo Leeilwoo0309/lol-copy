@@ -16,11 +16,13 @@ var players = {
         selector: document.querySelector('.player.blue'),
         size: 30,
         hp: [100, 100],
+        barrier: [],
         spec: {
             ad: 30,
             atkspd: 1.5,
             armor: 30,
             ignoreArmor: 0,
+            ignoreArmorPercent: 0,
             range: 500,
             moveSpd: 5.5,
             criticD: 0,
@@ -47,6 +49,7 @@ var players = {
             atkspd: 0,
             armor: 0,
             ignoreArmor: 0,
+            ignoreArmorPercent: 0,
             range: 0,
             magicRegist: 0,
             skillHaste: 0,
@@ -69,7 +72,7 @@ var players = {
         status: {
             invisible: false,
         },
-        gold: 500,
+        gold: 50000,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
     },
     red: {
@@ -77,11 +80,13 @@ var players = {
         size: 30,
         // [최대, 현재]
         hp: [100, 100],
+        barrier: [],
         spec: {
             ad: 30,
             atkspd: 1,
             armor: 30,
             ignoreArmor: 0,
+            ignoreArmorPercent: 0,
             range: 500,
             moveSpd: 5,
             criticD: 0,
@@ -108,6 +113,7 @@ var players = {
             atkspd: 0,
             armor: 0,
             ignoreArmor: 0,
+            ignoreArmorPercent: 0,
             range: 0,
             magicRegist: 0,
             skillHaste: 0,
@@ -130,7 +136,7 @@ var players = {
         status: {
             invisible: false,
         },
-        gold: 500,
+        gold: 50000,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
     },
 };
@@ -188,6 +194,9 @@ var cooldownItem = {
     },
     sheen: {
         isActive: false
+    },
+    draksar: {
+        damage: 0
     }
 };
 var keyDown = {
@@ -210,14 +219,14 @@ var keyDown = {
 var absolutePosition = {
     // blue: {x: 4100, y: -430},
     blue: { x: 200, y: -430 },
-    red: { x: 4170, y: -430 }
-    // red : {x: 800, y: -430}
+    // red : {x: 4170, y: -430}
+    red: { x: 800, y: -430 }
 };
 var absolutePointerPosition = { x: 0, y: 0 };
 var cameraPosition = { x: 0, y: 0 };
 // let cameraSpd = 12;
 var atkWait = 0;
-var nexusHp = { blue: [3000, 3000], red: [3000, 3000] };
+var nexusHp = { blue: [7000, 7000], red: [7000, 7000] };
 var isNexusAlive = { blue: true, red: true };
 var gameObjects = [
     // 맵 [0~3]

@@ -7,6 +7,7 @@
         "atkspd": 1.1,
         "armor": 18,
         "ignoreArmor": 0,
+        "ignoreArmorPercent": 0,
         "magicRegist": 17,
         "skillHaste": 0,
         "range": 345,
@@ -28,7 +29,7 @@
     ],
     "skills": {
         "passive": {
-            "damage": 8,
+            "damage": 10,
             "ap": 0.02
         },
         "Q": {

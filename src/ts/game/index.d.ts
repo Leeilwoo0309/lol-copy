@@ -26,6 +26,7 @@ type PlayerDeclare = {
     size: number,
     selector: HTMLDivElement,
     hp: [number, number],
+    barrier: [number?, number?][]
     spec: Ability,
     specItem: Ability,
     specINIT: Ability,
@@ -73,6 +74,7 @@ type Ability = {
     healthBoost?: number,
     armor?: number,
     ignoreArmor?: number,
+    ignoreArmorPercent?: number,
     vamp?: number,
     criticP?: number,
     criticD?: number,
@@ -118,6 +120,7 @@ type ApheliosQSkillInfo = {
 }
 
 type ItemNamesEnglish =
+    "0_doran_ring" |
     "0_doran_shield" |
     "0_doran_blade" |
     "0_cull" |
@@ -125,6 +128,8 @@ type ItemNamesEnglish =
     "b_2spd" |
     "b_2skill_haste" |
     "b_2atkspd" |
+    "b_2armor" | 
+    "b_2magic_regis" |
     "1_glowing_mote" |
     "1_short_sword" |
     "1_bead" |
@@ -153,6 +158,8 @@ type ItemNamesEnglish =
     "2_guise" |
     "2_onpildo" |
     "2_noonquiver" |
+    "2_firestone" |
+    "2_colpild" |
     "3_navori" |
     "3_phantom_dance" |
     "3_wits_end" |
@@ -170,7 +177,9 @@ type ItemNamesEnglish =
     "3_bloodthir" |
     "3_tfo" |
     "3_infinity_edge" |
-    "3_decap";
+    "3_decap" |
+    "3_draksar" |
+    "3_shojin";
 
 type ChampionNames = 
     "ezreal" |

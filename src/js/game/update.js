@@ -118,12 +118,13 @@ setInterval(function () {
     players[team].spec = {
         ad: players[team].specINIT.ad + players[team].specItem.ad,
         ap: players[team].specINIT.ap + players[team].specItem.ap,
-        atkspd: Math.floor(players[team].specINIT.atkspd * (1 + Math.floor(players[team].specItem.atkspd) / 100) * 100) / 100,
+        atkspd: Math.round(players[team].specINIT.atkspd * (1 + Math.round(players[team].specItem.atkspd) / 100) * 100) / 100,
         armor: players[team].specINIT.armor + players[team].specItem.armor
             + legendItem * skillInfo.growth[2].armor
             + seosaItem * skillInfo.growth[1].armor
             + commonItem * skillInfo.growth[0].armor,
         ignoreArmor: players[team].specINIT.ignoreArmor + players[team].specItem.ignoreArmor,
+        ignoreArmorPercent: players[team].specINIT.ignoreArmorPercent + players[team].specItem.ignoreArmorPercent,
         magicRegist: players[team].specINIT.magicRegist + players[team].specItem.magicRegist
             + legendItem * skillInfo.growth[2].magicRegist
             + seosaItem * skillInfo.growth[1].magicRegist
@@ -146,11 +147,19 @@ setInterval(function () {
     if (hasItem('3_decap'))
         players[team].spec.ap *= findItem('3_decap').body.extra[0];
     if (hasItem('3_riftmaker'))
-        players[team].spec.ap += Math.floor(players[team].spec.health * findItem('3_riftmaker').body.extra[0] / 100);
+        players[team].spec.ap += Math.round(players[team].spec.health * findItem('3_riftmaker').body.extra[0] / 100);
+    if (hasItem('3_draksar')) {
+        cooldownItem.draksar.damage = (((1 - (players[getEnemyTeam()].hp[1] / players[getEnemyTeam()].hp[0]))) - 0.3) / 0.7 * findItem('3_draksar').body.extra[0] * players[team].spec.ad / 100;
+        if (players[getEnemyTeam()].hp[1] / players[getEnemyTeam()].hp[0] <= 0.3)
+            cooldownItem.draksar.damage = players[team].spec.ad * findItem('3_draksar').body.extra[0] / 100;
+    }
+    if (hasItem('3_bloodthir') && players[team].hp[1] / players[team].hp[0] >= findItem('3_bloodthir').body.extra[0] / 100)
+        players[team].spec.ad += findItem('3_bloodthir').body.extra[2];
     if (char[team] === 'vampire')
-        players[team].spec.vamp = Math.floor(players[team].spec.vamp * skillInfo.passive.vamp);
-    players[team].spec.atkspd = Math.floor(players[team].spec.atkspd * 100) / 100;
-    document.querySelector('#now-hp').innerHTML = "".concat(Math.floor(players[team].hp[1]), " / ").concat(players[team].hp[0]);
+        players[team].spec.vamp = Math.round(players[team].spec.vamp * skillInfo.passive.vamp);
+    players[team].spec.atkspd = Math.round(players[team].spec.atkspd * 100) / 100;
+    players[team].spec.ad += Math.round(cooldownItem.draksar.damage);
+    document.querySelector('#now-hp').innerHTML = "".concat(Math.round(players[team].hp[1]), " / ").concat(players[team].hp[0]);
     hpProgressBars.forEach(function (e) {
         if (e.className.indexOf('nexus') >= 0 && e.className.indexOf('blue') >= 0) {
             e.style.width = "".concat(nexusHp.blue[1] / nexusHp.blue[0] * 100, "%");
@@ -159,17 +168,49 @@ setInterval(function () {
             e.style.width = "".concat(nexusHp.red[1] / nexusHp.red[0] * 100, "%");
         }
         else if (e.className.indexOf(team) >= 0) {
+            var totalBarrier_1 = 0;
+            players[team].barrier.forEach(function (e) { return totalBarrier_1 += e[0]; });
             e.style.width = "".concat(players[team].hp[1] / players[team].hp[0] * 100, "%");
+            if (players[team].hp[1] + totalBarrier_1 > players[team].hp[0]) {
+                e.style.width = "".concat(Math.abs(players[team].hp[1]) / (players[team].hp[0] + totalBarrier_1) * 100, "%");
+            }
+            if (e.className.includes('barrier')) {
+                if (players[team].hp[1] + totalBarrier_1 > players[team].hp[0]) {
+                    // e.style.width = `${ (players[team].hp[1] + totalBarrier) / (players[team].hp[0] + totalBarrier) * 100}%`;
+                    e.style.width = "".concat(100, "%");
+                    //@ts-ignore
+                    // `${ (players[team].hp[1] - totalBarrier) / (players[team].hp[0] + totalBarrier) * 100}%`;
+                }
+                else {
+                    e.style.width = "".concat((players[team].hp[1] + totalBarrier_1) / players[team].hp[0] * 100, "%");
+                }
+            }
         }
         else if (e.className.indexOf(getEnemyTeam()) >= 0) {
+            var totalBarrier_2 = 0;
+            players[getEnemyTeam()].barrier.forEach(function (e) { return totalBarrier_2 += e[0]; });
             e.style.width = "".concat(players[getEnemyTeam()].hp[1] / players[getEnemyTeam()].hp[0] * 100, "%");
+            if (players[getEnemyTeam()].hp[1] + totalBarrier_2 > players[getEnemyTeam()].hp[0]) {
+                e.style.width = "".concat(Math.abs(players[getEnemyTeam()].hp[1]) / (players[getEnemyTeam()].hp[0] + totalBarrier_2) * 100, "%");
+            }
+            if (e.className.includes('barrier')) {
+                if (players[getEnemyTeam()].hp[1] + totalBarrier_2 > players[getEnemyTeam()].hp[0]) {
+                    // e.style.width = `${ (players[getEnemyTeam()].hp[1] + totalBarrier) / (players[getEnemyTeam()].hp[0] + totalBarrier) * 100}%`;
+                    e.style.width = "".concat(100, "%");
+                    //@ts-ignore
+                    // `${ (players[getEnemyTeam()].hp[1] - totalBarrier) / (players[getEnemyTeam()].hp[0] + totalBarrier) * 100}%`;
+                }
+                else {
+                    e.style.width = "".concat((players[getEnemyTeam()].hp[1] + totalBarrier_2) / players[getEnemyTeam()].hp[0] * 100, "%");
+                }
+            }
         }
     });
     statusDiv.style.left = "".concat(window.innerWidth / 2 - 300, "px");
     itemsDiv.style.left = "".concat(window.innerWidth / 2 + 300, "px");
     itemsDiv.children[6].innerHTML = "<p id=\"gold\">G".concat(players[team].gold, "</p>");
     specDiv.style.left = "".concat(window.innerWidth / 2 - 470, "px");
-    specDiv.innerHTML = "\n        <p>\uACF5\uACA9\uB825: ".concat(players[team].spec.ad, "</p>\n        <p>\uC8FC\uBB38\uB825: ").concat(players[team].spec.ap, "</p>\n        <p>\uACF5\uACA9 \uC18D\uB3C4: ").concat(players[team].spec.atkspd, "</p>\n        <p>\uBC29\uC5B4\uB825: ").concat(Math.floor(players[team].spec.armor), "</p>\n        <p>\uB9C8\uBC95 \uC800\uD56D\uB825: ").concat(Math.floor(players[team].spec.magicRegist), "</p>\n        <p>\uC0AC\uAC70\uB9AC: ").concat(players[team].spec.range, "</p>\n        <p>\uC774\uB3D9\uC18D\uB3C4: ").concat(Math.floor((players[team].spec.moveSpd) * 100) / 100, "</p>\n        <p>\uCE58\uBA85\uD0C0 \uD655\uB960: ").concat(players[team].spec.criticP, "%</p>\n        <p>\uC0DD\uBA85\uB825 \uD761\uC218: ").concat(players[team].spec.vamp, "%</p>\n        <p>\uBB3C\uB9AC \uAD00\uD1B5\uB825: ").concat(players[team].spec.ignoreArmor, "</p>\n        <p>\uC2A4\uD0AC \uAC00\uC18D: ").concat(players[team].spec.skillHaste, "%</p>\n        <p>\uCD08\uB2F9 \uCCB4\uB825 \uD68C\uBCF5: ").concat(Math.floor((players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10) / 10, "</p>\n    ");
+    specDiv.innerHTML = "\n        <p>\uACF5\uACA9\uB825: ".concat(players[team].spec.ad, "</p>\n        <p>\uC8FC\uBB38\uB825: ").concat(players[team].spec.ap, "</p>\n        <p>\uACF5\uACA9 \uC18D\uB3C4: ").concat(players[team].spec.atkspd, "</p>\n        <p>\uBC29\uC5B4\uB825: ").concat(Math.round(players[team].spec.armor), "</p>\n        <p>\uB9C8\uBC95 \uC800\uD56D\uB825: ").concat(Math.round(players[team].spec.magicRegist), "</p>\n        <p>\uC0AC\uAC70\uB9AC: ").concat(players[team].spec.range, "</p>\n        <p>\uC774\uB3D9\uC18D\uB3C4: ").concat(Math.round((players[team].spec.moveSpd) * 100) / 100, "</p>\n        <p>\uCE58\uBA85\uD0C0 \uD655\uB960: ").concat(players[team].spec.criticP, "%</p>\n        <p>\uC0DD\uBA85\uB825 \uD761\uC218: ").concat(players[team].spec.vamp, "%</p>\n        <p>\uBB3C\uB9AC \uAD00\uD1B5\uB825: ").concat(players[team].spec.ignoreArmor, "</p>\n        <p>\uBC29\uC5B4\uAD6C \uAD00\uD1B5\uB825: ").concat(players[team].spec.ignoreArmorPercent, "%</p>\n        <p>\uC2A4\uD0AC \uAC00\uC18D: ").concat(players[team].spec.skillHaste, "</p>\n        <p>\uCD08\uB2F9 \uCCB4\uB825 \uD68C\uBCF5: ").concat(Math.round((players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10) / 10, "</p>\n    ");
     shopBtn.addEventListener('click', function () { shopOpen(); });
     var position = {
         x: parseFloat(players[team].selector.style.left),
@@ -254,7 +295,7 @@ setInterval(function () {
                     crescendumAa(angle);
                 }
                 // || (apheliosWeapon[1] === 'Infernum' && players[getEnemyTeam()].marker.aphelios.Calibrum)
-                if (apheliosWeapon[0] === 'Infernum') {
+                if (apheliosWeapon[0] === 'Infernum' || (apheliosWeapon[1] === 'Infernum' && players[getEnemyTeam()].marker.aphelios.Calibrum)) {
                     for (var i = -1; i <= 1; i += 2) {
                         projectiles[team].push(new ProjectileBuilder()
                             .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
@@ -316,7 +357,7 @@ setInterval(function () {
             skillBtns[index].style.color = 'black';
             skillBtns[index].style.border = '1px solid white';
             if (charClass.cooldown[skillKey] > 0)
-                skillBtns[index].innerHTML = "".concat(Math.floor(charClass.cooldown[skillKey] / 10) / 10);
+                skillBtns[index].innerHTML = "".concat(Math.round(charClass.cooldown[skillKey] / 10) / 10);
             else
                 skillBtns[index].innerHTML = "".concat(skillKey.toUpperCase());
         }
@@ -325,12 +366,12 @@ setInterval(function () {
             skillBtns[index].style.backgroundColor = 'black';
             skillBtns[index].style.color = 'white';
             skillBtns[index].style.border = '1px solid white';
-            skillBtns[index].innerHTML = "".concat(Math.floor(charClass.cooldown[skillKey] / 10) / 10);
+            skillBtns[index].innerHTML = "".concat(Math.round(charClass.cooldown[skillKey] / 10) / 10);
             if (char[team] === 'aphelios' && skillKey === 'q') {
-                skillBtns[index].innerHTML = "".concat(Math.floor(charClass.cooldown[skillKey] / 10) / 10, " <br/> (").concat(apheliosAmmo[0], ")");
+                skillBtns[index].innerHTML = "".concat(Math.round(charClass.cooldown[skillKey] / 10) / 10, " <br/> (").concat(apheliosAmmo[0], ")");
             }
             else if (char[team] === 'aphelios' && skillKey === 'e') {
-                skillBtns[index].innerHTML = "".concat(Math.floor(charClass.cooldown[skillKey] / 10) / 10, " <br/> (").concat(apheliosAmmo[1], ")");
+                skillBtns[index].innerHTML = "".concat(Math.round(charClass.cooldown[skillKey] / 10) / 10, " <br/> (").concat(apheliosAmmo[1], ")");
             }
         }
         else if (charClass.cooldown[skillKey] == 0) {
@@ -347,7 +388,7 @@ setInterval(function () {
                     Infernum: 'white',
                     Crescendum: 'black'
                 };
-                skillBtns[index].innerHTML = "".concat(skillKey.toUpperCase(), " (").concat(apheliosAmmo[1], ") <br/> CHANGE ").concat(apheliosSkillCooldown[1] > 0 ? "<br /> ".concat(Math.floor(apheliosSkillCooldown[1] / 10) / 10) : '');
+                skillBtns[index].innerHTML = "".concat(skillKey.toUpperCase(), " (").concat(apheliosAmmo[1], ") <br/> CHANGE ").concat(apheliosSkillCooldown[1] > 0 ? "<br /> ".concat(Math.round(apheliosSkillCooldown[1] / 10) / 10) : '');
                 skillBtns[index].style.backgroundColor = weaponColor[apheliosWeapon[1]];
                 skillBtns[index].style.fontSize = '15px';
                 skillBtns[index].style.color = fontColor[apheliosWeapon[1]];
@@ -405,10 +446,10 @@ setInterval(function () {
     animation(team);
     animation(getEnemyTeam());
     // 아이템
-    if (hasItem("3_shieldbow") && cooldownItem.shieldbow == 0 && players[team].hp[1] / players[team].hp[0] <= 0.3 && players[team].hp[1] > 0) {
-        players[team].hp[1] += players[team].hp[0] * (findItem("3_shieldbow").body.extra[0] / 100);
-        cooldownItem.shieldbow = findItem("3_shieldbow").body.extra[1];
-    }
+    // if (hasItem("3_shieldbow") && cooldownItem.shieldbow == 0 && players[team].hp[1] / players[team].hp[0] <= 0.3 && players[team].hp[1] > 0) {
+    //     players[team].hp[1] += players[team].hp[0] * (findItem("3_shieldbow").body.extra[0] / 100);
+    //     cooldownItem.shieldbow = findItem("3_shieldbow").body.extra[1];
+    // }
     var newProjectiles = [];
     projectiles[team].forEach(function (e) {
         if (e.isArrive) {
@@ -420,6 +461,7 @@ setInterval(function () {
         pos: absolutePosition[team],
         projectiles: projectiles[team],
         hp: players[team].hp,
+        barrier: players[team].barrier,
         nexus: nexusHp[team],
         item: players[team].items,
         marker: players[team].marker,
@@ -495,7 +537,7 @@ setInterval(function () {
                 shieldbow.style.paddingTop = '10px';
                 shieldbow.style.marginBottom = '-30px';
                 shieldbow.style.height = '30px';
-                shieldbow.innerHTML = "".concat(Math.floor(cooldownItem.shieldbow / 10) / 10);
+                shieldbow.innerHTML = "".concat(Math.round(cooldownItem.shieldbow / 10) / 10);
             }
             else {
                 var shieldbow = document.querySelector("#vault-".concat(i + 1));
@@ -523,6 +565,15 @@ setInterval(function () {
             slowness = 0;
         }
     }
+    players[team].barrier.forEach(function (e, i) {
+        if (e[0] <= 0)
+            players[team].barrier.splice(i, 1);
+        if (e[1] > 0)
+            players[team].barrier[i][1] -= 1;
+        else if (e[1] <= 0)
+            players[team].barrier.splice(i, 1);
+    });
+    players[team].barrier.sort(function (x, y) { return x[1] - y[1]; });
 }, 10);
 setInterval(function () {
     var nexusIndex = { blue: [7, 8], red: [9, 10] };
@@ -536,7 +587,7 @@ setInterval(function () {
 setInterval(function () {
     var nexusIndex = { blue: [7, 8], red: [9, 10] };
     if (players[team].hp[1] < players[team].hp[0])
-        players[team].hp[1] += Math.floor((players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10) / 10;
+        players[team].hp[1] += Math.round((players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10) / 10;
     if (gameObjects[nexusIndex[team][0]].isCollide(players[team].selector)) {
         players[team].hp[1] += players[team].hp[0] / 40;
     }

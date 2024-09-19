@@ -118,12 +118,13 @@ setInterval(() => {
     players[team].spec = {
         ad: players[team].specINIT.ad + players[team].specItem.ad,
         ap: players[team].specINIT.ap + players[team].specItem.ap,
-        atkspd: Math.floor(players[team].specINIT.atkspd * (1 + Math.floor(players[team].specItem.atkspd) / 100) * 100) / 100,
+        atkspd: Math.round(players[team].specINIT.atkspd * (1 + Math.round(players[team].specItem.atkspd) / 100) * 100) / 100,
         armor: players[team].specINIT.armor + players[team].specItem.armor
             + legendItem * skillInfo.growth[2].armor
             + seosaItem * skillInfo.growth[1].armor
             + commonItem * skillInfo.growth[0].armor,
         ignoreArmor: players[team].specINIT.ignoreArmor + players[team].specItem.ignoreArmor,
+        ignoreArmorPercent: players[team].specINIT.ignoreArmorPercent + players[team].specItem.ignoreArmorPercent,
         magicRegist: players[team].specINIT.magicRegist + players[team].specItem.magicRegist
             + legendItem * skillInfo.growth[2].magicRegist
             + seosaItem * skillInfo.growth[1].magicRegist
@@ -144,13 +145,20 @@ setInterval(() => {
         players[team].spec.atkspd *= 1 + findItem('3_guinsu').body.extra[0] / 100 * cooldownItem.guinsu.count;
     }
     if (hasItem('3_decap')) players[team].spec.ap *= findItem('3_decap').body.extra[0];
-    if (hasItem('3_riftmaker')) players[team].spec.ap += Math.floor(players[team].spec.health * findItem('3_riftmaker').body.extra[0] / 100);
+    if (hasItem('3_riftmaker')) players[team].spec.ap += Math.round(players[team].spec.health * findItem('3_riftmaker').body.extra[0] / 100);
+    if (hasItem('3_draksar')) {
+        cooldownItem.draksar.damage = (((1 - (players[getEnemyTeam()].hp[1] / players[getEnemyTeam()].hp[0]))) - 0.3) / 0.7 * findItem('3_draksar').body.extra[0] * players[team].spec.ad / 100;
+        
+        if (players[getEnemyTeam()].hp[1] / players[getEnemyTeam()].hp[0] <= 0.3) cooldownItem.draksar.damage = players[team].spec.ad * findItem('3_draksar').body.extra[0] / 100;
+    }
+    if (hasItem('3_bloodthir') && players[team].hp[1] / players[team].hp[0] >= findItem('3_bloodthir').body.extra[0] / 100) players[team].spec.ad += findItem('3_bloodthir').body.extra[2];
 
-    if (char[team] === 'vampire') players[team].spec.vamp = Math.floor(players[team].spec.vamp * skillInfo.passive.vamp);
+    if (char[team] === 'vampire') players[team].spec.vamp = Math.round(players[team].spec.vamp * skillInfo.passive.vamp);
 
-    players[team].spec.atkspd = Math.floor(players[team].spec.atkspd * 100) / 100;
+    players[team].spec.atkspd = Math.round(players[team].spec.atkspd * 100) / 100;
+    players[team].spec.ad += Math.round(cooldownItem.draksar.damage);
 
-    document.querySelector('#now-hp').innerHTML = `${ Math.floor(players[team].hp[1]) } / ${ players[team].hp[0] }`;
+    document.querySelector('#now-hp').innerHTML = `${ Math.round(players[team].hp[1]) } / ${ players[team].hp[0] }`;
 
     hpProgressBars.forEach(e => {
         if (e.className.indexOf('nexus') >= 0 && e.className.indexOf('blue') >= 0) {
@@ -158,9 +166,49 @@ setInterval(() => {
         } else if (e.className.indexOf('nexus') >= 0 && e.className.indexOf('red') >= 0) {
             e.style.width = `${ nexusHp.red[1] / nexusHp.red[0] * 100}%`;
         } else if (e.className.indexOf(team) >= 0) {
+            let totalBarrier: number = 0;
+            players[team].barrier.forEach(e => totalBarrier += e[0]);
+
             e.style.width = `${ players[team].hp[1] / players[team].hp[0] * 100}%`;
+
+            if (players[team].hp[1] + totalBarrier > players[team].hp[0]) {
+                e.style.width = `${ Math.abs(players[team].hp[1]) / (players[team].hp[0] + totalBarrier) * 100}%`;
+            }
+            
+            if (e.className.includes('barrier')) {
+                
+                if (players[team].hp[1] + totalBarrier > players[team].hp[0]) {
+                    // e.style.width = `${ (players[team].hp[1] + totalBarrier) / (players[team].hp[0] + totalBarrier) * 100}%`;
+                    e.style.width = `${ 100 }%`;
+                    //@ts-ignore
+                    // `${ (players[team].hp[1] - totalBarrier) / (players[team].hp[0] + totalBarrier) * 100}%`;
+                } else {
+                    e.style.width = `${ (players[team].hp[1] + totalBarrier) / players[team].hp[0] * 100}%`;
+                }
+    
+            }
         } else if (e.className.indexOf(getEnemyTeam()) >= 0) {
+            let totalBarrier: number = 0;
+            players[getEnemyTeam()].barrier.forEach(e => totalBarrier += e[0]);
+
             e.style.width = `${ players[getEnemyTeam()].hp[1] / players[getEnemyTeam()].hp[0] * 100}%`;
+
+            if (players[getEnemyTeam()].hp[1] + totalBarrier > players[getEnemyTeam()].hp[0]) {
+                e.style.width = `${ Math.abs(players[getEnemyTeam()].hp[1]) / (players[getEnemyTeam()].hp[0] + totalBarrier) * 100}%`;
+            }
+            
+            if (e.className.includes('barrier')) {
+                
+                if (players[getEnemyTeam()].hp[1] + totalBarrier > players[getEnemyTeam()].hp[0]) {
+                    // e.style.width = `${ (players[getEnemyTeam()].hp[1] + totalBarrier) / (players[getEnemyTeam()].hp[0] + totalBarrier) * 100}%`;
+                    e.style.width = `${ 100 }%`;
+                    //@ts-ignore
+                    // `${ (players[getEnemyTeam()].hp[1] - totalBarrier) / (players[getEnemyTeam()].hp[0] + totalBarrier) * 100}%`;
+                } else {
+                    e.style.width = `${ (players[getEnemyTeam()].hp[1] + totalBarrier) / players[getEnemyTeam()].hp[0] * 100}%`;
+                }
+    
+            }
         }
     });
 
@@ -172,16 +220,17 @@ setInterval(() => {
         <p>공격력: ${ players[team].spec.ad }</p>
         <p>주문력: ${ players[team].spec.ap }</p>
         <p>공격 속도: ${ players[team].spec.atkspd }</p>
-        <p>방어력: ${ Math.floor(players[team].spec.armor) }</p>
-        <p>마법 저항력: ${ Math.floor(players[team].spec.magicRegist) }</p>
+        <p>방어력: ${ Math.round(players[team].spec.armor) }</p>
+        <p>마법 저항력: ${ Math.round(players[team].spec.magicRegist) }</p>
         <p>사거리: ${ players[team].spec.range }</p>
-        <p>이동속도: ${ Math.floor((players[team].spec.moveSpd) * 100) / 100 }</p>
+        <p>이동속도: ${ Math.round((players[team].spec.moveSpd) * 100) / 100 }</p>
         <p>치명타 확률: ${ players[team].spec.criticP }%</p>
         <p>생명력 흡수: ${ players[team].spec.vamp }%</p>
         <p>물리 관통력: ${ players[team].spec.ignoreArmor }</p>
-        <p>스킬 가속: ${ players[team].spec.skillHaste }%</p>
+        <p>방어구 관통력: ${ players[team].spec.ignoreArmorPercent }%</p>
+        <p>스킬 가속: ${ players[team].spec.skillHaste }</p>
         <p>초당 체력 회복: ${
-            Math.floor(
+            Math.round(
                 (players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10
             ) / 10 
         }</p>
@@ -288,7 +337,7 @@ setInterval(() => {
                 }
 
                     // || (apheliosWeapon[1] === 'Infernum' && players[getEnemyTeam()].marker.aphelios.Calibrum)
-                if (apheliosWeapon[0] === 'Infernum') {
+                if (apheliosWeapon[0] === 'Infernum' || (apheliosWeapon[1] === 'Infernum' && players[getEnemyTeam()].marker.aphelios.Calibrum)) {
                     for (let i = -1; i <= 1; i += 2) {
                         projectiles[team].push(
                             new ProjectileBuilder()
@@ -354,7 +403,7 @@ setInterval(() => {
             skillBtns[index].style.color = 'black';
             skillBtns[index].style.border = '1px solid white';
 
-            if (charClass.cooldown[skillKey] > 0) skillBtns[index].innerHTML = `${ Math.floor(charClass.cooldown[skillKey] / 10) / 10  }`;
+            if (charClass.cooldown[skillKey] > 0) skillBtns[index].innerHTML = `${ Math.round(charClass.cooldown[skillKey] / 10) / 10  }`;
             else skillBtns[index].innerHTML = `${ skillKey.toUpperCase() }`;
         } else if (charClass.cooldown[skillKey] > 0) {
             // 쿨타임일 때
@@ -362,12 +411,12 @@ setInterval(() => {
             skillBtns[index].style.color = 'white';
             skillBtns[index].style.border = '1px solid white';
     
-            skillBtns[index].innerHTML = `${ Math.floor(charClass.cooldown[skillKey] / 10) / 10  }`;
+            skillBtns[index].innerHTML = `${ Math.round(charClass.cooldown[skillKey] / 10) / 10  }`;
             
             if (char[team] === 'aphelios' && skillKey === 'q') {
-                skillBtns[index].innerHTML = `${ Math.floor(charClass.cooldown[skillKey] / 10) / 10  } <br/> (${ apheliosAmmo[0] })`;
+                skillBtns[index].innerHTML = `${ Math.round(charClass.cooldown[skillKey] / 10) / 10  } <br/> (${ apheliosAmmo[0] })`;
             } else if (char[team] === 'aphelios' && skillKey === 'e') {
-                skillBtns[index].innerHTML = `${ Math.floor(charClass.cooldown[skillKey] / 10) / 10  } <br/> (${ apheliosAmmo[1] })`;
+                skillBtns[index].innerHTML = `${ Math.round(charClass.cooldown[skillKey] / 10) / 10  } <br/> (${ apheliosAmmo[1] })`;
             }
         } else if (charClass.cooldown[skillKey] == 0) {
             //그냥
@@ -386,7 +435,7 @@ setInterval(() => {
                     Crescendum: 'black'
                 };
                 
-                skillBtns[index].innerHTML = `${ skillKey.toUpperCase() } (${ apheliosAmmo[1] }) <br/> CHANGE ${ apheliosSkillCooldown[1] > 0 ? `<br /> ${Math.floor(apheliosSkillCooldown[1] / 10) / 10}` : '' }`;
+                skillBtns[index].innerHTML = `${ skillKey.toUpperCase() } (${ apheliosAmmo[1] }) <br/> CHANGE ${ apheliosSkillCooldown[1] > 0 ? `<br /> ${Math.round(apheliosSkillCooldown[1] / 10) / 10}` : '' }`;
                 skillBtns[index].style.backgroundColor = weaponColor[apheliosWeapon[1]];
                 skillBtns[index].style.fontSize = '15px';
                 skillBtns[index].style.color = fontColor[apheliosWeapon[1]];
@@ -447,10 +496,10 @@ setInterval(() => {
 
 
     // 아이템
-    if (hasItem("3_shieldbow") && cooldownItem.shieldbow == 0 && players[team].hp[1] / players[team].hp[0] <= 0.3 && players[team].hp[1] > 0) {
-        players[team].hp[1] += players[team].hp[0] * (findItem("3_shieldbow").body.extra[0] / 100);
-        cooldownItem.shieldbow = findItem("3_shieldbow").body.extra[1];
-    }
+    // if (hasItem("3_shieldbow") && cooldownItem.shieldbow == 0 && players[team].hp[1] / players[team].hp[0] <= 0.3 && players[team].hp[1] > 0) {
+    //     players[team].hp[1] += players[team].hp[0] * (findItem("3_shieldbow").body.extra[0] / 100);
+    //     cooldownItem.shieldbow = findItem("3_shieldbow").body.extra[1];
+    // }
 
     let newProjectiles: Projectile[] = [];
 
@@ -466,6 +515,7 @@ setInterval(() => {
         pos: absolutePosition[team],
         projectiles: projectiles[team],
         hp: players[team].hp,
+        barrier: players[team].barrier,
         nexus: nexusHp[team],
         item: players[team].items,
         marker: players[team].marker,
@@ -541,7 +591,7 @@ setInterval(() => {
                 shieldbow.style.paddingTop = '10px';
                 shieldbow.style.marginBottom = '-30px';
                 shieldbow.style.height = '30px';
-                shieldbow.innerHTML = `${ Math.floor(cooldownItem.shieldbow / 10) / 10 }`;
+                shieldbow.innerHTML = `${ Math.round(cooldownItem.shieldbow / 10) / 10 }`;
             } else {
                 const shieldbow: HTMLDivElement = document.querySelector(`#vault-${ i + 1 }`);
                 
@@ -569,6 +619,14 @@ setInterval(() => {
             slowness = 0;
         }
     }
+
+    players[team].barrier.forEach((e, i) => {
+        if (e[0] <= 0) players[team].barrier.splice(i, 1);
+        if (e[1] > 0) players[team].barrier[i][1] -= 1;
+        else if (e[1] <= 0) players[team].barrier.splice(i, 1)
+    });
+
+    players[team].barrier.sort((x, y) => x[1] - y[1]);
 }, 10);
 
 setInterval(() => {
@@ -586,7 +644,7 @@ setInterval(() => {
 setInterval(() => {
     let nexusIndex = {blue: [7, 8], red: [9, 10]};
 
-    if (players[team].hp[1] < players[team].hp[0]) players[team].hp[1] += Math.floor(
+    if (players[team].hp[1] < players[team].hp[0]) players[team].hp[1] += Math.round(
         (players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10
     ) / 10 ;
     

@@ -4,9 +4,10 @@
     "defaultSpec": {
         "ad": 12,
         "ap": 0,
-        "atkspd": 1.1,
+        "atkspd": 1.05,
         "armor": 23,
         "ignoreArmor": 0,
+        "ignoreArmorPercent": 0,
         "magicRegist": 19,
         "skillHaste": 0,
         "range": 450,

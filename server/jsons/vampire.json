@@ -7,6 +7,7 @@
         "atkspd": 0.8,
         "armor": 26,
         "ignoreArmor": 0,
+        "ignoreArmorPercent": 0,
         "magicRegist": 24,
         "skillHaste": 0,
         "range": 400,
