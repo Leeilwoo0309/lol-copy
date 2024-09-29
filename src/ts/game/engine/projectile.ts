@@ -95,6 +95,7 @@ class Projectile {
                     if (!this.canPass) this.isArrive = false;
 
                     if (skillHit.vampire == true) return;
+                    if (skillHit.ashe == true) return;
 
                     // 크리티컬 데미지
                     if (isCritical) {
@@ -178,7 +179,7 @@ class Projectile {
                         }
                         if (e?.name[1] == '3_shadowflame' && this.damageType == 'magic' && isCritical) {
                             // players[team].hp[1] -= this.damage * criticalDamage * damageCoefficient.magic;
-                            totalDamage.magic += this.damage * criticalDamage * damageCoefficient.magic;
+                            totalDamage.magic += criticalDamage * damageCoefficient.magic;
                         }
                         
                     });
@@ -326,6 +327,32 @@ class Projectile {
                                 socket.send(JSON.stringify({body: {msg: "aphlios-crescendum"}}));
                             }
                         }
+                    } else if (this.onhit?.includes('ashe')) {
+                        players[team].marker.ashe = 1;
+                        slowness = (players[team].specINIT.moveSpd + players[team].specItem.moveSpd) * 0.2;
+                        
+                        slowTime = 250;
+
+                        if (this.onhit?.includes('ashe skill e')) {
+                            skillHit.ashe = true;
+
+                            setTimeout(() => {
+                                skillHit.ashe = false;
+                            }, 100);
+                        } else if (this.onhit?.includes('ashe skill wheel')) {
+                            canMove = false;
+
+                            charClass.cooldown.q += enemySkillInfo.wheel.duration;
+                            charClass.cooldown.e += enemySkillInfo.wheel.duration;
+                            charClass.cooldown.shift += enemySkillInfo.wheel.duration;
+                            charClass.cooldown.wheel += enemySkillInfo.wheel.duration;
+
+                            atkWait += enemySkillInfo.wheel.duration;
+
+                            setTimeout(() => {
+                                canMove = true;
+                            }, enemySkillInfo.wheel.duration * 10);
+                        }
                     }
 
                     if (this.onhit?.includes('skill')) {
@@ -385,29 +412,29 @@ class Projectile {
 
                     let totalDamageSum = totalDamage.magic + totalDamage.melee + totalDamage.true;
 
-                    if (players[team].barrier.length > 0) {
-                        let index: number = 0;
+                //     if (players[team].barrier.length > 0) {
+                //         let index: number = 0;
 
-                        while (true) {
-                            if (players[team].barrier.length < index) break;
+                //         while (true) {
+                //             if (players[team].barrier.length < index) break;
 
-                            let barrierMax = players[team].barrier[index][0]
-                            players[team].barrier[index][0] -= totalDamageSum;
+                //             let barrierMax = players[team].barrier[index][0]
+                //             players[team].barrier[index][0] -= totalDamageSum;
 
-                            if (players[team].barrier[index][0] < 0) {
-                                totalDamageSum -= barrierMax;
+                //             if (players[team].barrier[index][0] < 0) {
+                //                 totalDamageSum -= barrierMax;
                                 
-                                index += 1;
-                            } else {
-                                totalDamageSum = 0;
-                                break;
-                            }
-                        }
+                //                 index += 1;
+                //             } else {
+                //                 totalDamageSum = 0;
+                //                 break;
+                //             }
+                //         }
 
-                        players[team].hp[1] -= totalDamageSum;
-                    } else {
-                        players[team].hp[1] -= totalDamageSum;
-                    }
+                //         players[team].hp[1] -= totalDamageSum;
+                //     } else {
+                //         players[team].hp[1] -= totalDamageSum;
+                //     }
 
                 }
 
@@ -453,7 +480,7 @@ class Projectile {
                     if (char[team] == 'sniper' && charClass.isActive.q) charClass.isActive.q = false;
                     if (char[team] === 'aphelios' && this.onhit.includes('wheel')) {
                         if (apheliosWeapon[0] === 'Severum') {
-                            let heal: number = players[team].hp[0] * 0.3 + 20
+                            let heal: number = players[team].hp[0] * 0.2 + players[team].spec.ad * 0.3
                             players[team].hp[1] += heal;
                             damageAlert("heal", heal, false, team)
                         }

@@ -48,8 +48,8 @@ function makeGraves() {
         players[team].specINIT.magicRegist += skillInfo.shift.armor;
         graves.isActive.shift = true;
         setTimeout(function () {
-            players[team].specINIT.armor -= skillInfo.shift.armor;
-            players[team].specINIT.magicRegist -= skillInfo.shift.armor;
+            players[team].specINIT.armor -= skillInfo.shift.armor + players[team].spec.ad * skillInfo.shift.ad;
+            players[team].specINIT.magicRegist -= skillInfo.shift.armor + players[team].spec.ad * skillInfo.shift.ad;
             graves.isActive.shift = false;
         }, skillInfo.shift.duration * 10);
         var dash = setInterval(function () {

@@ -204,6 +204,7 @@ async function getData() {
     makeGraves();
     makeVampire();
     makeAphelios();
+    makeAshe();
 
     if (char[team] == 'ezreal') {
         charClass = ezreal;
@@ -223,6 +224,8 @@ async function getData() {
         charClass = vampire;
     } else if (char[team] == 'aphelios') {
         charClass = aphelios;
+    } else if (char[team] == 'ashe') {
+        charClass = ashe;
     }
 
     let fetchedItemData: ItemData[] = await getItemInfo();
@@ -237,6 +240,7 @@ async function getData() {
             if (e.grade) item.setGrade(e.grade);
             if (e.extra) item.setExtra(e.extra);
             if (e.des) item.setDescription(e.des);
+            if (e.active) item.setActive(e.active);
     
             itemData.push(
                 item.build()

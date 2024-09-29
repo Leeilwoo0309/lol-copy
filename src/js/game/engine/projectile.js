@@ -53,7 +53,7 @@ var Projectile = /** @class */ (function () {
             _bullet.style.opacity = "".concat(this.style.opacity, "%");
         _main.appendChild(_bullet);
         var update = setInterval(function () {
-            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u;
             // clearInterval(update);
             _this._movedDistance += _this.speed;
             var enemyTar = _this.targetEnemy[1] == 'blue' ? 'red' : 'blue';
@@ -83,6 +83,8 @@ var Projectile = /** @class */ (function () {
                     if (!_this.canPass)
                         _this.isArrive = false;
                     if (skillHit.vampire == true)
+                        return;
+                    if (skillHit.ashe == true)
                         return;
                     // 크리티컬 데미지
                     if (isCritical) {
@@ -160,7 +162,7 @@ var Projectile = /** @class */ (function () {
                         }
                         if ((e === null || e === void 0 ? void 0 : e.name[1]) == '3_shadowflame' && _this.damageType == 'magic' && isCritical) {
                             // players[team].hp[1] -= this.damage * criticalDamage * damageCoefficient.magic;
-                            totalDamage.magic += _this.damage * criticalDamage_1 * damageCoefficient_1.magic;
+                            totalDamage.magic += criticalDamage_1 * damageCoefficient_1.magic;
                         }
                     });
                     // 플레이어가 가지고 있는 아이템에 따라..
@@ -293,7 +295,29 @@ var Projectile = /** @class */ (function () {
                             }
                         }
                     }
-                    if ((_q = _this.onhit) === null || _q === void 0 ? void 0 : _q.includes('skill')) {
+                    else if ((_q = _this.onhit) === null || _q === void 0 ? void 0 : _q.includes('ashe')) {
+                        players[team].marker.ashe = 1;
+                        slowness = (players[team].specINIT.moveSpd + players[team].specItem.moveSpd) * 0.2;
+                        slowTime = 250;
+                        if ((_r = _this.onhit) === null || _r === void 0 ? void 0 : _r.includes('ashe skill e')) {
+                            skillHit.ashe = true;
+                            setTimeout(function () {
+                                skillHit.ashe = false;
+                            }, 100);
+                        }
+                        else if ((_s = _this.onhit) === null || _s === void 0 ? void 0 : _s.includes('ashe skill wheel')) {
+                            canMove = false;
+                            charClass.cooldown.q += enemySkillInfo.wheel.duration;
+                            charClass.cooldown.e += enemySkillInfo.wheel.duration;
+                            charClass.cooldown.shift += enemySkillInfo.wheel.duration;
+                            charClass.cooldown.wheel += enemySkillInfo.wheel.duration;
+                            atkWait += enemySkillInfo.wheel.duration;
+                            setTimeout(function () {
+                                canMove = true;
+                            }, enemySkillInfo.wheel.duration * 10);
+                        }
+                    }
+                    if ((_t = _this.onhit) === null || _t === void 0 ? void 0 : _t.includes('skill')) {
                         socket.send(JSON.stringify({ body: { msg: "onhit", target: 'enemy', type: "skill" } }));
                     }
                     else {
@@ -348,27 +372,24 @@ var Projectile = /** @class */ (function () {
                     damageAlert("true", totalDamage.true, isCritical, type == 'blue' ? 'red' : 'blue');
                     damageAlert("heal", (totalDamage.melee + totalDamage.magic) * players[type].spec.vamp / 100, false, type);
                     var totalDamageSum = totalDamage.magic + totalDamage.melee + totalDamage.true;
-                    if (players[team].barrier.length > 0) {
-                        var index = 0;
-                        while (true) {
-                            if (players[team].barrier.length < index)
-                                break;
-                            var barrierMax = players[team].barrier[index][0];
-                            players[team].barrier[index][0] -= totalDamageSum;
-                            if (players[team].barrier[index][0] < 0) {
-                                totalDamageSum -= barrierMax;
-                                index += 1;
-                            }
-                            else {
-                                totalDamageSum = 0;
-                                break;
-                            }
-                        }
-                        players[team].hp[1] -= totalDamageSum;
-                    }
-                    else {
-                        players[team].hp[1] -= totalDamageSum;
-                    }
+                    //     if (players[team].barrier.length > 0) {
+                    //         let index: number = 0;
+                    //         while (true) {
+                    //             if (players[team].barrier.length < index) break;
+                    //             let barrierMax = players[team].barrier[index][0]
+                    //             players[team].barrier[index][0] -= totalDamageSum;
+                    //             if (players[team].barrier[index][0] < 0) {
+                    //                 totalDamageSum -= barrierMax;
+                    //                 index += 1;
+                    //             } else {
+                    //                 totalDamageSum = 0;
+                    //                 break;
+                    //             }
+                    //         }
+                    //         players[team].hp[1] -= totalDamageSum;
+                    //     } else {
+                    //         players[team].hp[1] -= totalDamageSum;
+                    //     }
                 }
                 var nexusIndex = { blue: [7, 8], red: [9, 10] };
                 if (_this.isCollideWithNexus(gameObjects[nexusIndex[team][1]].objSelector, _bullet) && gameObjects[nexusIndex[team][0]].isCollide(players[getEnemyTeam()].selector) && !_this.isCollide) {
@@ -401,7 +422,7 @@ var Projectile = /** @class */ (function () {
                         onhitCount[type] += 1;
                     if (!_this.canPass)
                         _this.isArrive = false;
-                    if (char[team] == 'ezreal' && ((_r = _this.onhit) === null || _r === void 0 ? void 0 : _r.includes('skill'))) {
+                    if (char[team] == 'ezreal' && ((_u = _this.onhit) === null || _u === void 0 ? void 0 : _u.includes('skill'))) {
                         _this.isCollide = true;
                         charClass.cooldown.q -= skillInfo.passive.skillHaste;
                         charClass.cooldown.e -= skillInfo.passive.skillHaste;
@@ -412,7 +433,7 @@ var Projectile = /** @class */ (function () {
                         charClass.isActive.q = false;
                     if (char[team] === 'aphelios' && _this.onhit.includes('wheel')) {
                         if (apheliosWeapon[0] === 'Severum') {
-                            var heal = players[team].hp[0] * 0.3 + 20;
+                            var heal = players[team].hp[0] * 0.2 + players[team].spec.ad * 0.3;
                             players[team].hp[1] += heal;
                             damageAlert("heal", heal, false, team);
                         }

@@ -27,7 +27,7 @@ function makeSamira() {
     players[team].selector.appendChild(styleGradePrint);
     
     samira.passive = () => {
-        passiveActiveTime = 600;
+        passiveActiveTime = 800;
 
         if (styleGrade < 6 && lastAttackType !== currentAttackType) {
             styleGrade += 1;

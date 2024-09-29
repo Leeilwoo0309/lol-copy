@@ -18,7 +18,7 @@ var charKr = {
 if (result == 'win') {
     console.log('win');
     //  "win", "lose", "items", "dmgs", "projectileHit"
-    // fetch(`http://kimchi-game.kro.kr:1973/addPlay?data=${ params.get('game') }`).then(r => r.json());
+    fetch("http://kimchi-game.kro.kr:1973/addPlay?data=".concat(params.get('game'))).then(function (r) { return r.json(); });
 }
 if (result == 'win') {
     resultPar.innerHTML = '결과 - <span style="color: rgb(0, 150, 255)">승리</span>';

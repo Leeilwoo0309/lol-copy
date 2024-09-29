@@ -39,10 +39,33 @@ var selectedP = document.querySelector('.selected-display');
 var des = document.querySelector('.description');
 var readyBtn = document.querySelector('#ready-btn');
 var _socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
-var selected = { ally: undefined, enemy: undefined };
+var selected = { ally: [undefined, undefined], enemy: [undefined, undefined] };
 var chars = undefined;
 var charName = ['teacher', 'sniper', 'ezreal', 'samira', 'vayne', 'exponent', 'graves', 'vampire', 'aphelios', 'assassin'];
 var charNameKr = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '베인', '엑스포넨트', '그레이브즈', '블라디미르', '아펠리오스', '어쌔신'];
+var charNameKrToEng = {
+    스나이퍼: 'sniper',
+    이즈리얼: 'ezreal',
+    사미라: 'samira',
+    베인: 'vayne',
+    엑스포넨트: 'exponent',
+    그레이브즈: 'graves',
+    블라디미르: 'vampire',
+    아펠리오스: 'aphelios',
+    애쉬: 'ashe'
+};
+var charNameEngToKr = {
+    sniper: '스나이퍼',
+    ezreal: '이즈리얼',
+    samira: '사미라',
+    vayne: '베인',
+    exponent: '엑스포넨트',
+    graves: '그레이브즈',
+    vampire: '블라디미르',
+    aphelios: '아펠리오스',
+    ashe: '애쉬',
+    undefined: '정하지 않음'
+};
 var readyStatus = [false, false];
 function getCharInfo(name) {
     return __awaiter(this, void 0, void 0, function () {
@@ -65,11 +88,12 @@ function getCharInfo(name) {
 charsBtn.forEach(function (e, i) {
     e.addEventListener('click', function () {
         var _a;
-        selected.ally = i;
+        selected.ally = [charNameKrToEng[e.innerHTML], i];
+        console.log(selected);
         (_a = document.querySelector('.selected')) === null || _a === void 0 ? void 0 : _a.classList.remove('selected');
         e.classList.add('selected');
-        getCharInfo(charName[selected.ally]);
-        _socket.send(JSON.stringify({ body: { selection: i } }));
+        getCharInfo(selected.ally[0]);
+        _socket.send(JSON.stringify({ body: { selection: selected.ally } }));
     });
 });
 readyBtn.addEventListener('click', function () {
@@ -77,10 +101,10 @@ readyBtn.addEventListener('click', function () {
         alert("챔피언을 선택해주세요.");
         return;
     }
-    if (selected.ally >= 9) {
-        alert("그챔 아직 안만듦~~");
-        return;
-    }
+    // if (selected.ally >= 9) {
+    //     alert("그챔 아직 안만듦~~");
+    //     return;
+    // }
     readyStatus[0] = !readyStatus[0];
     _socket.send(JSON.stringify({
         body: {
@@ -96,7 +120,7 @@ _socket.onopen = function () {
         reader.onload = function () {
             //@ts-ignore
             var sentJson = JSON.parse(reader.result);
-            console.log(sentJson);
+            // console.log(sentJson);
             if (sentJson.body) {
                 if (sentJson.body.selection !== undefined) {
                     selected.enemy = sentJson.body.selection;
@@ -141,7 +165,7 @@ function updateSelected() {
     if (chars) {
         des.innerHTML = "\n                <h2>".concat(chars.name, "</h2>\n                <hr />\n                <p>\uCCB4\uB825: ").concat(chars.defaultSpec.health, "</p>\n                <p>\uCCB4\uB825 \uC7AC\uC0DD: ").concat(chars.defaultSpec.healthBoost, "</p>\n                <p>\uACF5\uACA9\uB825: ").concat(chars.defaultSpec.ad, "</p>\n                <p>\uACF5\uACA9 \uC18D\uB3C4: ").concat(chars.defaultSpec.atkspd, "</p>\n                <p>\uBC29\uC5B4\uB825: ").concat(chars.defaultSpec.armor, "</p>\n                <p>\uB9C8\uBC95 \uC800\uD56D\uB825: ").concat(chars.defaultSpec.magicRegist, "</p>\n                <p>\uC0AC\uAC70\uB9AC: ").concat(chars.defaultSpec.range, "</p>\n                <p>\uC774\uB3D9 \uC18D\uB3C4: ").concat(chars.defaultSpec.moveSpd, "</p>\n                <p><b>\uAE30\uBCF8 \uC9C0\uC18D \uD6A8\uACFC</b><span> - ").concat(generateDes(chars.des.passive, chars), "</span></p>\n                <p><b>\uC2A4\uD0AC Q</b><span> - ").concat(generateDes(chars.des.Q, chars), " </span></p>\n                <p><b>\uC2A4\uD0AC E</b><span> - ").concat(generateDes(chars.des.E, chars), " </span></p>\n                <p><b>\uC2A4\uD0AC Shift</b><span> - ").concat(generateDes(chars.des.Shift, chars), " </span></p>\n                <p><b>\uC2A4\uD0AC Wheel (\uAD81\uADF9\uAE30)</b><span> - ").concat(generateDes(chars.des.Wheel, chars), " </span></p>\n        ");
     }
-    selectedP.innerHTML = "<b>".concat((_a = charNameKr[selected.ally]) !== null && _a !== void 0 ? _a : "정하지 않음", " (\uB098)</b> vs <span>").concat((_b = charNameKr[selected.enemy]) !== null && _b !== void 0 ? _b : "정하지 않음", " (\uC0C1\uB300)</span>");
+    selectedP.innerHTML = "<b>".concat((_a = charNameEngToKr[selected.ally[0]]) !== null && _a !== void 0 ? _a : "정하지 않음", " (\uB098)</b> vs <span>").concat((_b = charNameEngToKr[selected.enemy[0]]) !== null && _b !== void 0 ? _b : "정하지 않음", " (\uC0C1\uB300)</span>");
 }
 setInterval(function () {
     updateSelected();

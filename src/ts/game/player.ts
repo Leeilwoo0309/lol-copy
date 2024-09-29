@@ -97,31 +97,44 @@ function checkCollide(position: Position) {
 }
 
 function animation(_team: 'red' | 'blue') {
-    if (players[_team].marker?.ezreal == true) {
-        players[_team].selector.style.boxShadow = `rgb(235, 201, 54) 0px 0px 10px`;
-        players[_team].selector.style.border = `3px solid rgb(235, 201, 54)`;
-    } else if (players[_team].marker?.ezreal == false) {
-        players[_team].selector.style.boxShadow = ``;
-        players[_team].selector.style.border = ``;
+    let enemyTeam: 'red' | 'blue' = _team === 'blue' ? 'red' : 'blue';
+
+    if (char[enemyTeam] === 'ezreal') {
+        if (players[_team].marker?.ezreal == true) {
+            players[_team].selector.style.boxShadow = `rgb(235, 201, 54) 0px 0px 10px`;
+            players[_team].selector.style.border = `3px solid rgb(235, 201, 54)`;
+        } else if (players[_team].marker?.ezreal == false) {
+            players[_team].selector.style.boxShadow = ``;
+            players[_team].selector.style.border = ``;
+        }
+    } else if (char[enemyTeam] === 'vayne') {
+        if (players[_team].marker?.vayne == 1) {
+            players[_team].selector.style.boxShadow = `rgb(0, 128, 255) 0px 0px 10px`;
+        } else if (players[_team].marker?.vayne == 2) {
+            players[_team].selector.style.boxShadow = `rgb(255, 0, 0) 0px 0px 10px`;
+        } else if (players[_team].marker?.vayne == 0) {
+            players[_team].selector.style.boxShadow = ``;
+            players[_team].selector.style.border = ``;
+        }
+    } else if (char[enemyTeam] === 'aphelios') {
+        if (players[_team].marker?.aphelios?.Calibrum ===  true) {
+            players[_team].selector.style.boxShadow = `darkturquoise 0px 0px 10px 5px`;
+        } else if (players[_team].marker?.aphelios?.Gravitum ===  true) {
+            players[_team].selector.style.boxShadow = `purple 0px 0px 10px 5px`;
+        } else if (players[_team].marker?.aphelios?.Gravitum === false && players[_team].marker?.aphelios?.Calibrum === false && char[_team == 'blue' ? 'red' : 'blue'] === 'aphelios') {
+            players[_team].selector.style.boxShadow = ``;
+            players[_team].selector.style.border = ``;
+        }
+    } else if (char[enemyTeam] === 'ashe') {
+        if (players[_team].marker.ashe !== 0) {
+            players[_team].selector.style.boxShadow = `rgb(48, 131, 175) 0px 0px 10px 5px`;
+        } else if (players[_team].marker.ashe === 0) {
+            players[_team].selector.style.boxShadow = ``;
+        }
     }
 
-    if (players[_team].marker?.vayne == 1) {
-        players[_team].selector.style.boxShadow = `rgb(0, 128, 255) 0px 0px 10px`;
-    } else if (players[_team].marker?.vayne == 2) {
-        players[_team].selector.style.boxShadow = `rgb(255, 0, 0) 0px 0px 10px`;
-    } else if (players[_team].marker?.vayne == 0) {
-        players[_team].selector.style.boxShadow = ``;
-        players[_team].selector.style.border = ``;
-    }
 
-    if (players[_team].marker?.aphelios?.Calibrum ===  true) {
-        players[_team].selector.style.boxShadow = `darkturquoise 0px 0px 10px 5px`;
-    } else if (players[_team].marker?.aphelios?.Gravitum ===  true) {
-        players[_team].selector.style.boxShadow = `purple 0px 0px 10px 5px`;
-    } else if (players[_team].marker?.aphelios?.Gravitum === false && players[_team].marker?.aphelios?.Calibrum === false && char[_team == 'blue' ? 'red' : 'blue'] === 'aphelios') {
-        players[_team].selector.style.boxShadow = ``;
-        players[_team].selector.style.border = ``;
-    }
+
 
     if (players[_team].status.invisible && _team == team) {
         players[_team].selector.style.opacity = '20%'
@@ -156,9 +169,9 @@ function damageAlert(type: 'melee' | 'magic' | 'true' | 'heal', dmg: number, isC
         heal: 'rgb(0, 180, 0)'
     }
 
-    if (Math.floor(dmg) == 0) return;
+    if (Math.round(dmg) == 0) return;
 
-    alerter.innerHTML = `${ Math.floor(dmg) }`;
+    alerter.innerHTML = `${ Math.round(dmg) }`;
     alerter.style.opacity = '100%';
     alerter.style.marginTop = `-${Math.random() * 20 + 30}px`;
     alerter.style.marginLeft = `${ Math.random() * 50 - 20 }px`;
@@ -172,13 +185,12 @@ function damageAlert(type: 'melee' | 'magic' | 'true' | 'heal', dmg: number, isC
     
     if (isCritical) {
         alerter.style.fontWeight = '800';
-        alerter.innerHTML = `${ Math.floor(dmg) }!`;
+        alerter.innerHTML = `${ Math.round(dmg) }!`;
         alerter.style.fontSize = `${ Math.log2(dmg * 4) + 20 }px`;
     }
 
     if (dmg == 9999 && type == 'true' && target != team) {
         players[team].gold += findItem('3_collector').body.extra[2];
-        // console.log(`${findItem('3_collector').body.extra[2]}원 들어옴ㅅㅅ`);
     } else if (dmg == 9999 && type == 'true' && target == team) {
         death();
         socket.send(JSON.stringify({body: {msg: "death"}}));
@@ -186,6 +198,36 @@ function damageAlert(type: 'melee' | 'magic' | 'true' | 'heal', dmg: number, isC
 
     
     damageAmount[target] += dmg;
+    let totalDamageSum: number = dmg;
+
+    if (target == team) {
+        if (players[team].barrier.length > 0) {
+            let index: number = 0;
+
+            while (true) {
+                if (players[team].barrier.length < index) break;
+
+                let barrierMax = players[team].barrier[index][0]
+                players[team].barrier[index][0] -= totalDamageSum;
+
+                if (players[team].barrier[index][0] < 0) {
+                    totalDamageSum -= barrierMax;
+                    
+                    index += 1;
+                } else {
+                    totalDamageSum = 0;
+                    break;
+                }
+            }
+
+            players[team].hp[1] -= totalDamageSum;
+        } else {
+            players[team].hp[1] -= totalDamageSum;
+        }
+
+        if (type == 'heal' && target == team) players[team].hp[1] += totalDamageSum;
+
+    }
 
     parent.appendChild(alerter);
 
@@ -197,4 +239,4 @@ function damageAlert(type: 'melee' | 'magic' | 'true' | 'heal', dmg: number, isC
         alerter.style.display = 'none';
         parent.removeChild(alerter);
     }, 1000);
-}
+};

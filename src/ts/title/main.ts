@@ -4,10 +4,33 @@ const des: HTMLParagraphElement = document.querySelector('.description');
 const readyBtn: HTMLParagraphElement = document.querySelector('#ready-btn');
 const _socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 
-let selected: {ally: number, enemy: number} = {ally: undefined, enemy: undefined};
+let selected: {ally: [string, number], enemy: [string, number]} = {ally: [undefined, undefined], enemy: [undefined, undefined]};
 let chars: CharData = undefined;
 let charName: string[] = ['teacher', 'sniper', 'ezreal', 'samira', 'vayne', 'exponent', 'graves', 'vampire', 'aphelios', 'assassin'];
 let charNameKr: string[] = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '베인', '엑스포넨트', '그레이브즈', '블라디미르', '아펠리오스', '어쌔신'];
+let charNameKrToEng = {
+    스나이퍼: 'sniper',
+    이즈리얼: 'ezreal',
+    사미라: 'samira',
+    베인: 'vayne',
+    엑스포넨트: 'exponent',
+    그레이브즈: 'graves',
+    블라디미르: 'vampire',
+    아펠리오스: 'aphelios',
+    애쉬: 'ashe'
+}
+let charNameEngToKr = {
+    sniper: '스나이퍼',
+    ezreal: '이즈리얼',
+    samira: '사미라',
+    vayne: '베인',
+    exponent: '엑스포넨트',
+    graves: '그레이브즈',
+    vampire: '블라디미르',
+    aphelios: '아펠리오스',
+    ashe: '애쉬',
+    undefined: '정하지 않음'
+}
 let readyStatus: [boolean, boolean] = [false, false];
 
 async function getCharInfo(name: string) {
@@ -22,14 +45,15 @@ async function getCharInfo(name: string) {
 
 charsBtn.forEach((e, i) => {
     e.addEventListener('click', () => {
-        selected.ally = i;
+        selected.ally = [charNameKrToEng[e.innerHTML], i];
+        console.log(selected);
 
         document.querySelector('.selected')?.classList.remove('selected');
         e.classList.add('selected');
 
-        getCharInfo(charName[selected.ally]);
+        getCharInfo(selected.ally[0]);
 
-        _socket.send(JSON.stringify({body: {selection: i}}));
+        _socket.send(JSON.stringify({body: {selection: selected.ally}}));
     });
 });
 
@@ -39,10 +63,10 @@ readyBtn.addEventListener('click', () => {
         return;
     }
 
-    if (selected.ally >= 9) {
-        alert("그챔 아직 안만듦~~");
-        return;
-    }
+    // if (selected.ally >= 9) {
+    //     alert("그챔 아직 안만듦~~");
+    //     return;
+    // }
 
     readyStatus[0] = !readyStatus[0];
 
@@ -64,7 +88,7 @@ _socket.onopen = () => {
             //@ts-ignore
             const sentJson: {body: any} = JSON.parse(reader.result);
 
-            console.log(sentJson);
+            // console.log(sentJson);
 
             if (sentJson.body) {
                 if (sentJson.body.selection !== undefined) {
@@ -167,7 +191,6 @@ function updateSelected() {
             ?.replace(/사거리/g, `<b>사거리</b>`)
     }
     if (chars) {
-
         des.innerHTML = `
                 <h2>${ chars.name }</h2>
                 <hr />
@@ -186,7 +209,7 @@ function updateSelected() {
                 <p><b>스킬 Wheel (궁극기)</b><span> - ${ generateDes(chars.des.Wheel, chars) } </span></p>
         `
     }
-    selectedP.innerHTML = `<b>${ charNameKr[selected.ally] ?? "정하지 않음" } (나)</b> vs <span>${ charNameKr[selected.enemy] ??  "정하지 않음" } (상대)</span>`
+    selectedP.innerHTML = `<b>${ charNameEngToKr[selected.ally[0]] ?? "정하지 않음" } (나)</b> vs <span>${ charNameEngToKr[selected.enemy[0]] ??  "정하지 않음" } (상대)</span>`
 }
 
 setInterval(() => {

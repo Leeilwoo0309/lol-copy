@@ -11,6 +11,7 @@ let kda = {blue: [0, 0], red: [0, 0]};
 let damageAmount = {blue: 0, red: 0};
 let onhitCount = {blue: 0, red: 0};
 let canMove: boolean = true;
+let hasActiveItem: boolean = false;
 const players: Players = {
     blue: {
         selector: document.querySelector('.player.blue'),
@@ -67,7 +68,8 @@ const players: Players = {
                 Calibrum: false,
                 CalibrumWheel: false,
                 Gravitum: false
-            }
+            },
+            ashe: 0
         },
         status: {
             invisible: false,
@@ -131,7 +133,8 @@ const players: Players = {
                 Calibrum: false,
                 CalibrumWheel: false,
                 Gravitum: false
-            }
+            },
+            ashe: 0
         },
         status: {
             invisible: false,
@@ -154,6 +157,7 @@ let readyStatus = {blue: false, red: false};
 let playerDistance: number = 0;
 let skillHit = {
     vampire: false,
+    ashe: false
 }
 let slowTime: number = 0;
 let slowness: number = 0;

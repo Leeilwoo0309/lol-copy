@@ -40,7 +40,7 @@
             },
             "Severum": {
                 "cooldown": 850,
-                "damage": 8,
+                "damage": 6,
                 "ad": 0.4,
                 "vamp": 0.075,
                 "moveSpd" : 0.4,

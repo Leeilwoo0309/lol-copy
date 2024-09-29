@@ -23,7 +23,7 @@ function makeSamira() {
     catch (err) { }
     players[team].selector.appendChild(styleGradePrint);
     samira.passive = function () {
-        passiveActiveTime = 600;
+        passiveActiveTime = 800;
         if (styleGrade < 6 && lastAttackType !== currentAttackType) {
             styleGrade += 1;
             alphaMoveSpd = skillInfo.passive.moveSpd * styleGrade;

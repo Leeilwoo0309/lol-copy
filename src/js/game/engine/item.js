@@ -49,6 +49,10 @@ var ItemBuilder = /** @class */ (function () {
         this.item.des = des;
         return this;
     };
+    ItemBuilder.prototype.setActive = function (active) {
+        this.item.active = active;
+        return this;
+    };
     ItemBuilder.prototype.build = function () {
         return this.item;
     };

@@ -11,6 +11,7 @@ var kda = { blue: [0, 0], red: [0, 0] };
 var damageAmount = { blue: 0, red: 0 };
 var onhitCount = { blue: 0, red: 0 };
 var canMove = true;
+var hasActiveItem = false;
 var players = {
     blue: {
         selector: document.querySelector('.player.blue'),
@@ -67,7 +68,8 @@ var players = {
                 Calibrum: false,
                 CalibrumWheel: false,
                 Gravitum: false
-            }
+            },
+            ashe: 0
         },
         status: {
             invisible: false,
@@ -131,7 +133,8 @@ var players = {
                 Calibrum: false,
                 CalibrumWheel: false,
                 Gravitum: false
-            }
+            },
+            ashe: 0
         },
         status: {
             invisible: false,
@@ -152,6 +155,7 @@ var readyStatus = { blue: false, red: false };
 var playerDistance = 0;
 var skillHit = {
     vampire: false,
+    ashe: false
 };
 var slowTime = 0;
 var slowness = 0;

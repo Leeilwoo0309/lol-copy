@@ -66,8 +66,8 @@ function makeGraves() {
         graves.isActive.shift = true;
         
         setTimeout(() => {
-            players[team].specINIT.armor -= skillInfo.shift.armor;
-            players[team].specINIT.magicRegist -= skillInfo.shift.armor;
+            players[team].specINIT.armor -= skillInfo.shift.armor + players[team].spec.ad * skillInfo.shift.ad;
+            players[team].specINIT.magicRegist -= skillInfo.shift.armor + players[team].spec.ad * skillInfo.shift.ad;
             graves.isActive.shift = false;
         }, skillInfo.shift.duration * 10)
         

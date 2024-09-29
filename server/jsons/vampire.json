@@ -39,8 +39,8 @@
         },
         "E": {
             "cooldown": 1500,
-            "damage": 15,
-            "ap": 2.4
+            "damage": 20,
+            "ap": 2.8
         },
         "Shift": {
             "cooldown": 1500,
@@ -48,7 +48,7 @@
         },
         "Wheel": {
             "cooldown": 7500,
-            "damage": 27,
+            "damage": 20,
             "ap": 0.7,
             "duration": 400
         }

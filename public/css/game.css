@@ -395,6 +395,10 @@ body {
 }
 
 .item3 {
+    grid-column: span 2;
+}
+
+.item-active {
     grid-column: span 0;
 }
 

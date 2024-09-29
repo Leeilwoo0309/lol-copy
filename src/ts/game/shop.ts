@@ -16,6 +16,7 @@ resultItem.addEventListener('click', () => {
     if (team == 'red' && absolutePosition[team].x < 3530  && deathCoolDown[team] <= 0) return;
     if (hasItem(itemData[itemInfo].name[1]) && itemData[itemInfo].name[1].includes('3_')) return;
     if (hasItem(itemData[itemInfo].name[1]) && itemData[itemInfo].name[1].includes('0_')) return;
+    if (hasActiveItem && itemData[itemInfo].name[1].includes('a3_')) return;
     // 업그레이드하는 함수
     function upgradeLower() {
         let lower: string[] = [...itemData[itemInfo].lower];
@@ -96,6 +97,7 @@ resultItem.addEventListener('click', () => {
         if (itemData[itemInfo].name[1].includes('3_')) players[team].hp[1] += 300;
         if (itemData[itemInfo].name[1].includes('2_')) players[team].hp[1] += 80;
         if (itemData[itemInfo].name[1].includes('1_')) players[team].hp[1] += 30;
+        if (itemData[itemInfo].name[1].includes('a3_')) hasActiveItem = true;
         
         refreshPrice();
         sellItems();
@@ -117,6 +119,7 @@ function sellItems() {
 
                     if (sellitem.body.name[1].includes('b_1') || sellitem.body.name[1].includes('b_2'))
                         hasBoots = false;
+                    if (hasActiveItem && sellitem.body.name[1].includes('a3_')) hasActiveItem = false;
 
                     players[team].gold += players[team].items[i].price * 0.7;
                     players[team].items[i] = undefined;
@@ -140,9 +143,12 @@ function sellItems() {
                     };
                     if (itemData[itemInfo].ability.mana) players[team].specItem.mana -= itemData[itemInfo].ability.mana;
                     if (itemData[itemInfo].ability.manaR) players[team].specItem.manaR -= itemData[itemInfo].ability.manaR;
+
+                    refreshPrice();
                 }
             })
-        })
+        });
+
     }
 }
 
@@ -156,6 +162,11 @@ function refreshPrice() {
                 <div id="item-selling-${ i }" class="item ${ e.grade }" style="background-image: url(./assets/items/${ e.name[1] }.png);  opacity: 0.3">
                 <p class="price">소유중</p>
                 </div>`;
+            } else if (hasActiveItem && e.name[1].includes('a3_')) {
+                listDiv.innerHTML += `
+                <div id="item-selling-${ i }" class="item ${ e.grade }" style="background-image: url(./assets/items/${ e.name[1] }.png); opacity: 0.3">
+                    <p class="price" style="font-size: 13px;">구매 불가</p>
+                </div>`;
             } else {
                 listDiv.innerHTML += `
                 <div id="item-selling-${ i }" class="item ${ e.grade }" style="background-image: url(./assets/items/${ e.name[1] }.png);">
@@ -167,6 +178,11 @@ function refreshPrice() {
                 listDiv.innerHTML += `
                 <div id="item-selling-${ i }" class="item" style="background-image: url(./assets/items/${ e.name[1] }.png); opacity: 0.3">
                 <p class="price">소유중</p>
+                </div>`;
+            } else if (hasActiveItem && e.name[1].includes('a3_')) {
+                listDiv.innerHTML += `
+                <div id="item-selling-${ i }" class="item" style="background-image: url(./assets/items/${ e.name[1] }.png); opacity: 0.3">
+                    <p class="price" style="font-size: 13px;">구매 불가</p>
                 </div>`;
             } else {
                 listDiv.innerHTML += `
@@ -271,6 +287,11 @@ function refreshShop(element, index) {
         ?.replace(/\$e2/g, (itemData[itemInfo].extra[1] / 100).toFixed())
         ?.replace(/\$e3/g, (itemData[itemInfo].extra[2]).toFixed())
         ?.replace(/\$e4/g, (itemData[itemInfo].extra[3]).toFixed()) }`
+    if (itemData[itemInfo].name[1].includes('a3_')) {des.innerHTML += `<br/><b>사용 시 효과</b> - ${ itemData[itemInfo].active
+        ?.replace(/\$e1/g, (itemData[itemInfo].extra[0]).toFixed())
+        ?.replace(/\$e2/g, (itemData[itemInfo].extra[1] / 100).toFixed())
+        ?.replace(/\$e3/g, (itemData[itemInfo].extra[2]).toFixed())
+        ?.replace(/\$e4/g, (itemData[itemInfo].extra[3]).toFixed()) }`; console.log(itemData[itemInfo]);}
     const aText: HTMLParagraphElement = document.querySelector('#need-items-text');
 
     

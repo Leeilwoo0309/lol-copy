@@ -108,10 +108,11 @@ function makeAphelios() {
     setInterval(function () {
         if (char[team] === 'aphelios') {
             skillInfo.q = apheliosSkillInfo.q[apheliosWeapon[0]];
-            apheliosSkillCooldown.forEach(function (e, i) {
-                if (e > 0)
-                    apheliosSkillCooldown[i] -= 1;
-            });
+            if (apheliosSkillCooldown[1] > 0)
+                apheliosSkillCooldown[1] -= 1;
+            // apheliosSkillCooldown.forEach((e, i) => {
+            //     if (e > 0) apheliosSkillCooldown[i] -= 1;
+            // });
             apheliosAmmo.forEach(function (e, i) {
                 if (e <= 0) {
                     apheliosAmmo[0] = 50;
@@ -345,7 +346,7 @@ function makeAphelios() {
             canMove = true;
             var damage = players[team].spec.ad * skillInfo.wheel.ad + players[team].spec.ap * skillInfo.wheel.ap + skillInfo.wheel.damage;
             if (apheliosWeapon[0] === 'Infernum')
-                damage *= 2 + players[team].spec.ad * 0.008;
+                damage *= 1.5 + players[team].spec.ad * 0.005;
             projectiles[team].push(new ProjectileBuilder()
                 .setDamage(damage, skillInfo.wheel.type)
                 .setCritical(players[team].spec.criticP, players[team].spec.criticD)

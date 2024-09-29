@@ -32,10 +32,10 @@
             "cooldown": 2000,
             "ad": 2,
             "ap": 5,
-            "health": 20,
-            "armor": 3,
+            "health": 25,
+            "armor": 4,
             "range": 10,
-            "magicRegist": 2
+            "magicRegist": 4
         },
         "Q": {
             "cooldown": 900,
@@ -50,15 +50,15 @@
             "damage": 30,
             "ap": 1.7,
             "duration": 200,
-            "moveSpd": 0.75
+            "moveSpd": 0.25
         },
         "Shift": {
             "cooldown": 750,
             "range": 75,
-            "duration": 125
+            "duration": 300
         },
         "Wheel": {
-            "cooldown": 4700
+            "cooldown": 3800
         }
     },
     "des": {

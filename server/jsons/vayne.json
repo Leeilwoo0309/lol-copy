@@ -41,10 +41,10 @@
         "E": {
             "cooldown": 3000,
             "des": "burf-heal",
-            "criticD": 30,
+            "criticD": 25,
             "damage": 15,
-            "ap": 0.02,
-            "ad": 0.01
+            "ap": 0.4,
+            "ad": 0.1
         },
         "Shift": {
             "cooldown": 2000,
@@ -55,9 +55,9 @@
         },
         "Wheel": {
             "cooldown": 4700,
-            "damage": 13,
-            "moveSpd": 0.75,
-            "duration": 1000
+            "damage": 20,
+            "moveSpd": 0.35,
+            "duration": 1200
         }
     },
     "des": {

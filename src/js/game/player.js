@@ -94,33 +94,48 @@ function checkCollide(position) {
 }
 function animation(_team) {
     var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
-    if (((_a = players[_team].marker) === null || _a === void 0 ? void 0 : _a.ezreal) == true) {
-        players[_team].selector.style.boxShadow = "rgb(235, 201, 54) 0px 0px 10px";
-        players[_team].selector.style.border = "3px solid rgb(235, 201, 54)";
+    var enemyTeam = _team === 'blue' ? 'red' : 'blue';
+    if (char[enemyTeam] === 'ezreal') {
+        if (((_a = players[_team].marker) === null || _a === void 0 ? void 0 : _a.ezreal) == true) {
+            players[_team].selector.style.boxShadow = "rgb(235, 201, 54) 0px 0px 10px";
+            players[_team].selector.style.border = "3px solid rgb(235, 201, 54)";
+        }
+        else if (((_b = players[_team].marker) === null || _b === void 0 ? void 0 : _b.ezreal) == false) {
+            players[_team].selector.style.boxShadow = "";
+            players[_team].selector.style.border = "";
+        }
     }
-    else if (((_b = players[_team].marker) === null || _b === void 0 ? void 0 : _b.ezreal) == false) {
-        players[_team].selector.style.boxShadow = "";
-        players[_team].selector.style.border = "";
+    else if (char[enemyTeam] === 'vayne') {
+        if (((_c = players[_team].marker) === null || _c === void 0 ? void 0 : _c.vayne) == 1) {
+            players[_team].selector.style.boxShadow = "rgb(0, 128, 255) 0px 0px 10px";
+        }
+        else if (((_d = players[_team].marker) === null || _d === void 0 ? void 0 : _d.vayne) == 2) {
+            players[_team].selector.style.boxShadow = "rgb(255, 0, 0) 0px 0px 10px";
+        }
+        else if (((_e = players[_team].marker) === null || _e === void 0 ? void 0 : _e.vayne) == 0) {
+            players[_team].selector.style.boxShadow = "";
+            players[_team].selector.style.border = "";
+        }
     }
-    if (((_c = players[_team].marker) === null || _c === void 0 ? void 0 : _c.vayne) == 1) {
-        players[_team].selector.style.boxShadow = "rgb(0, 128, 255) 0px 0px 10px";
+    else if (char[enemyTeam] === 'aphelios') {
+        if (((_g = (_f = players[_team].marker) === null || _f === void 0 ? void 0 : _f.aphelios) === null || _g === void 0 ? void 0 : _g.Calibrum) === true) {
+            players[_team].selector.style.boxShadow = "darkturquoise 0px 0px 10px 5px";
+        }
+        else if (((_j = (_h = players[_team].marker) === null || _h === void 0 ? void 0 : _h.aphelios) === null || _j === void 0 ? void 0 : _j.Gravitum) === true) {
+            players[_team].selector.style.boxShadow = "purple 0px 0px 10px 5px";
+        }
+        else if (((_l = (_k = players[_team].marker) === null || _k === void 0 ? void 0 : _k.aphelios) === null || _l === void 0 ? void 0 : _l.Gravitum) === false && ((_o = (_m = players[_team].marker) === null || _m === void 0 ? void 0 : _m.aphelios) === null || _o === void 0 ? void 0 : _o.Calibrum) === false && char[_team == 'blue' ? 'red' : 'blue'] === 'aphelios') {
+            players[_team].selector.style.boxShadow = "";
+            players[_team].selector.style.border = "";
+        }
     }
-    else if (((_d = players[_team].marker) === null || _d === void 0 ? void 0 : _d.vayne) == 2) {
-        players[_team].selector.style.boxShadow = "rgb(255, 0, 0) 0px 0px 10px";
-    }
-    else if (((_e = players[_team].marker) === null || _e === void 0 ? void 0 : _e.vayne) == 0) {
-        players[_team].selector.style.boxShadow = "";
-        players[_team].selector.style.border = "";
-    }
-    if (((_g = (_f = players[_team].marker) === null || _f === void 0 ? void 0 : _f.aphelios) === null || _g === void 0 ? void 0 : _g.Calibrum) === true) {
-        players[_team].selector.style.boxShadow = "darkturquoise 0px 0px 10px 5px";
-    }
-    else if (((_j = (_h = players[_team].marker) === null || _h === void 0 ? void 0 : _h.aphelios) === null || _j === void 0 ? void 0 : _j.Gravitum) === true) {
-        players[_team].selector.style.boxShadow = "purple 0px 0px 10px 5px";
-    }
-    else if (((_l = (_k = players[_team].marker) === null || _k === void 0 ? void 0 : _k.aphelios) === null || _l === void 0 ? void 0 : _l.Gravitum) === false && ((_o = (_m = players[_team].marker) === null || _m === void 0 ? void 0 : _m.aphelios) === null || _o === void 0 ? void 0 : _o.Calibrum) === false && char[_team == 'blue' ? 'red' : 'blue'] === 'aphelios') {
-        players[_team].selector.style.boxShadow = "";
-        players[_team].selector.style.border = "";
+    else if (char[enemyTeam] === 'ashe') {
+        if (players[_team].marker.ashe !== 0) {
+            players[_team].selector.style.boxShadow = "rgb(48, 131, 175) 0px 0px 10px 5px";
+        }
+        else if (players[_team].marker.ashe === 0) {
+            players[_team].selector.style.boxShadow = "";
+        }
     }
     if (players[_team].status.invisible && _team == team) {
         players[_team].selector.style.opacity = '20%';
@@ -151,9 +166,9 @@ function damageAlert(type, dmg, isCritical, target) {
         true: 'white',
         heal: 'rgb(0, 180, 0)'
     };
-    if (Math.floor(dmg) == 0)
+    if (Math.round(dmg) == 0)
         return;
-    alerter.innerHTML = "".concat(Math.floor(dmg));
+    alerter.innerHTML = "".concat(Math.round(dmg));
     alerter.style.opacity = '100%';
     alerter.style.marginTop = "-".concat(Math.random() * 20 + 30, "px");
     alerter.style.marginLeft = "".concat(Math.random() * 50 - 20, "px");
@@ -166,18 +181,43 @@ function damageAlert(type, dmg, isCritical, target) {
         alerter.style.textShadow = '0px 0px 2px black';
     if (isCritical) {
         alerter.style.fontWeight = '800';
-        alerter.innerHTML = "".concat(Math.floor(dmg), "!");
+        alerter.innerHTML = "".concat(Math.round(dmg), "!");
         alerter.style.fontSize = "".concat(Math.log2(dmg * 4) + 20, "px");
     }
     if (dmg == 9999 && type == 'true' && target != team) {
         players[team].gold += findItem('3_collector').body.extra[2];
-        // console.log(`${findItem('3_collector').body.extra[2]}원 들어옴ㅅㅅ`);
     }
     else if (dmg == 9999 && type == 'true' && target == team) {
         death();
         socket.send(JSON.stringify({ body: { msg: "death" } }));
     }
     damageAmount[target] += dmg;
+    var totalDamageSum = dmg;
+    if (target == team) {
+        if (players[team].barrier.length > 0) {
+            var index = 0;
+            while (true) {
+                if (players[team].barrier.length < index)
+                    break;
+                var barrierMax = players[team].barrier[index][0];
+                players[team].barrier[index][0] -= totalDamageSum;
+                if (players[team].barrier[index][0] < 0) {
+                    totalDamageSum -= barrierMax;
+                    index += 1;
+                }
+                else {
+                    totalDamageSum = 0;
+                    break;
+                }
+            }
+            players[team].hp[1] -= totalDamageSum;
+        }
+        else {
+            players[team].hp[1] -= totalDamageSum;
+        }
+        if (type == 'heal' && target == team)
+            players[team].hp[1] += totalDamageSum;
+    }
     parent.appendChild(alerter);
     setTimeout(function () {
         alerter.style.opacity = '0%';
@@ -187,3 +227,4 @@ function damageAlert(type, dmg, isCritical, target) {
         parent.removeChild(alerter);
     }, 1000);
 }
+;

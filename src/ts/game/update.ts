@@ -36,6 +36,12 @@ setInterval(() => {
                 const item: HTMLDivElement = document.querySelector(`#inf-item-b>#vault-${ i + 1 }`);
                 
                 item.style.backgroundImage = `url(./assets/items/${ e?.name[1] }.png)`;
+                
+                if (e.name[1].includes('a3_')) {
+                    item.style.border = `10px solid yellow`;
+                } else {
+                    item.style.border = ``;
+                }
             } else {
                 const item: HTMLDivElement = document.querySelector(`#vault-${ i + 1 }`);
                 
@@ -329,7 +335,6 @@ setInterval(() => {
                 if ((players[getEnemyTeam()].marker.aphelios.Calibrum || players[getEnemyTeam()].marker.aphelios.CalibrumWheel) && apheliosWeapon.includes('Crescendum')) {
                     crescendumAmount += 1;
                     crescendumAa(angle, true);
-
                 }
 
                 if (apheliosWeapon[0] === 'Crescendum') {
@@ -355,6 +360,24 @@ setInterval(() => {
                         )
                     }
                 }
+            } else if (char[team] === 'ashe') {
+                let alphaDamage: number = players[getEnemyTeam()].marker.ashe !== 0 ? players[team].spec.ad * skillInfo.passive.ad + skillInfo.passive.damage : 0
+                if (ashe.isActive.q) 
+                    asheQ(angle, alphaDamage);
+                else {
+                    projectiles[team].push(
+                        new ProjectileBuilder()
+                        .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage + alphaDamage, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
+                        .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                        .setDegree(angle)
+                        .setReach(players[team].spec.range)
+                        .setSpeed(players[team].spec.projectileSpd)
+                        .setSize({height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1]})
+                        .onHit(`${ char[team] } aa`)
+                        .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
+                        .build(team)
+                    )
+                }
             } else {
                 projectiles[team].push(
                     new ProjectileBuilder()
@@ -368,6 +391,8 @@ setInterval(() => {
                         .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
                         .build(team)
                 );
+
+                
             }
         } else if (players[team].specINIT.defaultAAType === "short") {
             nonProjectiles[team].push(
@@ -615,6 +640,10 @@ setInterval(() => {
     if (slowTime === 0) {
         if (char[getEnemyTeam()] === 'aphelios') {
             players[team].marker.aphelios.Gravitum = false;
+
+            slowness = 0;
+        } else if (char[getEnemyTeam()] === 'ashe') {
+            players[team].marker.ashe = 0;
 
             slowness = 0;
         }

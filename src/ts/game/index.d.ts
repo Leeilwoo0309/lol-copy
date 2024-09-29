@@ -43,7 +43,8 @@ type Marker = {
         Calibrum: boolean,
         CalibrumWheel: boolean,
         Gravitum: boolean
-    }
+    },
+    ashe: number
 }
 
 type AbsolutePosition = {
@@ -61,6 +62,7 @@ type ItemData = {
     enable: boolean,
     des?: string,
     grade?: "시작" | "장화" | "기본" | "서사" | "전설",
+    active: string
 };
 
 type Ability = {
@@ -192,5 +194,6 @@ type ChampionNames =
     "teacher" |
     "graves" |
     "vampire" |
-    "aphelios"
+    "aphelios" |
+    "ashe"
     ;

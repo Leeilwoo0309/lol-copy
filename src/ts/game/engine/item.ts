@@ -8,6 +8,7 @@ class Item {
     public passive: () => {};
     public extra: number[];
     public des: string;
+    public active: string;
 
     public start() {
         if (this.passive) this.passive();
@@ -63,6 +64,11 @@ class ItemBuilder {
 
     public setDescription(des: string): ItemBuilder {
         this.item.des = des;
+        return this;
+    }
+
+    public setActive(active: string): ItemBuilder {
+        this.item.active = active;
         return this;
     }
 

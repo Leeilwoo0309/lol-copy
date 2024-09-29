@@ -39,13 +39,14 @@
         },
         "E": {
             "cooldown": 1200,
-            "moveSpd": 0.7,
+            "moveSpd": 0.4,
             "duration": 400
         },
         "Shift": {
             "cooldown": 1750,
-            "duration": 300,
+            "duration": 500,
             "armor": 30,
+            "ad": 0.2,
             "range": 40
         },
         "Wheel": {

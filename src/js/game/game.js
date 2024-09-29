@@ -227,6 +227,7 @@ function getData() {
                     makeGraves();
                     makeVampire();
                     makeAphelios();
+                    makeAshe();
                     if (char[team] == 'ezreal') {
                         charClass = ezreal;
                     }
@@ -254,6 +255,9 @@ function getData() {
                     else if (char[team] == 'aphelios') {
                         charClass = aphelios;
                     }
+                    else if (char[team] == 'ashe') {
+                        charClass = ashe;
+                    }
                     return [4 /*yield*/, getItemInfo()];
                 case 4:
                     fetchedItemData = _b.sent();
@@ -271,6 +275,8 @@ function getData() {
                                 item.setExtra(e.extra);
                             if (e.des)
                                 item.setDescription(e.des);
+                            if (e.active)
+                                item.setActive(e.active);
                             itemData.push(item.build());
                         }
                     });

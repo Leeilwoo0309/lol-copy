@@ -40,6 +40,12 @@ setInterval(function () {
             if (e !== undefined) {
                 var item = document.querySelector("#inf-item-b>#vault-".concat(i + 1));
                 item.style.backgroundImage = "url(./assets/items/".concat(e === null || e === void 0 ? void 0 : e.name[1], ".png)");
+                if (e.name[1].includes('a3_')) {
+                    item.style.border = "10px solid yellow";
+                }
+                else {
+                    item.style.border = "";
+                }
             }
             else {
                 var item = document.querySelector("#vault-".concat(i + 1));
@@ -312,6 +318,23 @@ setInterval(function () {
                     }
                 }
             }
+            else if (char[team] === 'ashe') {
+                var alphaDamage = players[getEnemyTeam()].marker.ashe !== 0 ? players[team].spec.ad * skillInfo.passive.ad + skillInfo.passive.damage : 0;
+                if (ashe.isActive.q)
+                    asheQ(angle, alphaDamage);
+                else {
+                    projectiles[team].push(new ProjectileBuilder()
+                        .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage + alphaDamage, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
+                        .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                        .setDegree(angle)
+                        .setReach(players[team].spec.range)
+                        .setSpeed(players[team].spec.projectileSpd)
+                        .setSize({ height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1] })
+                        .onHit("".concat(char[team], " aa"))
+                        .setStyle(team == 'red' ? 'rgb(180, 0, 0)' : 'rgb(0, 0, 180)')
+                        .build(team));
+                }
+            }
             else {
                 projectiles[team].push(new ProjectileBuilder()
                     .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
@@ -562,6 +585,10 @@ setInterval(function () {
     if (slowTime === 0) {
         if (char[getEnemyTeam()] === 'aphelios') {
             players[team].marker.aphelios.Gravitum = false;
+            slowness = 0;
+        }
+        else if (char[getEnemyTeam()] === 'ashe') {
+            players[team].marker.ashe = 0;
             slowness = 0;
         }
     }

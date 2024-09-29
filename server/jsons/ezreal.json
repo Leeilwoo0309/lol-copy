@@ -29,7 +29,7 @@
     ],
     "skills": {
         "passive": {
-            "ap": 1,
+            "ap": 2.1,
             "ad": 1.5,
             "skillHaste": 100,
             "damage": 15

@@ -27,6 +27,8 @@ resultItem.addEventListener('click', function () {
         return;
     if (hasItem(itemData[itemInfo].name[1]) && itemData[itemInfo].name[1].includes('0_'))
         return;
+    if (hasActiveItem && itemData[itemInfo].name[1].includes('a3_'))
+        return;
     // 업그레이드하는 함수
     function upgradeLower() {
         var lower = __spreadArray([], itemData[itemInfo].lower, true);
@@ -131,6 +133,8 @@ resultItem.addEventListener('click', function () {
             players[team].hp[1] += 80;
         if (itemData[itemInfo].name[1].includes('1_'))
             players[team].hp[1] += 30;
+        if (itemData[itemInfo].name[1].includes('a3_'))
+            hasActiveItem = true;
         refreshPrice();
         sellItems();
     }
@@ -149,6 +153,8 @@ function sellItems() {
                     var sellitem = findItem(players[team].items[i].name[1]);
                     if (sellitem.body.name[1].includes('b_1') || sellitem.body.name[1].includes('b_2'))
                         hasBoots = false;
+                    if (hasActiveItem && sellitem.body.name[1].includes('a3_'))
+                        hasActiveItem = false;
                     players[team].gold += players[team].items[i].price * 0.7;
                     players[team].items[i] = undefined;
                     if (sellitem.body.ability.ad)
@@ -186,6 +192,7 @@ function sellItems() {
                         players[team].specItem.mana -= itemData[itemInfo].ability.mana;
                     if (itemData[itemInfo].ability.manaR)
                         players[team].specItem.manaR -= itemData[itemInfo].ability.manaR;
+                    refreshPrice();
                 }
             });
         });
@@ -199,6 +206,9 @@ function refreshPrice() {
             if (hasItem(e.name[1]) && e.name[1].includes('3_') || (hasItem(e.name[1])) && e.name[1].includes('0_')) {
                 listDiv.innerHTML += "\n                <div id=\"item-selling-".concat(i, "\" class=\"item ").concat(e.grade, "\" style=\"background-image: url(./assets/items/").concat(e.name[1], ".png);  opacity: 0.3\">\n                <p class=\"price\">\uC18C\uC720\uC911</p>\n                </div>");
             }
+            else if (hasActiveItem && e.name[1].includes('a3_')) {
+                listDiv.innerHTML += "\n                <div id=\"item-selling-".concat(i, "\" class=\"item ").concat(e.grade, "\" style=\"background-image: url(./assets/items/").concat(e.name[1], ".png); opacity: 0.3\">\n                    <p class=\"price\" style=\"font-size: 13px;\">\uAD6C\uB9E4 \uBD88\uAC00</p>\n                </div>");
+            }
             else {
                 listDiv.innerHTML += "\n                <div id=\"item-selling-".concat(i, "\" class=\"item ").concat(e.grade, "\" style=\"background-image: url(./assets/items/").concat(e.name[1], ".png);\">\n                    <p class=\"price\">G").concat(e.lower ? getPrice(i) : e.price, "</p>\n                </div>");
             }
@@ -206,6 +216,9 @@ function refreshPrice() {
         else {
             if ((hasItem(e.name[1]) && e.name[1].includes('3_')) || (hasItem(e.name[1])) && e.name[1].includes('0_')) {
                 listDiv.innerHTML += "\n                <div id=\"item-selling-".concat(i, "\" class=\"item\" style=\"background-image: url(./assets/items/").concat(e.name[1], ".png); opacity: 0.3\">\n                <p class=\"price\">\uC18C\uC720\uC911</p>\n                </div>");
+            }
+            else if (hasActiveItem && e.name[1].includes('a3_')) {
+                listDiv.innerHTML += "\n                <div id=\"item-selling-".concat(i, "\" class=\"item\" style=\"background-image: url(./assets/items/").concat(e.name[1], ".png); opacity: 0.3\">\n                    <p class=\"price\" style=\"font-size: 13px;\">\uAD6C\uB9E4 \uBD88\uAC00</p>\n                </div>");
             }
             else {
                 listDiv.innerHTML += "\n                <div id=\"item-selling-".concat(i, "\" class=\"item\" style=\"background-image: url(./assets/items/").concat(e.name[1], ".png);\">\n                    <p class=\"price\">G").concat(e.lower ? getPrice(i) : e.price, "</p>\n                </div>");
@@ -247,7 +260,7 @@ exitBtn.addEventListener('click', function () {
 shopBtn.addEventListener('mouseenter', function () { game.style.cursor = 'pointer'; });
 shopBtn.addEventListener('mouseleave', function () { game.style.cursor = ''; });
 function refreshShop(element, index) {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
     var buyInfo = document.querySelector('#buy-info');
     buyInfo.style.display = '';
     itemInfo = index;
@@ -309,8 +322,12 @@ function refreshShop(element, index) {
         des.innerHTML += "<p>\uBC29\uC5B4\uAD6C \uAD00\uD1B5\uB825: ".concat(itemData[itemInfo].ability.ignoreArmorPercent, "%</p>");
     if (itemData[itemInfo].des)
         des.innerHTML += "<br/><b>\uAE30\uBCF8 \uC9C0\uC18D \uD6A8\uACFC</b> - ".concat((_d = (_c = (_b = (_a = itemData[itemInfo].des) === null || _a === void 0 ? void 0 : _a.replace(/\$e1/g, (itemData[itemInfo].extra[0]).toFixed())) === null || _b === void 0 ? void 0 : _b.replace(/\$e2/g, (itemData[itemInfo].extra[1] / 100).toFixed())) === null || _c === void 0 ? void 0 : _c.replace(/\$e3/g, (itemData[itemInfo].extra[2]).toFixed())) === null || _d === void 0 ? void 0 : _d.replace(/\$e4/g, (itemData[itemInfo].extra[3]).toFixed()));
+    if (itemData[itemInfo].name[1].includes('a3_')) {
+        des.innerHTML += "<br/><b>\uC0AC\uC6A9 \uC2DC \uD6A8\uACFC</b> - ".concat((_h = (_g = (_f = (_e = itemData[itemInfo].active) === null || _e === void 0 ? void 0 : _e.replace(/\$e1/g, (itemData[itemInfo].extra[0]).toFixed())) === null || _f === void 0 ? void 0 : _f.replace(/\$e2/g, (itemData[itemInfo].extra[1] / 100).toFixed())) === null || _g === void 0 ? void 0 : _g.replace(/\$e3/g, (itemData[itemInfo].extra[2]).toFixed())) === null || _h === void 0 ? void 0 : _h.replace(/\$e4/g, (itemData[itemInfo].extra[3]).toFixed()));
+        console.log(itemData[itemInfo]);
+    }
     var aText = document.querySelector('#need-items-text');
-    (_e = itemData[index].lower) === null || _e === void 0 ? void 0 : _e.forEach(function (e, i) {
+    (_j = itemData[index].lower) === null || _j === void 0 ? void 0 : _j.forEach(function (e, i) {
         underItem.style.display = '';
         aText.style.display = '';
         underItem.innerHTML += "<div id=\"need-item-".concat(i, "\" class=\"item need itid-").concat(findItem(e).index, "\" style=\"background-image: url(./assets/items/").concat(e, ".png)\">\n        <p class=\"price\">G").concat(findItem(e).body.price, "</p>\n        </div>");

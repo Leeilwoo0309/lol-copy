@@ -29,7 +29,7 @@
     ],
     "skills": {
         "passive": {
-            "moveSpd": 1.25,
+            "moveSpd": 0.2,
             "duration": 150
         },
         "Q": {
@@ -50,8 +50,8 @@
         },
         "Wheel": {
             "cooldown": 7500,
-            "damage": 10,
-            "ad": 1.7,
+            "damage": 15,
+            "ad": 2.5,
             "type": "melee"
         }
     },

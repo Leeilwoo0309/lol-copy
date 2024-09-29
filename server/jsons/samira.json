@@ -29,7 +29,7 @@
     ],
     "skills": {
         "passive": {
-            "moveSpd": 0.12,
+            "moveSpd": 0.08,
             "duration": 150
         },
         "Q": {
