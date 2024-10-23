@@ -60,7 +60,7 @@ app.use(cors());
 
 app.get('/getChar', (req, res) => {
     const query = req.query.char;
-    const charList = ['teacher', 'sniper', 'samira', 'ezreal', 'vayne', 'exponent', 'graves', 'assassin', 'vampire', 'aphelios', 'ashe'];
+    const charList = ['teacher', 'sniper', 'samira', 'ezreal', 'vayne', 'exponent', 'graves', 'assassin', 'vampire', 'aphelios', 'ashe', 'kaisa', 'akali', 'ahri', 'talon'];
 
     if (query === undefined) {
         return res.send(JSON.stringify({
@@ -83,6 +83,16 @@ app.get('/getChar', (req, res) => {
 
 app.get('/getItem', (req, res) => {
     fs.readFile(`./jsons/items.json`, (err, data) => {
+        if (err) throw err;
+
+        const itemData = {body: JSON.parse(data.toString())};
+
+        return res.send(JSON.stringify(itemData));
+    });
+});
+
+app.get('/getRune', (req, res) => {
+    fs.readFile(`./jsons/runes.json`, (err, data) => {
         if (err) throw err;
 
         const itemData = {body: JSON.parse(data.toString())};
@@ -152,7 +162,7 @@ app.get('/addPlay', async (req, res) => {
 
 app.get('/get/char/:name', async (req, res) => {
     const charName = req.params.name;
-    const charList = ["sniper", "ezreal", "samira", "vayne", "exponent", "graves", 'vampire', 'aphelios', 'ashe'];
+    const charList = ["sniper", "ezreal", "samira", "vayne", "exponent", "graves", 'vampire', 'aphelios', 'ashe', 'kaisa', 'akali', 'ahri'];
 
     const db = await open({
         filename: './db/playdata.db',

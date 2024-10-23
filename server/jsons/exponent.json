@@ -23,9 +23,9 @@
         "defaultAAType": "long"
     },
     "growth": [
-        {"health": 5, "armor": 0.6, "magicRegist": 0.3},
-        {"health": 17, "armor": 2, "magicRegist": 1},
-        {"health": 55, "armor": 6.5, "magicRegist": 3.2}
+        {"health": 15, "armor": 1, "magicRegist": 0.3},
+        {"health": 50, "armor": 4, "magicRegist": 1},
+        {"health": 180, "armor": 15, "magicRegist": 3.2}
     ],
     "skills": {
         "passive": {
@@ -49,23 +49,25 @@
             "des": "burf-heal",
             "damage": 30,
             "ap": 1.7,
-            "duration": 200,
-            "moveSpd": 0.25
+            "duration": 100,
+            "moveSpd": 1.2
         },
         "Shift": {
             "cooldown": 750,
             "range": 75,
-            "duration": 300
+            "duration": 300,
+            "armor": 50,
+            "ap": 1.4
         },
         "Wheel": {
-            "cooldown": 3800
+            "cooldown": 4000
         }
     },
     "des": {
         "passive": "$pcd초마다 공격력 $pad, 주문력 $pap, 체력 $phe, 방어력 $par, 마법 저항력 $pmr, 사거리 $pra이 증가합니다. 40중첩 달성시 이후 증가량은 두배가 하며 기본 공격의 피해 범위와 속도가 증가합니다.",
         "Q": "투사체를 발사해 마법 피해를 입합니다.<br/>(피해량: $qd + 공격력 * $qad + 주문력 * $qap, 재사용 대기시간: $qcd초)",
         "E": "체력을 회복하고 2초 동안 이동 속도를 상승시킵니다.<br/>(회복량: $ed + 주문력 * $eap, 재사용 대기시간: $ecd초)",
-        "Shift": "$sdu초동안 사거리가 $sra만큼 증가합니다. <br/>(재사용 대기시간: $scd초)",
+        "Shift": "$sdu초동안 사거리가 $sra만큼 증가하며, 보호막을 얻습니다. <br/>(재사용 대기시간: $scd초, 보호막 양: $sar + 주문력 * $eap)",
         "Wheel": "즉시 기본 지속 효과를 발동해 중첩을 하나 쌓습니다. <br/>(재사용 대기시간: $wcd초)"
     }
 }

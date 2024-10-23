@@ -159,6 +159,12 @@ async function getItemInfo() {
         .then(result => result.body);
 }
 
+async function getRuneInfo() {
+    return await fetch(`http://kimchi-game.kro.kr:1973/getRune`)
+        .then(r => r.json())
+        .then(result => result.body);
+}
+
 async function getData() {
     let fetched = await getCharInfo(char[team])
     players[team].specINIT = fetched.defaultSpec;
@@ -205,6 +211,9 @@ async function getData() {
     makeVampire();
     makeAphelios();
     makeAshe();
+    makeKaisa();
+    makeAhri();
+    makeTalon();
 
     if (char[team] == 'ezreal') {
         charClass = ezreal;
@@ -226,9 +235,16 @@ async function getData() {
         charClass = aphelios;
     } else if (char[team] == 'ashe') {
         charClass = ashe;
+    } else if (char[team] == 'kaisa') {
+        charClass = kaisa;
+    } else if (char[team] == 'ahri') {
+        charClass = ahri;
+    } else if (char[team] == 'talon') {
+        charClass = talon;
     }
 
     let fetchedItemData: ItemData[] = await getItemInfo();
+    runeInfo = await getRuneInfo();
     itemData = [];
     fetchedItemData.forEach(e => {
         if (e.enable) {
@@ -240,7 +256,10 @@ async function getData() {
             if (e.grade) item.setGrade(e.grade);
             if (e.extra) item.setExtra(e.extra);
             if (e.des) item.setDescription(e.des);
-            if (e.active) item.setActive(e.active);
+            if (e.active) {
+                item.setActive(e.active);
+                item.setActiveInfo(e.activeInfo)
+            }
     
             itemData.push(
                 item.build()

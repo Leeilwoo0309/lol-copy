@@ -56,6 +56,7 @@ let weaponColor = {
 };
 let crescendumAmount: number = 0;
 
+
 const weaponPrint = document.createElement('div');
 const subWeaponPrint = document.createElement('div');
 
@@ -293,6 +294,7 @@ function makeAphelios() {
                         .setReach(450)
                         .setSpeed(25)
                         .setSize({height: 60, width: 40})
+                        .setStyle(`${ weaponColor[apheliosWeapon[0]] }`)
                         // .setStyle('gray')
                         .canPass()
                         .onHit(`aphelios skill q-infernum`)

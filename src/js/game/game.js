@@ -179,6 +179,18 @@ function getItemInfo() {
         });
     });
 }
+function getRuneInfo() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch("http://kimchi-game.kro.kr:1973/getRune")
+                        .then(function (r) { return r.json(); })
+                        .then(function (result) { return result.body; })];
+                case 1: return [2 /*return*/, _a.sent()];
+            }
+        });
+    });
+}
 function getData() {
     return __awaiter(this, void 0, void 0, function () {
         var fetched, fetched2, _a, fetchedItemData;
@@ -228,6 +240,9 @@ function getData() {
                     makeVampire();
                     makeAphelios();
                     makeAshe();
+                    makeKaisa();
+                    makeAhri();
+                    makeTalon();
                     if (char[team] == 'ezreal') {
                         charClass = ezreal;
                     }
@@ -258,9 +273,21 @@ function getData() {
                     else if (char[team] == 'ashe') {
                         charClass = ashe;
                     }
+                    else if (char[team] == 'kaisa') {
+                        charClass = kaisa;
+                    }
+                    else if (char[team] == 'ahri') {
+                        charClass = ahri;
+                    }
+                    else if (char[team] == 'talon') {
+                        charClass = talon;
+                    }
                     return [4 /*yield*/, getItemInfo()];
                 case 4:
                     fetchedItemData = _b.sent();
+                    return [4 /*yield*/, getRuneInfo()];
+                case 5:
+                    runeInfo = _b.sent();
                     itemData = [];
                     fetchedItemData.forEach(function (e) {
                         if (e.enable) {
@@ -275,8 +302,10 @@ function getData() {
                                 item.setExtra(e.extra);
                             if (e.des)
                                 item.setDescription(e.des);
-                            if (e.active)
+                            if (e.active) {
                                 item.setActive(e.active);
+                                item.setActiveInfo(e.activeInfo);
+                            }
                             itemData.push(item.build());
                         }
                     });

@@ -23,13 +23,13 @@
         "defaultAAType": "long"
     },
     "growth": [
-        {"health": 12, "armor": 1.3, "magicRegist": 1},
-        {"health": 40, "armor": 4, "magicRegist": 4},
-        {"health": 150, "armor": 15, "magicRegist": 13}
+        {"health": 20, "armor": 2, "magicRegist": 1.7},
+        {"health": 80, "armor": 8, "magicRegist": 6},
+        {"health": 260, "armor": 25, "magicRegist": 20}
     ],
     "skills": {
         "passive": {
-            "damage": 10,
+            "damage": 15,
             "ap": 0.02
         },
         "Q": {
@@ -56,7 +56,7 @@
         "Wheel": {
             "cooldown": 4700,
             "damage": 20,
-            "moveSpd": 0.35,
+            "moveSpd": 0.8,
             "duration": 1200
         }
     },

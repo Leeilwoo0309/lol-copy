@@ -9,6 +9,7 @@ class Item {
     public extra: number[];
     public des: string;
     public active: string;
+    public activeInfo: number[];
 
     public start() {
         if (this.passive) this.passive();
@@ -69,6 +70,11 @@ class ItemBuilder {
 
     public setActive(active: string): ItemBuilder {
         this.item.active = active;
+        return this;
+    }
+
+    public setActiveInfo(activeInfo: number[]): ItemBuilder {
+        this.item.activeInfo = activeInfo;
         return this;
     }
 

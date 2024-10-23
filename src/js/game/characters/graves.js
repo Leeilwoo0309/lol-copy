@@ -44,8 +44,8 @@ function makeGraves() {
         graves.cooldown.shift = graves.cooldownINIT.shift;
         var angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
         var dashLength = 0;
-        players[team].specINIT.armor += skillInfo.shift.armor;
-        players[team].specINIT.magicRegist += skillInfo.shift.armor;
+        players[team].specINIT.armor += skillInfo.shift.armor + players[team].spec.ad * skillInfo.shift.ad;
+        players[team].specINIT.magicRegist += skillInfo.shift.armor + players[team].spec.ad * skillInfo.shift.ad;
         graves.isActive.shift = true;
         setTimeout(function () {
             players[team].specINIT.armor -= skillInfo.shift.armor + players[team].spec.ad * skillInfo.shift.ad;

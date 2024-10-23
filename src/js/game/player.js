@@ -1,54 +1,54 @@
 function move(position) {
     if (!checkCollide(position) && readyStatus[getEnemyTeam()] && canMove) {
         if ((keyDown.d) && (keyDown.w)) {
-            players[team].selector.style.left = "".concat(position.x + (players[team].spec.moveSpd / Math.SQRT2), "px");
-            players[team].selector.style.top = "".concat(position.y - (players[team].spec.moveSpd / Math.SQRT2), "px");
+            // players[team].selector.style.left = `${ position.x + (players[team].spec.moveSpd / Math.SQRT2) }px`;
+            // players[team].selector.style.top = `${ position.y - (players[team].spec.moveSpd / Math.SQRT2) }px`;
             absolutePosition[team].x += players[team].spec.moveSpd / Math.SQRT2;
             absolutePosition[team].y += players[team].spec.moveSpd / Math.SQRT2;
             absolutePointerPosition.x += players[team].spec.moveSpd / Math.SQRT2;
             absolutePointerPosition.y += players[team].spec.moveSpd / Math.SQRT2;
         }
         else if ((keyDown.d) && (keyDown.s)) {
-            players[team].selector.style.left = "".concat(position.x + (players[team].spec.moveSpd / Math.SQRT2), "px");
-            players[team].selector.style.top = "".concat(position.y + (players[team].spec.moveSpd / Math.SQRT2), "px");
+            // players[team].selector.style.left = `${ position.x + (players[team].spec.moveSpd / Math.SQRT2) }px`;
+            // players[team].selector.style.top = `${ position.y + (players[team].spec.moveSpd / Math.SQRT2) }px`;
             absolutePosition[team].x += players[team].spec.moveSpd / Math.SQRT2;
             absolutePosition[team].y -= players[team].spec.moveSpd / Math.SQRT2;
             absolutePointerPosition.x += players[team].spec.moveSpd / Math.SQRT2;
             absolutePointerPosition.y -= players[team].spec.moveSpd / Math.SQRT2;
         }
         else if ((keyDown.a) && (keyDown.w)) {
-            players[team].selector.style.left = "".concat(position.x - (players[team].spec.moveSpd / Math.SQRT2), "px");
-            players[team].selector.style.top = "".concat(position.y - (players[team].spec.moveSpd / Math.SQRT2), "px");
+            // players[team].selector.style.left = `${ position.x - (players[team].spec.moveSpd / Math.SQRT2) }px`;
+            // players[team].selector.style.top = `${ position.y - (players[team].spec.moveSpd / Math.SQRT2) }px`;
             absolutePosition[team].x -= players[team].spec.moveSpd / Math.SQRT2;
             absolutePosition[team].y += players[team].spec.moveSpd / Math.SQRT2;
             absolutePointerPosition.x -= players[team].spec.moveSpd / Math.SQRT2;
             absolutePointerPosition.y += players[team].spec.moveSpd / Math.SQRT2;
         }
         else if ((keyDown.a) && (keyDown.s)) {
-            players[team].selector.style.left = "".concat(position.x - (players[team].spec.moveSpd / Math.SQRT2), "px");
-            players[team].selector.style.top = "".concat(position.y + (players[team].spec.moveSpd / Math.SQRT2), "px");
+            // players[team].selector.style.left = `${ position.x - (players[team].spec.moveSpd / Math.SQRT2) }px`;
+            // players[team].selector.style.top = `${ position.y + (players[team].spec.moveSpd / Math.SQRT2) }px`;
             absolutePosition[team].x -= players[team].spec.moveSpd / Math.SQRT2;
             absolutePosition[team].y -= players[team].spec.moveSpd / Math.SQRT2;
             absolutePointerPosition.x -= players[team].spec.moveSpd / Math.SQRT2;
             absolutePointerPosition.y -= players[team].spec.moveSpd / Math.SQRT2;
         }
         else if (keyDown.w) {
-            players[team].selector.style.top = "".concat(position.y - players[team].spec.moveSpd, "px");
+            // players[team].selector.style.top = `${ position.y - players[team].spec.moveSpd }px`;
             absolutePosition[team].y += players[team].spec.moveSpd;
             absolutePointerPosition.y += players[team].spec.moveSpd;
         }
         else if (keyDown.s) {
-            players[team].selector.style.top = "".concat(position.y + players[team].spec.moveSpd, "px");
+            // players[team].selector.style.top = `${ position.y + players[team].spec.moveSpd }px`;
             absolutePosition[team].y -= players[team].spec.moveSpd;
             absolutePointerPosition.y -= players[team].spec.moveSpd;
         }
         else if (keyDown.a) {
-            players[team].selector.style.left = "".concat(position.x - players[team].spec.moveSpd, "px");
+            // players[team].selector.style.left = `${ position.x - players[team].spec.moveSpd }px`;
             absolutePosition[team].x -= players[team].spec.moveSpd;
             absolutePointerPosition.x -= players[team].spec.moveSpd;
         }
         else if (keyDown.d) {
-            players[team].selector.style.left = "".concat(position.x + players[team].spec.moveSpd, "px");
+            // players[team].selector.style.left = `${ position.x + players[team].spec.moveSpd }px`;
             absolutePosition[team].x += players[team].spec.moveSpd;
             absolutePointerPosition.x += players[team].spec.moveSpd;
         }
@@ -137,6 +137,20 @@ function animation(_team) {
             players[_team].selector.style.boxShadow = "";
         }
     }
+    else if (char[enemyTeam] === 'kaisa') {
+        var color = ['', 'rgb(57, 188, 221) 0px 0px 10px 5px', 'rgb(52, 228, 75) 0px 0px 10px 5px', 'rgb(219, 188, 12) 0px 0px 10px 5px', 'red 0px 0px 10px 5px'];
+        players[_team].selector.style.boxShadow = "".concat(color[players[_team].marker.kaisa]);
+    }
+    else if (char[enemyTeam] === 'talon') {
+        var color = ['', 'rgb(0, 128, 255) 0px 0px 10px 5px', 'rgb(255, 0, 0) 0px 0px 10px 5px'];
+        players[_team].selector.style.boxShadow = "".concat(color[players[_team].marker.talon.stack]);
+    }
+    if (players[_team].marker.zhonya) {
+        players[_team].selector.style.backgroundColor = 'yellow';
+    }
+    else {
+        players[_team].selector.style.backgroundColor = _team;
+    }
     if (players[_team].status.invisible && _team == team) {
         players[_team].selector.style.opacity = '20%';
     }
@@ -166,6 +180,13 @@ function damageAlert(type, dmg, isCritical, target) {
         true: 'white',
         heal: 'rgb(0, 180, 0)'
     };
+    var damageCoefficient = {
+        melee: (1 / (1 + (players[target].spec.armor * (1 - players[target === 'blue' ? 'red' : 'blue'].spec.ignoreArmorPercent / 100) - players[target === 'blue' ? 'red' : 'blue'].spec.ignoreArmor) * 0.01)),
+        magic: (1 / (1 + players[target].spec.magicRegist * 0.01)),
+        true: 1,
+        heal: 1
+    };
+    dmg *= damageCoefficient[type];
     if (Math.round(dmg) == 0)
         return;
     alerter.innerHTML = "".concat(Math.round(dmg));
@@ -194,7 +215,7 @@ function damageAlert(type, dmg, isCritical, target) {
     damageAmount[target] += dmg;
     var totalDamageSum = dmg;
     if (target == team) {
-        if (players[team].barrier.length > 0) {
+        if (players[team].barrier.length > 0 && type !== 'heal') {
             var index = 0;
             while (true) {
                 if (players[team].barrier.length < index)
@@ -215,9 +236,22 @@ function damageAlert(type, dmg, isCritical, target) {
         else {
             players[team].hp[1] -= totalDamageSum;
         }
-        if (type == 'heal' && target == team)
-            players[team].hp[1] += totalDamageSum;
+        if (type === 'heal') {
+            players[team].hp[1] += dmg;
+            players[team].hp[1] += dmg;
+        }
     }
+    // socket.send(JSON.stringify({    
+    //     body: {
+    //         msg: 'damageAlert',
+    //         info: [
+    //             type,
+    //             dmg,
+    //             isCritical,
+    //             team
+    //         ]
+    //     }
+    // }));
     parent.appendChild(alerter);
     setTimeout(function () {
         alerter.style.opacity = '0%';
@@ -228,3 +262,21 @@ function damageAlert(type, dmg, isCritical, target) {
     }, 1000);
 }
 ;
+function checkCollideFromChampion(position, angle, dash) {
+    var collideChecker = document.querySelector('.checker-dash.player');
+    var ret = false;
+    collideChecker.style.position = 'absolute';
+    collideChecker.style.backgroundColor = 'green';
+    collideChecker.style.left = "".concat(absolutePosition[team].x - 35 - cameraPosition.x - 5 * Math.cos(angle), "px");
+    collideChecker.style.top = "".concat(-absolutePosition[team].y - 35 - cameraPosition.y + 5 * Math.sin(angle), "px");
+    collideChecker.style.height = '80px';
+    collideChecker.style.width = '80px';
+    gameObjects.forEach(function (e, i) {
+        if (e.isCollide(collideChecker) && e.extra.canCollide) {
+            ret = true;
+            clearInterval(dash);
+            return;
+        }
+    });
+    return ret;
+}

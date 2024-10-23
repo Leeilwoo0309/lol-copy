@@ -2,10 +2,14 @@ const charsBtn: NodeListOf<HTMLDivElement> = document.querySelectorAll('.char-bt
 const selectedP: HTMLParagraphElement = document.querySelector('.selected-display');
 const des: HTMLParagraphElement = document.querySelector('.description');
 const readyBtn: HTMLParagraphElement = document.querySelector('#ready-btn');
+const runeSelectFinBtn: HTMLParagraphElement = document.querySelector('#done-btn');
+const runeSelectStartBtn: HTMLParagraphElement = document.querySelector('#rune-btn');
+const runeBtn: NodeListOf<HTMLParagraphElement> = document.querySelectorAll('.rune-btn');
 const _socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 
 let selected: {ally: [string, number], enemy: [string, number]} = {ally: [undefined, undefined], enemy: [undefined, undefined]};
 let chars: CharData = undefined;
+let runeInfo: string = undefined;
 let charName: string[] = ['teacher', 'sniper', 'ezreal', 'samira', 'vayne', 'exponent', 'graves', 'vampire', 'aphelios', 'assassin'];
 let charNameKr: string[] = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '베인', '엑스포넨트', '그레이브즈', '블라디미르', '아펠리오스', '어쌔신'];
 let charNameKrToEng = {
@@ -17,7 +21,11 @@ let charNameKrToEng = {
     그레이브즈: 'graves',
     블라디미르: 'vampire',
     아펠리오스: 'aphelios',
-    애쉬: 'ashe'
+    애쉬: 'ashe',
+    카이사: 'kaisa',
+    아리: 'ahri',
+    탈론: 'talon'
+    // 아칼리: 'akali'
 }
 let charNameEngToKr = {
     sniper: '스나이퍼',
@@ -29,24 +37,48 @@ let charNameEngToKr = {
     vampire: '블라디미르',
     aphelios: '아펠리오스',
     ashe: '애쉬',
-    undefined: '정하지 않음'
+    undefined: '정하지 않음',
+    kaisa: "카이사",
+    ahri: '아리',
+    talon: '탈론'
+    // akali: '아칼리'
+};
+let runeNameKrToEnd = {
+    "기민한 발놀림": "gibal",
+    "정복자": "bokjaJung",
+    "치명적 속도": "chisok"
+};
+let runeNameEngToKr = {
+    bokjaJung: '정복자',
+    chisok: '치명적 속도',
+    gibal: '기민한 발놀림'
 }
 let readyStatus: [boolean, boolean] = [false, false];
+let selectedRune: string = undefined;
+
+async function getRuneInfo() {
+    runeInfo = await fetch('http://kimchi-game.kro.kr:1973/getRune')
+        .then(r => r.json())
+        .then(result => result.body)
+        .catch(err => console.log(err));
+}
 
 async function getCharInfo(name: string) {
     chars = await fetch(`http://kimchi-game.kro.kr:1973/getChar?char=${ name }`, {method: 'GET'})
         .then(r => r.json())
         .then(result => result.body)
         .catch(err => console.log(err));
-    
+        
+
     updateSelected();
-    console.log(chars);
+    // console.log(chars);
 };
 
 charsBtn.forEach((e, i) => {
     e.addEventListener('click', () => {
+        if (readyStatus[0]) return;
         selected.ally = [charNameKrToEng[e.innerHTML], i];
-        console.log(selected);
+        // console.log(selected);
 
         document.querySelector('.selected')?.classList.remove('selected');
         e.classList.add('selected');
@@ -58,10 +90,20 @@ charsBtn.forEach((e, i) => {
 });
 
 readyBtn.addEventListener('click', () => {
-    if (selected.ally === undefined) {
-        alert("챔피언을 선택해주세요.");
+    if (selected.ally[0] === undefined) {
+        alert("올바른 챔피언을 선택해주세요.");
+        return;
+    } else if (selectedRune === undefined) {
+        alert("올바른 룬을 선택해주세요.");
         return;
     }
+    
+    console.log(selected.ally);
+
+    // if (document.querySelectorAll('.char-btn')[selected.ally[1] - 1].classList.contains('developing')) {
+    //     alert("그거 아직 만드는 중임ㅎ");
+    //     return;
+    // }
 
     // if (selected.ally >= 9) {
     //     alert("그챔 아직 안만듦~~");
@@ -115,10 +157,10 @@ _socket.onopen = () => {
                             }
                         }));
 
-                        window.location.href = `../public/game.html?team=blue&char=${ chars.cn }`;
+                        window.location.href = `../public/game.html?team=blue&char=${ chars.cn }&rune=${ selectedRune }`;
                     }
                 } else if (sentJson.body.msg == "start") {
-                    window.location.href = `../public/game.html?team=red&char=${ chars.cn }`;
+                    window.location.href = `../public/game.html?team=red&char=${ chars.cn }&rune=${ selectedRune }`;
                 }
             }
 
@@ -209,6 +251,13 @@ function updateSelected() {
                 <p><b>스킬 Wheel (궁극기)</b><span> - ${ generateDes(chars.des.Wheel, chars) } </span></p>
         `
     }
+    if (selectedRune) {
+        document.querySelector('#rune-modal>div.description').innerHTML = `
+            <h2>${ runeNameEngToKr[selectedRune] }</h2>
+            <hr />
+            <p>${ runeInfo[selectedRune].des }</p>
+        `
+    }
     selectedP.innerHTML = `<b>${ charNameEngToKr[selected.ally[0]] ?? "정하지 않음" } (나)</b> vs <span>${ charNameEngToKr[selected.enemy[0]] ??  "정하지 않음" } (상대)</span>`
 }
 
@@ -238,6 +287,52 @@ setInterval(() => {
         readyBtn.style.animation = ''
         readyBtn.style.animation = 'readyFalse 500ms cubic-bezier(0, 0.79, 0.47, 1.01)'
     }
+
+    let modal: HTMLDivElement = document.querySelector('.modal');
+
+    modal.style.height = `${window.innerHeight}px`;
+    modal.style.width = `${window.innerWidth}px`;
 }, 16);
+
+// 룬 선택
+runeBtn.forEach((e, i) => {
+    e.addEventListener('click', () => {
+        getRuneInfo()
+
+        console.log('clicked');
+        if (readyStatus[0]) return;
+        selectedRune = runeNameKrToEnd[e.innerHTML];
+        // console.log(selected);
+
+        document.querySelector('.selected')?.classList.remove('selected');
+        e.classList.add('selected');
+
+        // getCharInfo(selected.ally[0]);
+    });
+});
+
+runeSelectFinBtn.addEventListener('click', () => {
+    let modal: HTMLDivElement = document.querySelector('.modal');
+
+    modal.classList.add('off')
+});
+
+runeSelectStartBtn.addEventListener('click', () => {
+    let modal: HTMLDivElement = document.querySelector('.modal');
+
+    modal.className = 'modal';
+});
+
+runeSelectStartBtn.addEventListener('mouseover', () => {
+    runeSelectStartBtn.innerHTML = runeNameEngToKr[selectedRune] ?? '정하지 않음';
+    runeSelectStartBtn.style.fontSize = '20px';
+    runeSelectStartBtn.style.top = '670px';
+});
+
+runeSelectStartBtn.addEventListener('mouseleave', () => {
+    runeSelectStartBtn.innerHTML = '룬 선택'
+    runeSelectStartBtn.style.fontSize = '25px';
+    runeSelectStartBtn.style.top = '665px';
+})
 
 export {};

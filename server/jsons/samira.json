@@ -35,8 +35,8 @@
         "Q": {
             "cooldown": 350,
             "type": "melee",
-            "damage": 5,
-            "ad": 0.95
+            "damage": 10,
+            "ad": 1.05
         },
         "E": {
             "cooldown": 1500,
@@ -44,7 +44,7 @@
             "damage": 4,
             "ad": 0.4,
             "ap": 1.4,
-            "duration": 150
+            "duration": 175
         },
         "Shift": {
             "cooldown": 1300,
@@ -56,8 +56,8 @@
         },
         "Wheel": {
             "cooldown": 500,
-            "damage": 8,
-            "ad": 0.55,
+            "damage": 5,
+            "ad": 0.65,
             "range": 250,
             "moveSpd": 0.4,
             "type": "melee"

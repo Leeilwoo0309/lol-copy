@@ -43,12 +43,12 @@ function makeVampire() {
     vampire.skillE = () => {
         vampire.cooldown.e = vampire.cooldownINIT.e;
 
-        for (let i = -8; i < 8; i++) {
+        for (let i = -10; i < 10; i++) {
             projectiles[team].push(
                 new ProjectileBuilder()
                     .setDamage(skillInfo.e.damage + players[team].spec.ap * skillInfo.e.ap, "magic")
                     .setCritical(players[team].spec.criticP, players[team].spec.criticD)
-                    .setDegree(i / 8 * Math.PI)
+                    .setDegree(i / 10 * Math.PI)
                     .setReach(450)
                     .setSpeed(25)
                     .setSize({height: 60, width: 40})
@@ -62,9 +62,9 @@ function makeVampire() {
     
     vampire.skillLShift = () => {
         vampire.cooldown.shift = vampire.cooldownINIT.shift;
-        vampire.cooldown.q -= vampire.cooldownINIT.q * skillInfo.shift.skillHaste;
-        vampire.cooldown.e -= vampire.cooldownINIT.e * skillInfo.shift.skillHaste;
-        vampire.cooldown.wheel -= vampire.cooldownINIT.wheel * skillInfo.shift.skillHaste;
+        vampire.cooldown.q *= skillInfo.shift.skillHaste;
+        vampire.cooldown.e *= skillInfo.shift.skillHaste;
+        vampire.cooldown.wheel *= skillInfo.shift.skillHaste;
     }
     
     vampire.skillWheel = () => {

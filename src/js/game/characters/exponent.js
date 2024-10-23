@@ -63,7 +63,7 @@ function makeExponent() {
         exponent.cooldown.shift = exponent.cooldownINIT.shift;
         players[team].specINIT.range += skillInfo.shift.range;
         exponent.isActive.shift = true;
-        players[team].barrier.push([50 + players[team].spec.ad * 1.5, 300]);
+        players[team].barrier.push([50 + players[team].spec.ap * skillInfo.shift.ap, 300]);
         setTimeout(function () {
             players[team].specINIT.range -= skillInfo.shift.range;
             exponent.isActive.shift = false;

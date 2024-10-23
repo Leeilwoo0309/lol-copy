@@ -22,7 +22,9 @@ const charKr = {
     exponent: "엑스포넨트",
     graves: "그레이브즈",
     vampire: "블라디미르",
-    aphelios: "아펠리오스"
+    aphelios: "아펠리오스",
+    ashe: "애쉬",
+    kaisa: "카이사"
 }
 
 if (result == 'win') {

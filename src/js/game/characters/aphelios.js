@@ -249,6 +249,7 @@ function makeAphelios() {
                     .setReach(450)
                     .setSpeed(25)
                     .setSize({ height: 60, width: 40 })
+                    .setStyle("".concat(weaponColor[apheliosWeapon[0]]))
                     // .setStyle('gray')
                     .canPass()
                     .onHit("aphelios skill q-infernum")

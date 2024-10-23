@@ -34,6 +34,7 @@ socket.onopen = function () {
                                 .ignoreObj(e.ignoreObj)
                                 .setTarget(e.targetEnemy[0], e.targetEnemy[1])
                                 .canPass(e.canPass)
+                                .projOffset({ x: e.offset.x, y: e.offset.y })
                                 .build(getEnemyTeam());
                     });
                     // console.log(JSON.stringify(sentJson.body.projectiles));
@@ -46,6 +47,7 @@ socket.onopen = function () {
                 }
                 else if (sentJson.body.msg) {
                     var message = sentJson.body.msg;
+                    // console.log(mes);
                     if (message == 'connected') {
                         socket.send(JSON.stringify({ body: { msg: "char", char: char[team] } }));
                         socket.send(JSON.stringify({ body: { msg: "ready" } }));
@@ -64,7 +66,7 @@ socket.onopen = function () {
                     }
                     else if (message == 'onhit') {
                         if (sentJson.body.target == 'enemy')
-                            onhit(sentJson.body.type);
+                            onhit(sentJson.body.type, sentJson.body.tags, sentJson.body.damage);
                         if (sentJson.body.target == 'nexus')
                             players[team].gold += 50;
                     }
@@ -82,10 +84,12 @@ socket.onopen = function () {
                     }
                     else if (message == 'vampire-q') {
                         var damage = (enemySkillInfo.q.damage + players[getEnemyTeam()].spec.ap * enemySkillInfo.q.ap);
+                        console.log(damage);
+                        console.log((1 / (1 + players[team].spec.magicRegist * 0.01)));
                         if (sentJson.body.critic)
                             damage *= players[getEnemyTeam()].spec.criticD / 100 + 1.75;
-                        players[team].hp[1] -= damage * (1 / (1 + players[team].spec.magicRegist * 0.01)) * sentJson.body.wd;
-                        damageAlert('magic', damage * (1 / (1 + players[team].spec.magicRegist * 0.01)) * sentJson.body.wd, sentJson.body.critic, team);
+                        // players[team].hp[1] -= damage * (1 / (1 + players[team].spec.magicRegist * 0.01)) * sentJson.body.wd;
+                        damageAlert('magic', damage * sentJson.body.wd * (1 / (1 + players[team].spec.magicRegist * 0.01)), sentJson.body.critic, team);
                     }
                     else if (message == 'aphelios-change') {
                         apheliosWeaponEnemy = [apheliosWeaponEnemy[1], apheliosWeaponEnemy[0]];
@@ -98,8 +102,8 @@ socket.onopen = function () {
                         var damage = enemySkillInfo.q.Gravitum.damage + enemySkillInfo.q.Gravitum.ad * players[getEnemyTeam()].spec.ad + enemySkillInfo.q.Gravitum.ap * players[getEnemyTeam()].spec.ap;
                         canMove = false;
                         players[team].marker.aphelios.Gravitum = false;
-                        players[team].hp[1] -= damage * (1 / (1 + players[team].spec.magicRegist * 0.01));
-                        damageAlert('magic', damage * (1 / (1 + players[team].spec.magicRegist * 0.01)), sentJson.body.critic, team);
+                        // players[team].hp[1] -= damage * (1 / (1 + players[team].spec.magicRegist * 0.01));
+                        damageAlert('magic', damage, sentJson.body.critic, team);
                         setTimeout(function () {
                             canMove = true;
                         }, 1500);
@@ -110,15 +114,24 @@ socket.onopen = function () {
                     else if (message == 'aphelios-wheel') {
                         apheliosWheelWheelMotion(getEnemyTeam(), { x: absolutePosition[getEnemyTeam()].x, y: absolutePosition[getEnemyTeam()].y });
                     }
+                    else if (message == 'kaisa-passive') {
+                        players[team].marker.kaisa += sentJson.body.count;
+                    }
+                    else if (message == 'talon-shift') {
+                        charClass.cooldown.q += enemySkillInfo.shift.duration;
+                        charClass.cooldown.e += enemySkillInfo.shift.duration;
+                        charClass.cooldown.shift += enemySkillInfo.shift.duration;
+                        charClass.cooldown.wheel += enemySkillInfo.shift.duration;
+                    }
                     else if (message == 'collideDash') {
                         var dashDamage = enemySkillInfo.shift.damage;
                         if (enemySkillInfo.shift.ad)
                             dashDamage += enemySkillInfo.shift.ad * players[getEnemyTeam()].spec.ad;
                         if (enemySkillInfo.shift.ap)
                             dashDamage += enemySkillInfo.shift.ap * players[getEnemyTeam()].spec.ap;
-                        players[team].hp[1] -= dashDamage * (1 / (1 + players[team].spec.magicRegist * 0.01));
-                        damageAmount[getEnemyTeam()] += dashDamage * (1 / (1 + players[team].spec.magicRegist * 0.01));
-                        damageAlert('magic', dashDamage * (1 / (1 + players[team].spec.magicRegist * 0.01)), false, team);
+                        // players[team].hp[1] -= dashDamage * (1 / (1 + players[team].spec.magicRegist * 0.01));
+                        // damageAmount[getEnemyTeam()] += dashDamage;
+                        damageAlert('magic', dashDamage, false, team);
                     }
                     else if (message == 'gameInfo') {
                         window.location.href = "../public/result.html?result=lose&game=".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sentJson.body.info)))));

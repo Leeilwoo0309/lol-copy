@@ -287,7 +287,7 @@ function refreshShop(element, index) {
         ?.replace(/\$e2/g, (itemData[itemInfo].extra[1] / 100).toFixed())
         ?.replace(/\$e3/g, (itemData[itemInfo].extra[2]).toFixed())
         ?.replace(/\$e4/g, (itemData[itemInfo].extra[3]).toFixed()) }`
-    if (itemData[itemInfo].name[1].includes('a3_')) {des.innerHTML += `<br/><b>사용 시 효과</b> - ${ itemData[itemInfo].active
+    if (itemData[itemInfo].name[1].includes('a3_')) {des.innerHTML += `<br/><b>사용 시 효과 (F키로 사용 가능)</b> - ${ itemData[itemInfo].active
         ?.replace(/\$e1/g, (itemData[itemInfo].extra[0]).toFixed())
         ?.replace(/\$e2/g, (itemData[itemInfo].extra[1] / 100).toFixed())
         ?.replace(/\$e3/g, (itemData[itemInfo].extra[2]).toFixed())

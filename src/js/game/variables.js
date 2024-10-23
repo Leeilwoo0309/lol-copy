@@ -12,6 +12,7 @@ var damageAmount = { blue: 0, red: 0 };
 var onhitCount = { blue: 0, red: 0 };
 var canMove = true;
 var hasActiveItem = false;
+var activeItemCooldown = 0;
 var players = {
     blue: {
         selector: document.querySelector('.player.blue'),
@@ -69,7 +70,13 @@ var players = {
                 CalibrumWheel: false,
                 Gravitum: false
             },
-            ashe: 0
+            ashe: 0,
+            zhonya: false,
+            kaisa: 0,
+            talon: {
+                cooldown: 0,
+                stack: 0
+            }
         },
         status: {
             invisible: false,
@@ -134,7 +141,13 @@ var players = {
                 CalibrumWheel: false,
                 Gravitum: false
             },
-            ashe: 0
+            ashe: 0,
+            zhonya: false,
+            kaisa: 0,
+            talon: {
+                cooldown: 0,
+                stack: 0
+            }
         },
         status: {
             invisible: false,
@@ -146,6 +159,16 @@ var players = {
 var aaA = {
     ad: 0
 };
+var runeInfo = {
+    bokjaJung: { duration: 0, ad: 0, ap: 0, maxStack: 0, vamp: 0 },
+    chisok: { duration: 0, atkspd: 0, maxStack: 0 },
+    gibal: { cooldown: 0, heal: { default: 0, ad: 0, ap: 0 }, moveSpd: 0, duration: 0 } // 기@발
+};
+var runeRealInfo = {
+    bokjaJung: { stack: 0, duration: 0 },
+    chisok: { stack: 0, duration: 0 },
+    gibal: { cooldown: 0, isActive: false },
+};
 var socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 var params = new URLSearchParams(window.location.search);
 var char = { blue: undefined, red: undefined };
@@ -155,12 +178,15 @@ var readyStatus = { blue: false, red: false };
 var playerDistance = 0;
 var skillHit = {
     vampire: false,
-    ashe: false
+    ashe: false,
+    talonE: false
 };
 var slowTime = 0;
 var slowness = 0;
 //@ts-ignore
 var team = params.get('team');
+//@ts-ignore
+var rune = params.get('rune');
 //@ts-ignore
 char[team] = params.get('char');
 var skillInfo = {
@@ -201,7 +227,12 @@ var cooldownItem = {
     },
     draksar: {
         damage: 0
-    }
+    },
+    stormrazor: {
+        cooldown: 0,
+        use: 0
+    },
+    liandry: { duration: 0 }
 };
 var keyDown = {
     w: false,
@@ -214,6 +245,7 @@ var keyDown = {
     e: false,
     shift: false,
     tab: false,
+    f: false,
     arrowup: false,
     arrowleft: false,
     arrowdown: false,

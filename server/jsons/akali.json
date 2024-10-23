@@ -1,0 +1,71 @@
+{
+    "cn": "akali",
+    "name": "아칼리",
+    "defaultSpec": {
+        "ad": 21,
+        "ap": 0,
+        "atkspd": 0.9,
+        "armor": 34,
+        "ignoreArmor": 0,
+        "ignoreArmorPercent": 0,
+        "magicRegist": 32,
+        "skillHaste": 0,
+        "range": 150,
+        "projectileSpd": 17,
+        "moveSpd": 3.8,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 485,
+        "healthBoost": 4.1,
+        "vamp": 0,
+        "projectileSize": [150, 10],
+        "damageType": "melee",
+        "defaultAAType": "short"
+    },
+    "growth": [
+        {"health": 30, "armor": 2, "magicRegist": 2},
+        {"health": 80, "armor": 6, "magicRegist": 6},
+        {"health": 300, "armor": 25, "magicRegist": 25}
+    ],
+    "skills": {
+        "passive": {
+            "moveSpd": 0.2,
+            "duration": 200,
+            "damage": 2,
+            "ad": 0.1
+        },
+        "Q": {
+            "cooldown": 850,
+            "type": "melee",
+            "damage": 18,
+            "ad": 0.2,
+            "atkspd": 0.4,
+            "duration": 400
+        },
+        "E": {
+            "cooldown": 750,
+            "type": "melee",
+            "damage": 15,
+            "ad": 1
+        },
+        "Shift": {
+            "cooldown": 1900,
+            "moveSpd": 0.6,
+            "duration": 500
+        },
+        "Wheel": {
+            "cooldown": 8000,
+            "type": "magic",
+            "damage": 70,
+            "ap": 1.2,
+            "duration": 200
+        }
+    },
+    "des": {
+        "passive": "스킬 및 기본 공격 적중 시, 적의 이동속도가 20% 감소합니다. 이동속도가 감소한 적을 공격하면 추가 피해를 입힙니다.",
+        "Q": "6초 동안 애쉬의 공격 속도가 오르며 기본 공격이 강화된 피해를 입힙니다.<br /> (피해량: $qd + 공격력 * $qad, 재사용 대기시간: $qcd초)",
+        "E": "애쉬가 몇 개의 화살을 일제히 쏴 각각 물리 피해를 입힙니다. 적들은 일제 사격의 여러 화살에 맞을 수 있지만, 그중 첫 번째 화살에만 피해를 입습니다.<br /> (피해량 : $ed + 공격력 * $ead, 재사용 대기시간: $ecd초)",
+        "Shift": "이동 속도가 증가합니다. <br /> (재사용 대기시간: $scd초, 이동 속도 증가량: 0.6    )",
+        "Wheel": "애쉬가 얼음 수정화살을 발사하여 적중한 적에게 마법 피해를 입히고 기절시킵니다.<br /> (피해량: $wd + 주문력 * $wap, 재사용 대기시간: $wcd초)"
+    }
+}
