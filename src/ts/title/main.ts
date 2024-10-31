@@ -13,7 +13,7 @@ let runeInfo: string = undefined;
 let charName: string[] = ['teacher', 'sniper', 'ezreal', 'samira', 'vayne', 'exponent', 'graves', 'vampire', 'aphelios', 'assassin'];
 let charNameKr: string[] = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '베인', '엑스포넨트', '그레이브즈', '블라디미르', '아펠리오스', '어쌔신'];
 let charNameKrToEng = {
-    스나이퍼: 'sniper',
+    케이틀린: 'sniper',
     이즈리얼: 'ezreal',
     사미라: 'samira',
     베인: 'vayne',
@@ -24,11 +24,12 @@ let charNameKrToEng = {
     애쉬: 'ashe',
     카이사: 'kaisa',
     아리: 'ahri',
-    탈론: 'talon'
+    탈론: 'talon',
+    야스오: 'yasuo'
     // 아칼리: 'akali'
 }
 let charNameEngToKr = {
-    sniper: '스나이퍼',
+    sniper: '케이틀린',
     ezreal: '이즈리얼',
     samira: '사미라',
     vayne: '베인',
@@ -40,18 +41,21 @@ let charNameEngToKr = {
     undefined: '정하지 않음',
     kaisa: "카이사",
     ahri: '아리',
-    talon: '탈론'
+    talon: '탈론',
+    yasuo: '야스오'
     // akali: '아칼리'
 };
 let runeNameKrToEnd = {
     "기민한 발놀림": "gibal",
     "정복자": "bokjaJung",
-    "치명적 속도": "chisok"
+    "치명적 속도": "chisok",
+    "감전": "gamjun"
 };
 let runeNameEngToKr = {
     bokjaJung: '정복자',
     chisok: '치명적 속도',
-    gibal: '기민한 발놀림'
+    gibal: '기민한 발놀림',
+    gamjun: '감전'
 }
 let readyStatus: [boolean, boolean] = [false, false];
 let selectedRune: string = undefined;

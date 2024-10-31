@@ -230,19 +230,32 @@ function getData() {
                     _a.specINIT = _b.sent();
                     players[getEnemyTeam()].hp[0] = players[getEnemyTeam()].specINIT.health;
                     players[getEnemyTeam()].hp[1] = players[getEnemyTeam()].specINIT.health;
-                    makeEzreal();
-                    makeSniper();
-                    makeSamira();
-                    makeVayne();
-                    makeExponent();
-                    makeAssassin();
-                    makeGraves();
-                    makeVampire();
-                    makeAphelios();
-                    makeAshe();
-                    makeKaisa();
-                    makeAhri();
-                    makeTalon();
+                    if (char[team] === 'ezreal' || char[getEnemyTeam()] === 'ezreal')
+                        makeEzreal();
+                    if (char[team] === 'sniper' || char[getEnemyTeam()] === 'sniper')
+                        makeSniper();
+                    if (char[team] === 'samira' || char[getEnemyTeam()] === 'samira')
+                        makeSamira();
+                    if (char[team] === 'vayne' || char[getEnemyTeam()] === 'vayne')
+                        makeVayne();
+                    if (char[team] === 'exponent' || char[getEnemyTeam()] === 'exponent')
+                        makeExponent();
+                    if (char[team] === 'graves' || char[getEnemyTeam()] === 'graves')
+                        makeGraves();
+                    if (char[team] === 'vampire' || char[getEnemyTeam()] === 'vampire')
+                        makeVampire();
+                    if (char[team] === 'aphelios' || char[getEnemyTeam()] === 'aphelios')
+                        makeAphelios();
+                    if (char[team] === 'ashe' || char[getEnemyTeam()] === 'ashe')
+                        makeAshe();
+                    if (char[team] === 'kaisa' || char[getEnemyTeam()] === 'kaisa')
+                        makeKaisa();
+                    if (char[team] === 'ahri' || char[getEnemyTeam()] === 'ahri')
+                        makeAhri();
+                    if (char[team] === 'talon' || char[getEnemyTeam()] === 'talon')
+                        makeTalon();
+                    if (char[team] === 'yasuo' || char[getEnemyTeam()] === 'yasuo')
+                        makeYasuo();
                     if (char[team] == 'ezreal') {
                         charClass = ezreal;
                     }
@@ -281,6 +294,9 @@ function getData() {
                     }
                     else if (char[team] == 'talon') {
                         charClass = talon;
+                    }
+                    else if (char[team] == 'yasuo') {
+                        charClass = yasuo;
                     }
                     return [4 /*yield*/, getItemInfo()];
                 case 4:

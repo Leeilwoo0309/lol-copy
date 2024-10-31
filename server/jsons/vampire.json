@@ -34,13 +34,13 @@
         "Q": {
             "cooldown": 400,
             "damage": 10,
-            "ap": 1.1,
-            "vamp": 0.5
+            "ap": 0.9,
+            "vamp": 0.2
         },
         "E": {
             "cooldown": 1500,
             "damage": 20,
-            "ap": 1.5
+            "ap": 1.2
         },
         "Shift": {
             "cooldown": 1500,
@@ -50,7 +50,7 @@
             "cooldown": 7500,
             "damage": 20,
             "ap": 0.7,
-            "duration": 400
+            "duration": 900
         }
     },
     "des": {

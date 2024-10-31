@@ -105,6 +105,23 @@ function makeTalon() {
                 msg: 'talon-shift'
             }
         }));
+
+        projectiles[team].push(
+            new ProjectileBuilder()
+                .setDamage(skillInfo.shift.damage + players[team].spec.ad * skillInfo.shift.ad, skillInfo.shift.type)
+                .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                .setDegree(0)
+                .setReach(400)
+                .setSpeed(20)
+                .setSize({height: 1, width: 1})
+                .setStyle('rgb(145, 176, 202)')
+                .onHit(`talon skill q`)
+                .canPass(true)
+                .setTarget()
+                .ignoreObj(true)
+                .build(team)
+        );
+
     }
     
     talon.skillWheel = () => {
@@ -112,16 +129,19 @@ function makeTalon() {
         talon.cooldown.wheel = talon.cooldownINIT.wheel;
         talon.isActive.wheel = true;
         players[team].status.invisible = true;
+        players[team].specItem.moveSpd += skillInfo.wheel.moveSpd;
         
         setTimeout(() => {
             players[team].status.invisible = false;
             talon.isActive.wheel = false;
+            players[team].specItem.moveSpd -= skillInfo.wheel.moveSpd;
         }, skillInfo.wheel.duration * 10);
 
         for (let i = -5; i <= 5; i++) {
             projectiles[team].push(
                 new ProjectileBuilder()
-                    .setDamage(skillInfo.wheel.damage + players[team].spec.ad * skillInfo.wheel.ad, skillInfo.wheel.type)
+                    //@ts-ignore
+                    .setDamage(10, skillInfo.wheel.type)
                     .setCritical(players[team].spec.criticP, players[team].spec.criticD)
                     .setDegree(i / 5 * Math.PI)
                     .setReach(150)

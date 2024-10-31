@@ -31,12 +31,13 @@ type PlayerDeclare = {
     specItem: Ability,
     specINIT: Ability,
     marker: Marker,
-    status: { invisible: boolean },
+    status: { invisible: boolean, cc: { stun: number, cantMove: number } },
     gold: number,
     items: Item[],
 }
 
 type Marker = {
+    sniper: boolean,
     ezreal?: boolean,
     vayne?: number,
     aphelios?: {
@@ -216,11 +217,13 @@ type ChampionNames =
     "ashe" |
     "kaisa" |
     "ahri" |
-    "talon"
+    "talon" |
+    "yasuo"
     ;
 
 type Rune = 
     "chisok" |
     "bokjaJung" |
-    "gibal"
+    "gibal" |
+    "gamjun"
 ;

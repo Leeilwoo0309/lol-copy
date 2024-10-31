@@ -141,8 +141,8 @@ setInterval(() => {
         vamp: players[team].specINIT.vamp + players[team].specItem.vamp
     };
 
-    players[team].spec.ad += runeRealInfo.bokjaJung.stack * runeInfo.bokjaJung.ad;
-    players[team].spec.ap += runeRealInfo.bokjaJung.stack * runeInfo.bokjaJung.ap;
+    players[team].spec.ad += Math.floor(runeRealInfo.bokjaJung.stack * runeInfo.bokjaJung.ad * 10) / 10;
+    players[team].spec.ap += Math.floor(runeRealInfo.bokjaJung.stack * runeInfo.bokjaJung.ap * 10) / 10;
     if (runeRealInfo.bokjaJung.stack === runeInfo.bokjaJung.maxStack) players[team].spec.vamp += runeInfo.bokjaJung.vamp;
     if (runeRealInfo.chisok.stack === runeInfo.chisok.maxStack) players[team].spec.ad += players[team].specItem.atkspd * 0.1;
     players[team].spec.atkspd *= 1 + runeRealInfo.chisok.stack * runeInfo.chisok.atkspd ;
@@ -161,6 +161,11 @@ setInterval(() => {
     if (hasItem('3_bloodthir') && players[team].hp[1] / players[team].hp[0] >= findItem('3_bloodthir').body.extra[0] / 100) players[team].spec.ad += findItem('3_bloodthir').body.extra[2];
 
     if (char[team] === 'vampire') players[team].spec.vamp = Math.round(players[team].spec.vamp * skillInfo.passive.vamp);
+    if (char[team] === 'aphelios') {
+        players[team].spec.ad += legendItem * 10;
+        players[team].spec.atkspd *= (1 + legendItem * 0.08);
+        players[team].spec.ignoreArmor += legendItem * 5;
+    }
 
     players[team].spec.atkspd = Math.round(players[team].spec.atkspd * 100) / 100;
     players[team].spec.ad += Math.round(cooldownItem.draksar.damage);
@@ -172,6 +177,8 @@ setInterval(() => {
             e.style.width = `${ nexusHp.blue[1] / nexusHp.blue[0] * 100}%`;
         } else if (e.className.indexOf('nexus') >= 0 && e.className.indexOf('red') >= 0) {
             e.style.width = `${ nexusHp.red[1] / nexusHp.red[0] * 100}%`;
+        } else if (e.className.indexOf('obj') >= 0) {
+            e.style.width = `${ objHp[1] / objHp[0] * 100}%`;
         } else if (e.className.indexOf(team) >= 0) {
             let totalBarrier: number = 0;
             players[team].barrier.forEach(e => totalBarrier += e[0]);
@@ -221,11 +228,7 @@ setInterval(() => {
 
     players[team].spec.ap = Math.ceil(players[team].spec.ap);
 
-    let runeNameEngToKr = {
-        bokjaJung: '정복자',
-        gibal: '기민한 발놀림',
-        chisok: '치명적 속도'
-    };
+    
     let stack = "";
 
     if (rune === "bokjaJung") {
@@ -234,6 +237,9 @@ setInterval(() => {
         stack = `(${runeRealInfo.chisok.stack}, ${ Math.ceil(runeRealInfo.chisok.duration / 10) / 10 }초)`;
     } else if (rune === 'gibal') {
         if (runeRealInfo.gibal.cooldown > 0) stack = `(${ Math.ceil(runeRealInfo.gibal.cooldown / 10) / 10 }초 남음)`
+    } else if (rune === 'gamjun') {
+        stack = `(${ Math.ceil( runeInfo.gamjun.damage + runeInfo.gamjun.ad * players[team].spec.ad + runeInfo.gamjun.ap * players[team].spec.ap ) })`
+        if (runeRealInfo.gamjun.cooldown > 0) stack = `(${ Math.ceil( runeInfo.gamjun.damage + runeInfo.gamjun.ad * players[team].spec.ad + runeInfo.gamjun.ap * players[team].spec.ap ) }, ${ Math.ceil(runeRealInfo.gamjun.cooldown / 10) / 10 }초 남음)`
     } else {
         stack = "";
     }
@@ -320,7 +326,25 @@ setInterval(() => {
         players[team].status.invisible = false;
         
         if (players[team].specINIT.defaultAAType == "long") {
-            if (char[team] == "graves") {
+            if (char[team] === 'sniper' && players[getEnemyTeam()].marker.sniper && playerDistance <= players[team].spec.range * 1.3) {
+                projectiles[team].push(
+                    new ProjectileBuilder()
+                        .setDamage(
+                            (players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage +
+                            players[team].spec.ad * (skillInfo.passive.ad + skillInfo.passive.criticD * (players[team].spec.criticD / 100 + 1.75) * players[team].spec.criticP / 100))
+                        , 'melee')
+                        .setCritical(100, players[team].spec.criticD)
+                        .setReach(players[team].spec.range * 5)
+                        .setSpeed(players[team].spec.projectileSpd * 1.5)
+                        .setTarget()
+                        .setSize({height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1]})
+                        // .setStyle('gray')
+                        .onHit(`sniper aa`)
+                        .build(team)
+                );
+
+                socket.send(JSON.stringify({body: {msg: 'sniper-power-aa'}}))
+            } else if (char[team] == "graves") {
                 for (let i = -1; i < 2; i++) {
                     projectiles[team].push(
                         new ProjectileBuilder()
@@ -340,7 +364,7 @@ setInterval(() => {
 
                 projectiles[team].push(
                     new ProjectileBuilder()
-                        .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage + (players[getEnemyTeam()].marker.aphelios.CalibrumWheel ? 30 : 0), aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
+                        .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage + (players[getEnemyTeam()].marker.aphelios.CalibrumWheel ? 20 + players[team].spec.ad * 0.6 : 0), aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
                         .setCritical(players[team].spec.criticP, players[team].spec.criticD)
                         .setDegree(angle)
                         .setStyle(weaponColor[apheliosWeapon[players[getEnemyTeam()].marker.aphelios.Calibrum ? apheliosWeapon[1] === 'Calibrum' ? 0 : 1 : 0]])
@@ -434,12 +458,16 @@ setInterval(() => {
 
     if (keyDown.q && charClass.cooldown.q === 0 && deathCoolDown[team] === 0) {
         charClass.skillQ();
+        skillUse();
     } if (keyDown.e && charClass.cooldown.e === 0 && deathCoolDown[team] === 0) {
         charClass.skillE();
+        skillUse();
     } if (keyDown.shift && charClass.cooldown.shift === 0 && deathCoolDown[team] === 0) {
         charClass.skillLShift();
+        skillUse();
     } if (keyDown.mouse[1] && charClass.cooldown.wheel === 0 && deathCoolDown[team] === 0) {
         charClass.skillWheel();
+        skillUse();
     }
 
     function skillUpdate(skillKey: string, index: number) {
@@ -454,6 +482,8 @@ setInterval(() => {
 
             if (char[team] === 'ahri' && skillKey === 'wheel' && ahri.isActive.wheel && ahri.cooldown.wheel === 0) {
                 skillBtns[index].innerHTML = `WHEEL (${ ahriWheelTimes })`
+            } else if (char[team] === 'yasuo' && skillKey === 'q' && yasuoQStack > 0 && yasuo.cooldown.q === 0) {
+                skillBtns[index].innerHTML = `Q (${yasuoQStack})`
             }
         } else if (charClass.cooldown[skillKey] > 0) {
             // 쿨타임일 때
@@ -473,8 +503,12 @@ setInterval(() => {
             skillBtns[index].style.backgroundColor = 'rgb(144, 148, 167)';
             skillBtns[index].style.color = 'black';
             skillBtns[index].style.border = '';
-    
+            
             skillBtns[index].innerHTML = `${ skillKey.toUpperCase() }`;
+
+            if (skillKey === 'q') {
+                skillBtns[index].style.fontSize = '30px';
+            }
 
             if (char[team] === 'aphelios' && skillKey == 'e') {
                 let fontColor = {
@@ -530,6 +564,9 @@ setInterval(() => {
                 skillBtns[index].style.color = fontColor[apheliosWeapon[0]];
                 // skillBtns[index].style.borderRadius = '100%'
                 // skillBtns[index].innerHTML = `NEXT`;
+            } else if (char[team] === 'yasuo' && skillKey === 'q' && yasuoQStack > 0) {
+                skillBtns[index].innerHTML = `Q (${yasuoQStack})`;
+                skillBtns[index].style.fontSize = '20px';
             }
         }
     }
@@ -574,6 +611,25 @@ setInterval(() => {
                     canMove = true;
                 }
             }, findItem('a3_galeforce').body.activeInfo[2]);
+
+            for (let i = -1; i <= 1; i++) {
+                if (playerDistance > 650) continue;
+                projectiles[team].push(
+                    new ProjectileBuilder()
+                        .setDamage(findItem('a3_galeforce').body.activeInfo[3] + findItem('a3_galeforce').body.activeInfo[4] * players[team].spec.ad, 'melee')
+                        .setCritical(0, players[team].spec.criticD)
+                        .setDegree(angle)
+                        .projOffset({x: Math.random() * 100 - 50, y: Math.random() * 100 - 50})
+                        .setReach(5500)
+                        .setSpeed(20)
+                        .setTarget()
+                        .setStyle('rgb(51, 159, 206)')
+                        .setSize({height: 10, width: 10})
+                        // .setStyle('gray')
+                        .onHit(``)
+                        .build(team)
+                );
+        }
         } else if (hasItem('a3_rocketbelt')) {
             activeItemCooldown = findItem('a3_rocketbelt').body.activeInfo[0];
 
@@ -659,8 +715,7 @@ setInterval(() => {
             slowTime = 0;
             players[team].marker.ashe = 0;
             players[team].marker.aphelios.Gravitum = false;
-            
-            canMove = true;
+            players[team].status.cc.stun = 0;
         } else if (hasItem('a3_youmu')) {
             activeItemCooldown = findItem('a3_youmu').body.activeInfo[0];
 
@@ -725,6 +780,15 @@ setInterval(() => {
     animation(team);
     animation(getEnemyTeam());
 
+    if (players[team].status.cc.stun > 0) {
+        canMove = false;
+        atkWait = 20;
+    } else if (players[team].status.cc.cantMove > 0) {
+        canMove = false;
+    } else {
+        canMove = true;
+    }
+
 
     // 아이템
     // if (hasItem("3_shieldbow") && cooldownItem.shieldbow == 0 && players[team].hp[1] / players[team].hp[0] <= 0.3 && players[team].hp[1] > 0) {
@@ -735,12 +799,25 @@ setInterval(() => {
     let newProjectiles: Projectile[] = [];
 
     projectiles[team].forEach(e => {
-        if (e.isArrive) {
-            newProjectiles.push(e);
+        if (!e.isSent) {
+            let send = e;
+            let selector = e.selector
+
+            //@ts-ignore
+            send.selector = e.selector.outerHTML;
+            newProjectiles.push(send);
+            // console.log(send);
+            //@ts-ignore
+            // send.selector = new DOMParser().parseFromString(e.selector, 'text/html');
+            //@ts-ignore
+            // send.selector = send.selector.lastChild.lastChild.firstChild;
+            //@ts-ignore
+
+            // send.selector = e.selector;
         }
     });
 
-    projectiles[team] = [...newProjectiles];
+    // projectiles[team] = [...newProjectiles];
 
     let sendData = {
         pos: absolutePosition[team],
@@ -751,7 +828,8 @@ setInterval(() => {
         item: players[team].items,
         marker: players[team].marker,
         spec: players[team].spec,
-        status: players[team].status
+        status: players[team].status,
+        objHp: objHp
     };
 
     socket.send(JSON.stringify({body: sendData}));
@@ -845,6 +923,9 @@ setInterval(() => {
         });
     }
 
+    if (players[team].status.cc.stun > 0) players[team].status.cc.stun -= 1;
+    if (players[team].status.cc.cantMove > 0) players[team].status.cc.cantMove -= 1;
+
     if (slowTime > 0) slowTime -= 1;
     if (slowTime === 0) {
         if (char[getEnemyTeam()] === 'aphelios') {
@@ -875,11 +956,12 @@ setInterval(() => {
     if (runeRealInfo.bokjaJung.stack >= 1) runeRealInfo.bokjaJung.duration -= 1;
     if (runeRealInfo.chisok.stack >= 1) runeRealInfo.chisok.duration -= 1;
     if (runeRealInfo.gibal.cooldown >= 1) runeRealInfo.gibal.cooldown -= 1;
+    if (runeRealInfo.gamjun.cooldown >= 1) runeRealInfo.gamjun.cooldown -= 1;
+    if (runeRealInfo.gamjun.duration >= 1) runeRealInfo.gamjun.duration -= 1;
 
-    if (runeRealInfo.bokjaJung.duration === 0) {
-        runeRealInfo.bokjaJung.stack = 0
-    };
+    if (runeRealInfo.bokjaJung.duration === 0) runeRealInfo.bokjaJung.stack = 0;
     if (runeRealInfo.chisok.duration === 0) runeRealInfo.chisok.stack = 0;
+    if (runeRealInfo.gamjun.duration === 0) runeRealInfo.gamjun.stack = 0;
 }, 10);
 
 setInterval(() => {
@@ -963,19 +1045,12 @@ function onhit(type, tags: string, damage: number) {
         charClass.cooldown.shift -= charClass.cooldownINIT.shift * decreasePercent
     }
 
-    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && cooldownItem.sheen.isActive) {
+    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && cooldownItem.sheen.isActive && type === 'aa') {
         cooldownItem.sheen.isActive = false;
         aaA.ad = 0;
         aaA.damageType = undefined;
     }
-    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && !cooldownItem.sheen.isActive && type == 'skill') {
-        aaA.ad += players[team].spec.ad;
-        if (hasItem('3_lich_bane')) {
-            aaA.ad += players[team].spec.ad * (findItem('3_lich_bane').body.extra[0] / 100) + players[team].spec.ap * (findItem('3_lich_bane').body.extra[2] / 100);
-            aaA.damageType = 'magic';
-        }
-        cooldownItem.sheen.isActive = true;
-    }
+    
 
     if (aaA.ad > 0 && !cooldownItem.sheen.isActive) {
         aaA.ad = 0;
@@ -997,6 +1072,8 @@ function onhit(type, tags: string, damage: number) {
         ahriAttackTimes += 1;
     } else if (char[team] === 'talon' && talon.isActive.wheel) {
         talonHitWheel = true;
+    } else if (char[team] === 'yasuo' && tags?.includes('q')) {
+        yasuoQStack += 1;
     }
 
     // 룬
@@ -1020,13 +1097,35 @@ function onhit(type, tags: string, damage: number) {
                 info: [ "heal", healAmount, false, team]
             }
         }));
-        players[team].hp[1] += healAmount;
+        // players[team].hp[1] += healAmount;
         players[team].specItem.moveSpd += runeInfo.gibal.moveSpd;
         
         setTimeout(() => {
             players[team].specItem.moveSpd -= runeInfo.gibal.moveSpd;
         }, runeInfo.gibal.duration * 10);
 
+    } else if (rune === 'gamjun' && runeRealInfo.gamjun.cooldown === 0) {
+        runeRealInfo.gamjun.stack += 1;
+        runeRealInfo.gamjun.duration = 200;
+        
+        if (runeRealInfo.gamjun.stack === 3) {
+            runeRealInfo.gamjun.stack = 0;
+            runeRealInfo.gamjun.duration = 0;
+            runeRealInfo.gamjun.cooldown = runeInfo.gamjun.cooldown;
+
+            socket.send(JSON.stringify({
+                body: {
+                    msg: 'damageAlert',
+                    info: [
+                        "magic",
+                        Math.ceil( runeInfo.gamjun.damage + runeInfo.gamjun.ad * players[team].spec.ad + runeInfo.gamjun.ap * players[team].spec.ap ),
+                        false,
+                        getEnemyTeam()
+                    ]
+                }
+            }));
+            damageAlert("magic",  Math.ceil( runeInfo.gamjun.damage + runeInfo.gamjun.ad * players[team].spec.ad + runeInfo.gamjun.ap * players[team].spec.ap ), false, getEnemyTeam());
+        }
     }
 }
 

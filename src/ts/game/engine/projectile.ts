@@ -20,10 +20,13 @@ class Projectile {
     public targetEnemy: [boolean, 'red' | 'blue'] = [false, team];
     public canPass: boolean = false;
     public offset: {x: number, y: number} = {x: 0, y: 0};
+    public selector: HTMLDivElement = undefined;
 
     public start(type: "blue" | "red") {
         const _main: HTMLElement = document.querySelector('.projectiles');
-        let _bullet: HTMLDivElement = document.createElement('div');
+        this.selector = document.createElement('div');
+
+        let _bullet = this.selector;
 
         let talonEBack: boolean = false;
 
@@ -38,7 +41,10 @@ class Projectile {
         // let offsetX = 4;
         let offsetY = -players[type].size / 2 + this.size.height / 2;
 
-        if (type === team) {
+        if (this.onhit?.includes('objProjectile')) {
+            _bullet.style.left = `${ absolutePosition[getEnemyTeam()].x - cameraPosition.x + offsetX}px`;
+            _bullet.style.top = `${ -absolutePosition[getEnemyTeam()].y - cameraPosition.y - offsetY}px`;
+        } else if (type === team) {
             _bullet.style.left = `${ absolutePosition[team].x - cameraPosition.x + offsetX}px`;
             _bullet.style.top = `${ -absolutePosition[team].y - cameraPosition.y - offsetY}px`;
 
@@ -46,7 +52,7 @@ class Projectile {
             // this.absPos.y = absolutePosition[team].y - offsetY;
             this.absPos.x = absolutePosition[team].x + offsetX + this.offset.x;
             this.absPos.y = absolutePosition[team].y - offsetY + this.offset.y;
-        } else {
+        } else if (type === getEnemyTeam()) {
             _bullet.style.left = `${ absolutePosition[getEnemyTeam()].x - cameraPosition.x + offsetX}px`;
             _bullet.style.top = `${ -absolutePosition[getEnemyTeam()].y - cameraPosition.y - offsetY}px`;
             
@@ -59,6 +65,11 @@ class Projectile {
         if (this.damage == 0) {
             _bullet.style.opacity = `20%`;
             _bullet.style.backgroundColor = `black`;
+        }
+
+        if (this.onhit?.includes("yasuo skill aa q")) {
+            this.absPos.x += -100 * Math.cos(this.angle);
+            this.absPos.y += -100 * Math.sin(this.angle);
         }
         
         if (this.style.color !== undefined) _bullet.style.backgroundColor  = `${ this.style.color }`;
@@ -88,6 +99,16 @@ class Projectile {
                 this.speed -= 0.3;
             } else if (this.onhit?.includes("ahri skill q2")) {
                 this.speed += 0.3;
+            } else if (this.onhit?.includes("yasuo skill e")) {
+                this.speed -= 1.5;
+
+                if (this.speed < 0) {
+                    this.speed = 0;
+                
+                    setTimeout(() => {
+                        this.isArrive = false;
+                    }, 4000);
+                }
             }
 
 
@@ -139,6 +160,7 @@ class Projectile {
                     
                     // 아이템 감지  
                     players[getEnemyTeam()].items.forEach(e => {
+                        if (this.onhit?.includes('objProjectile')) return;
                         if (e?.name[1] == '3_molwang' && !this.onhit?.includes('skill')) {
                             totalDamage.melee += players[team].hp[1] * (e.extra[0] / 100);
                         }
@@ -169,14 +191,14 @@ class Projectile {
                     });
 
                     // 플레이어가 가지고 있는 아이템에 따라..
-                    if (hasItem('3_shieldbow') && cooldownItem.shieldbow == 0 && players[team].hp[1] / players[team].hp[0] <= 0.35 && players[team].hp[1] > 0) {
+                    if (hasItem('3_shieldbow') && cooldownItem.shieldbow == 0 && players[team].hp[1] / players[team].hp[0] <= 0.35 && players[team].hp[1] > 0 && !this.onhit?.includes('objProjectile')) {
                         const shieldbow = findItem('3_shieldbow').body;
 
                         players[team].barrier.push([players[team].hp[0] * (shieldbow.extra[0] / 100) + shieldbow.extra[2], shieldbow.extra[3] * 100]);
                         cooldownItem.shieldbow = findItem("3_shieldbow").body.extra[1];
                     }
 
-                    if (players[team].marker?.ezreal == true) {
+                    if (players[team].marker?.ezreal == true && !this.onhit?.includes('objProjectile')) {
                         absolutePosition[team].x += 3;
                         absolutePosition[team].y -= 3;
 
@@ -189,7 +211,11 @@ class Projectile {
                     }
                     
                     // 챔피언별 온힛 효과
-                    if (this.onhit?.includes("ezreal") && this.onhit?.includes(" e")) {
+                    if (this.onhit?.includes('objProjectile')) {let a = 1;}
+                    else if (this.onhit?.includes('sniper skill e') || this.onhit?.includes('sniper skill shift')) {
+                        players[team].marker.sniper = true;
+                        players[team].status.cc.stun = 150;
+                    } else if (this.onhit?.includes("ezreal") && this.onhit?.includes(" e")) {
                         absolutePosition[team].x -= 3;
                         absolutePosition[team].y += 3;
                         players[team].marker.ezreal = true;
@@ -200,12 +226,8 @@ class Projectile {
                             }
                         }));
 
-                        if (this.onhit?.includes(" e")) {
-                            canMove = false;
-                            
-                            setTimeout(() => {
-                                canMove = true;
-                            }, enemySkillInfo.e.duration * 10);
+                        if (this.onhit?.includes("samira skill e")) {
+                            players[team].status.cc.stun += enemySkillInfo.e.duration * 10
                         }
 
                         
@@ -221,11 +243,7 @@ class Projectile {
                         }
 
                         if (this.onhit?.includes('bondage')) {
-                            canMove = false;
-
-                            setTimeout(() => {
-                                canMove = true;
-                            }, enemySkillInfo.shift.duration * 10);
+                            players[team].status.cc.stun += enemySkillInfo.shift.duration * 10
                         }
                     } else if (this.onhit?.includes('vampire skill e')) {
                         skillHit.vampire = true;
@@ -287,7 +305,7 @@ class Projectile {
                                 skillHit.ashe = false;
                             }, 100);
                         } else if (this.onhit?.includes('ashe skill wheel')) {
-                            canMove = false;
+                            players[team].status.cc.stun = enemySkillInfo.wheel.duration;
 
                             charClass.cooldown.q += enemySkillInfo.wheel.duration;
                             charClass.cooldown.e += enemySkillInfo.wheel.duration;
@@ -296,9 +314,9 @@ class Projectile {
 
                             atkWait += enemySkillInfo.wheel.duration;
 
-                            setTimeout(() => {
-                                canMove = true;
-                            }, enemySkillInfo.wheel.duration * 10);
+                            // setTimeout(() => {
+                            //     canMove = true;
+                            // }, enemySkillInfo.wheel.duration * 10);
                         }
                     } else if (this.onhit?.includes('kaisa')) {
                         if (this.onhit?.includes('aa')) {
@@ -308,8 +326,7 @@ class Projectile {
                         }
                     } else if (this.onhit?.includes('ahri')) {
                         if (this.onhit?.includes('shift')) {
-                            canMove = false;
-
+                            players[team].status.cc.stun = enemySkillInfo.shift.duration;
                             charClass.cooldown.q += enemySkillInfo.shift.duration;
                             charClass.cooldown.e += enemySkillInfo.shift.duration;
                             charClass.cooldown.shift += enemySkillInfo.shift.duration;
@@ -317,9 +334,9 @@ class Projectile {
 
                             atkWait += enemySkillInfo.shift.duration;
 
-                            setTimeout(() => {
-                                canMove = true;
-                            }, enemySkillInfo.shift.duration * 10);
+                            // setTimeout(() => {
+                            //     canMove = true;
+                            // }, enemySkillInfo.shift.duration * 10);
                         }
                     } else if (this.onhit?.includes('talon skill')) {
                         if (players[team].marker.talon.cooldown === 0) {
@@ -333,16 +350,26 @@ class Projectile {
                                 skillHit.talonE = false;
                             }, 50);
                         }
+                    } else if (this.onhit?.includes('yasuo skill q2')) {
+                        players[team].status.cc.stun += 100;
+                        
+
+                        charClass.cooldown.q += 100;
+                        charClass.cooldown.e += 100;
+                        charClass.cooldown.shift += 100;
+                        charClass.cooldown.wheel += 100;
+
+                        atkWait += 100;
                     }
 
-                    if (hasShadowflame && isCritical) {
+                    if (hasShadowflame && isCritical && !this.onhit?.includes('objProjectile')) {
                         // players[team].hp[1] -= this.damage * criticalDamage * damageCoefficient.magic;
                         totalDamage.magic *= (1 + this.critical[1] / 100);
                     }
 
                     let totalDamageSum = totalDamage.magic * damageCoefficient.magic + totalDamage.melee * damageCoefficient.melee + totalDamage.true
 
-                    if (this.onhit?.includes('skill')) {
+                    if (this.onhit?.includes('skill') && !this.onhit?.includes('objProjectile')) {
                         socket.send(JSON.stringify({body: {msg: "onhit", target: 'enemy', type: "skill", tags: this.onhit, damage: totalDamageSum}}));
                     } else {
                         socket.send(JSON.stringify({body: {msg: "onhit", target: 'enemy', type: "aa", tags: this.onhit, damage: totalDamageSum}}));
@@ -409,6 +436,14 @@ class Projectile {
                     
                     nexusHp[team][1] -= (1 / (1 + 50 * 0.01)) * this.damage;
                     nexusHp[team][1] -= players[getEnemyTeam()].spec.ap * 0.7 * (1 / (1 + 30 * 0.01));
+                    this.isCollide = true;
+
+                    socket.send(JSON.stringify({body: {msg: 'onhit', target: 'nexus'}}));
+                } else if (this.isCollideWithNexus(gameObjects[11].objSelector, _bullet) && !this.isCollide && !this.onhit?.includes('objProjectile')) {
+                    if (objHp[1] <= 0) return;
+                    
+                    objHp[1] -= (1 / (1 + 50 * 0.01)) * this.damage;
+                    objHp[1] -= players[getEnemyTeam()].spec.ap * 0.7 * (1 / (1 + 30 * 0.01));
                     this.isCollide = true;
 
                     socket.send(JSON.stringify({body: {msg: 'onhit', target: 'nexus'}}));
@@ -557,6 +592,8 @@ class Projectile {
                 clearInterval(update);
                 _main.removeChild(_bullet);
             }
+
+            this.selector = _bullet;
         }, 16);
     }
 
@@ -588,7 +625,7 @@ class Projectile {
     
 
     public isCollideWithNexus(victim: HTMLDivElement, projectileSelector: HTMLDivElement): boolean {
-        if (this.onhit?.includes('skill')) return false;
+        // if (this.onhit?.includes('skill')) return false;
         const r1 = projectileSelector.offsetWidth / 2;
         const r2 = victim.offsetWidth / 2;
 
@@ -676,6 +713,11 @@ class ProjectileBuilder {
 
     public projOffset(offset: {x: number, y: number}): ProjectileBuilder {
         this.projectile.offset = offset;
+        return this;
+    }
+
+    public setSelector(selector: HTMLDivElement): ProjectileBuilder {
+        this.projectile.selector = selector;
         return this;
     }
 

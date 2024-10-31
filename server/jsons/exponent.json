@@ -32,10 +32,10 @@
             "cooldown": 2000,
             "ad": 2,
             "ap": 5,
-            "health": 25,
-            "armor": 4,
+            "health": 20,
+            "armor": 2.5,
             "range": 10,
-            "magicRegist": 4
+            "magicRegist": 2
         },
         "Q": {
             "cooldown": 900,
@@ -45,19 +45,19 @@
             "ap": 1
         },
         "E": {
-            "cooldown": 1500,
+            "cooldown": 2400,
             "des": "burf-heal",
-            "damage": 30,
-            "ap": 1.7,
+            "damage": 20,
+            "ap": 0.6,
             "duration": 100,
             "moveSpd": 1.2
         },
         "Shift": {
-            "cooldown": 750,
+            "cooldown": 1300,
             "range": 75,
-            "duration": 300,
-            "armor": 50,
-            "ap": 1.4
+            "duration": 200,
+            "armor": 35,
+            "ap": 0.9
         },
         "Wheel": {
             "cooldown": 4000

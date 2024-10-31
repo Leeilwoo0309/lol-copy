@@ -104,6 +104,19 @@ var GameObjectBuilder = /** @class */ (function () {
             hpBar.appendChild(hpBarProgress);
             object.className = 'nexus';
         }
+        else if (this.obj.role === 'obj') {
+            var hpBar = document.createElement('div');
+            var hpBarProgress = document.createElement('div');
+            var hpBarProgressLater = document.createElement('div');
+            object.style.transition = 'opacity 3s';
+            hpBar.className = "obj hp";
+            hpBarProgress.className = "hp-progress obj";
+            hpBarProgressLater.className = "hp-progress later obj";
+            object.appendChild(hpBar);
+            hpBar.appendChild(hpBarProgressLater);
+            hpBar.appendChild(hpBarProgress);
+            object.className = 'obj';
+        }
         this.obj.objSelector = object;
         game.appendChild(object);
         this.obj.start();
@@ -111,3 +124,29 @@ var GameObjectBuilder = /** @class */ (function () {
     };
     return GameObjectBuilder;
 }());
+setInterval(function () {
+    if (_isCollideWithNexus(gameObjects[12].objSelector, players[team].selector)) {
+        projectiles[team].push(new ProjectileBuilder()
+            .setDamage(10, "melee")
+            .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+            .setReach(1500)
+            .setSpeed(15)
+            .ignoreObj()
+            .setPos(2200, 500 + 12.5)
+            .setTarget(true, getEnemyTeam())
+            .setSize({ height: 30, width: 30 })
+            .setStyle('rgb(65, 65, 65)')
+            .onHit('objProjectile')
+            .build(getEnemyTeam()));
+    }
+}, 100);
+function _isCollideWithNexus(victim, projectileSelector) {
+    var r1 = projectileSelector.offsetWidth / 2;
+    var r2 = victim.offsetWidth / 2;
+    var x1 = projectileSelector.offsetLeft + r1;
+    var y1 = projectileSelector.offsetTop + r1;
+    var x2 = victim.offsetLeft + r2;
+    var y2 = victim.offsetTop + r2;
+    var distance = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+    return distance <= (r1 + r2);
+}

@@ -15,7 +15,7 @@ const resultPar: HTMLParagraphElement = document.querySelector('.header');
 const resultPrint: HTMLDivElement = document.querySelector('.result');
 const toTitleBtn: HTMLDivElement = document.querySelector('#back');
 const charKr = {
-    sniper: "스나이퍼",
+    sniper: "케이틀린",
     ezreal: "이즈리얼",
     samira: "사미라",
     vayne: "베인",

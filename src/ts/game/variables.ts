@@ -65,6 +65,7 @@ const players: Players = {
             manaR: 0
         },
         marker: {
+            sniper: false,
             aphelios: {
                 Calibrum: false,
                 CalibrumWheel: false,
@@ -80,6 +81,10 @@ const players: Players = {
         },
         status: {
             invisible: false,
+            cc: {
+                stun: 0,
+                cantMove: 0
+            }
         },
         gold: 50000,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
@@ -136,6 +141,7 @@ const players: Players = {
             manaR: 0
         },
         marker: {
+            sniper: false,
             aphelios: {
                 Calibrum: false,
                 CalibrumWheel: false,
@@ -151,6 +157,10 @@ const players: Players = {
         },
         status: {
             invisible: false,
+            cc: {
+                stun: 0,
+                cantMove: 0
+            }
         },
         gold: 50000,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
@@ -160,15 +170,23 @@ const players: Players = {
 let aaA: Ability = {
     ad: 0
 };
+let runeNameEngToKr = {
+    bokjaJung: '정복자',
+    gibal: '기민한 발놀림',
+    chisok: '치명적 속도',
+    gamjun: '감전'
+};
 let runeInfo = {
     bokjaJung: { duration: 0, ad: 0, ap: 0, maxStack: 0, vamp: 0 },  // 정복자
     chisok: { duration: 0, atkspd: 0, maxStack: 0 }, // 치속
-    gibal: { cooldown: 0, heal: { default: 0, ad: 0, ap: 0}, moveSpd: 0, duration: 0 } // 기@발
+    gibal: { cooldown: 0, heal: { default: 0, ad: 0, ap: 0}, moveSpd: 0, duration: 0 }, // 기@발
+    gamjun: { cooldown: 0, damage: 0, ad: 0, ap: 0 } // 기@발
 };
 let runeRealInfo = {
     bokjaJung: { stack: 0, duration: 0 },
     chisok: { stack: 0, duration: 0 },
     gibal: { cooldown: 0, isActive: false },
+    gamjun: { cooldown: 0, duration: 0, stack: 0, }
 }
 
 const socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
@@ -284,7 +302,11 @@ let gameObjects: GameObject[] = [
     new GameObjectBuilder().setPosition(1175, 375).setSize(50, 50).setCollideSetting(false).setColor('rgb(0, 0, 175)').setRole('nexus').setTeam('blue').build(),
     new GameObjectBuilder().setPosition(2900, 100).setSize(600, 600).setCollideSetting(false).setColor('rgb(255, 0, 0, 0.08)').build(),
     new GameObjectBuilder().setPosition(3175, 375).setSize(50, 50).setCollideSetting(false).setColor('rgb(175, 0, 0)').setRole('nexus').setTeam('red').build(),
+    // 맵 - 오브젝트 [11, 12]
+    new GameObjectBuilder().setPosition(2200 - 50, -500 - 50).setSize(100, 100).setCollideSetting(false).setColor('rgb(110, 110, 110)').setRole('obj').build(),
+    new GameObjectBuilder().setPosition(2200 - 500, -500 - 500).setSize(1000, 1000).setCollideSetting(false).setColor('rgba(146, 146, 146, 0.31)').setRole('obj').build(),
 ];
+let objHp: [number, number] = [1500, 1500];
 
 let itemData: Item[] = [];
 

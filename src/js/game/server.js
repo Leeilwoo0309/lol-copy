@@ -19,8 +19,10 @@ socket.onopen = function () {
                     absolutePosition[getEnemyTeam()] = sentJson.body.pos;
                     projectiles[getEnemyTeam()] = sentJson.body.projectiles;
                     nexusHp[getEnemyTeam()] = sentJson.body.nexus;
+                    objHp = sentJson.body.objHp;
                     (_a = sentJson.body.projectiles) === null || _a === void 0 ? void 0 : _a.forEach(function (e) {
-                        if (e.isArrive && !e.isSent && e !== undefined)
+                        if (e.isArrive && !e.isSent && e !== undefined) {
+                            var select = new DOMParser().parseFromString(e.selector, 'text/html');
                             new ProjectileBuilder()
                                 .setDegree(e.angle)
                                 .setPos(e.absPos.x, e.absPos.y)
@@ -34,8 +36,11 @@ socket.onopen = function () {
                                 .ignoreObj(e.ignoreObj)
                                 .setTarget(e.targetEnemy[0], e.targetEnemy[1])
                                 .canPass(e.canPass)
+                                //@ts-ignore
+                                .setSelector(select.lastChild.lastChild.firstChild)
                                 .projOffset({ x: e.offset.x, y: e.offset.y })
                                 .build(getEnemyTeam());
+                        }
                     });
                     // console.log(JSON.stringify(sentJson.body.projectiles));
                     players[getEnemyTeam()].hp = sentJson.body.hp;
@@ -73,6 +78,9 @@ socket.onopen = function () {
                     else if (message == 'death') {
                         enemyDeath();
                     }
+                    else if (message == 'sniper-power-aa') {
+                        players[team].marker.sniper = false;
+                    }
                     else if (message == 'sniper-wheel') {
                         sniperWheelMotion(team);
                     }
@@ -84,12 +92,10 @@ socket.onopen = function () {
                     }
                     else if (message == 'vampire-q') {
                         var damage = (enemySkillInfo.q.damage + players[getEnemyTeam()].spec.ap * enemySkillInfo.q.ap);
-                        console.log(damage);
-                        console.log((1 / (1 + players[team].spec.magicRegist * 0.01)));
                         if (sentJson.body.critic)
                             damage *= players[getEnemyTeam()].spec.criticD / 100 + 1.75;
                         // players[team].hp[1] -= damage * (1 / (1 + players[team].spec.magicRegist * 0.01)) * sentJson.body.wd;
-                        damageAlert('magic', damage * sentJson.body.wd * (1 / (1 + players[team].spec.magicRegist * 0.01)), sentJson.body.critic, team);
+                        damageAlert('magic', damage * sentJson.body.wd, sentJson.body.critic, team);
                     }
                     else if (message == 'aphelios-change') {
                         apheliosWeaponEnemy = [apheliosWeaponEnemy[1], apheliosWeaponEnemy[0]];
@@ -122,6 +128,12 @@ socket.onopen = function () {
                         charClass.cooldown.e += enemySkillInfo.shift.duration;
                         charClass.cooldown.shift += enemySkillInfo.shift.duration;
                         charClass.cooldown.wheel += enemySkillInfo.shift.duration;
+                    }
+                    else if (message == 'yasuo-wheel') {
+                        charClass.cooldown.q += 100;
+                        charClass.cooldown.e += 100;
+                        charClass.cooldown.shift += 100;
+                        charClass.cooldown.wheel += 100;
                     }
                     else if (message == 'collideDash') {
                         var dashDamage = enemySkillInfo.shift.damage;

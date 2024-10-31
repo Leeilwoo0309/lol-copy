@@ -18,7 +18,7 @@ function makeVampire() {
             damage *= players[team].spec.criticD / 100 + 1.75;
         players[team].hp[1] += damage * players[team].spec.vamp / 100;
         players[team].hp[1] += damage * skillInfo.q.vamp;
-        damageAlert("magic", damage * (1 / (1 + players[getEnemyTeam()].spec.magicRegist * 0.01)) * vampireWheelDamage, isCritical, getEnemyTeam());
+        damageAlert("magic", damage * vampireWheelDamage, isCritical, getEnemyTeam());
         damageAlert("heal", damage * skillInfo.q.vamp + damage * players[team].spec.vamp / 50, isCritical, team);
         socket.send(JSON.stringify({
             body: {
@@ -50,9 +50,9 @@ function makeVampire() {
     };
     vampire.skillLShift = function () {
         vampire.cooldown.shift = vampire.cooldownINIT.shift;
-        vampire.cooldown.q *= skillInfo.shift.skillHaste;
-        vampire.cooldown.e *= skillInfo.shift.skillHaste;
-        vampire.cooldown.wheel *= skillInfo.shift.skillHaste;
+        vampire.cooldown.q -= vampire.cooldownINIT.q * skillInfo.shift.skillHaste;
+        vampire.cooldown.e -= vampire.cooldownINIT.e * skillInfo.shift.skillHaste;
+        vampire.cooldown.wheel -= vampire.cooldownINIT.wheel * skillInfo.shift.skillHaste;
     };
     vampire.skillWheel = function () {
         vampire.cooldown.wheel = vampire.cooldownINIT.wheel;

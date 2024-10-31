@@ -94,7 +94,7 @@ class GameObjectBuilder {
         return this;
     }
 
-    public setRole(role: 'nexus'): GameObjectBuilder {
+    public setRole(role: 'nexus' | 'obj'): GameObjectBuilder {
         this.obj.role = role;
         
         return this;
@@ -139,6 +139,23 @@ class GameObjectBuilder {
             hpBar.appendChild(hpBarProgress);
 
             object.className = 'nexus'
+        } else if (this.obj.role === 'obj') {
+            const hpBar: HTMLDivElement = document.createElement('div');
+            const hpBarProgress: HTMLDivElement = document.createElement('div');
+            const hpBarProgressLater: HTMLDivElement = document.createElement('div');
+
+            object.style.transition = 'opacity 3s';
+
+            hpBar.className = `obj hp`;
+            hpBarProgress.className = `hp-progress obj`;
+            hpBarProgressLater.className = `hp-progress later obj`;
+
+            object.appendChild(hpBar);
+            hpBar.appendChild(hpBarProgressLater);
+            hpBar.appendChild(hpBarProgress);
+
+            object.className = 'obj';
+
         }
 
         this.obj.objSelector = object;
@@ -148,4 +165,37 @@ class GameObjectBuilder {
 
         return this.obj
     }
+}
+
+setInterval(() => {
+    if (_isCollideWithNexus(gameObjects[12].objSelector, players[team].selector)) {
+        projectiles[team].push(
+            new ProjectileBuilder()
+                .setDamage(10, "melee")
+                .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                .setReach(1500)
+                .setSpeed(15)
+                .ignoreObj()
+                .setPos(2200, 500 + 12.5)
+                .setTarget(true, getEnemyTeam())
+                .setSize({height: 30, width: 30})
+                .setStyle('rgb(65, 65, 65)')
+                .onHit('objProjectile')
+                .build(getEnemyTeam())
+        )
+    }
+}, 100);
+
+function _isCollideWithNexus(victim: HTMLDivElement, projectileSelector: HTMLDivElement): boolean {
+    const r1 = projectileSelector.offsetWidth / 2;
+    const r2 = victim.offsetWidth / 2;
+
+    const x1 = projectileSelector.offsetLeft + r1;
+    const y1 = projectileSelector.offsetTop + r1;
+    const x2 = victim.offsetLeft + r2;
+    const y2 = victim.offsetTop + r2;
+
+    const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+
+    return distance <= (r1 + r2);
 }

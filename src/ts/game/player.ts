@@ -99,7 +99,10 @@ function checkCollide(position: Position) {
 function animation(_team: 'red' | 'blue') {
     let enemyTeam: 'red' | 'blue' = _team === 'blue' ? 'red' : 'blue';
 
-    if (char[enemyTeam] === 'ezreal') {
+    if (char[enemyTeam] === 'sniper') {
+        if (players[_team].marker?.sniper) players[_team].selector.style.boxShadow = `rgb(13, 68, 168) 0px 0px 10px 10px`;
+        else players[_team].selector.style.boxShadow = ``;
+    } else if (char[enemyTeam] === 'ezreal') {
         if (players[_team].marker?.ezreal == true) {
             players[_team].selector.style.boxShadow = `rgb(235, 201, 54) 0px 0px 10px`;
             players[_team].selector.style.border = `3px solid rgb(235, 201, 54)`;
@@ -298,4 +301,17 @@ function checkCollideFromChampion(position: Position, angle: number, dash) {
     });
 
     return ret;
+}
+
+function skillUse() {
+    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && !cooldownItem.sheen.isActive) {
+        console.log('hi');
+        aaA.ad += players[team].spec.ad;
+    if (hasItem('3_lich_bane')) {
+        aaA.ad += players[team].spec.ad * (findItem('3_lich_bane').body.extra[0] / 100) + players[team].spec.ap * (findItem('3_lich_bane').body.extra[2] / 100);
+            aaA.damageType = 'magic';
+        }
+        
+        cooldownItem.sheen.isActive = true;
+    }
 }

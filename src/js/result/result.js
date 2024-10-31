@@ -6,7 +6,7 @@ var resultPar = document.querySelector('.header');
 var resultPrint = document.querySelector('.result');
 var toTitleBtn = document.querySelector('#back');
 var charKr = {
-    sniper: "스나이퍼",
+    sniper: "케이틀린",
     ezreal: "이즈리얼",
     samira: "사미라",
     vayne: "베인",

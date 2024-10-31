@@ -1,12 +1,3 @@
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 setInterval(function () {
     var _a;
     var legendItem = 0;
@@ -140,8 +131,8 @@ setInterval(function () {
         projectileSpd: players[team].specINIT.projectileSpd,
         vamp: players[team].specINIT.vamp + players[team].specItem.vamp
     };
-    players[team].spec.ad += runeRealInfo.bokjaJung.stack * runeInfo.bokjaJung.ad;
-    players[team].spec.ap += runeRealInfo.bokjaJung.stack * runeInfo.bokjaJung.ap;
+    players[team].spec.ad += Math.floor(runeRealInfo.bokjaJung.stack * runeInfo.bokjaJung.ad * 10) / 10;
+    players[team].spec.ap += Math.floor(runeRealInfo.bokjaJung.stack * runeInfo.bokjaJung.ap * 10) / 10;
     if (runeRealInfo.bokjaJung.stack === runeInfo.bokjaJung.maxStack)
         players[team].spec.vamp += runeInfo.bokjaJung.vamp;
     if (runeRealInfo.chisok.stack === runeInfo.chisok.maxStack)
@@ -165,6 +156,11 @@ setInterval(function () {
         players[team].spec.ad += findItem('3_bloodthir').body.extra[2];
     if (char[team] === 'vampire')
         players[team].spec.vamp = Math.round(players[team].spec.vamp * skillInfo.passive.vamp);
+    if (char[team] === 'aphelios') {
+        players[team].spec.ad += legendItem * 10;
+        players[team].spec.atkspd *= (1 + legendItem * 0.08);
+        players[team].spec.ignoreArmor += legendItem * 5;
+    }
     players[team].spec.atkspd = Math.round(players[team].spec.atkspd * 100) / 100;
     players[team].spec.ad += Math.round(cooldownItem.draksar.damage);
     document.querySelector('#now-hp').innerHTML = "".concat(Math.round(players[team].hp[1]), " / ").concat(players[team].hp[0]);
@@ -174,6 +170,9 @@ setInterval(function () {
         }
         else if (e.className.indexOf('nexus') >= 0 && e.className.indexOf('red') >= 0) {
             e.style.width = "".concat(nexusHp.red[1] / nexusHp.red[0] * 100, "%");
+        }
+        else if (e.className.indexOf('obj') >= 0) {
+            e.style.width = "".concat(objHp[1] / objHp[0] * 100, "%");
         }
         else if (e.className.indexOf(team) >= 0) {
             var totalBarrier_1 = 0;
@@ -215,11 +214,6 @@ setInterval(function () {
         }
     });
     players[team].spec.ap = Math.ceil(players[team].spec.ap);
-    var runeNameEngToKr = {
-        bokjaJung: '정복자',
-        gibal: '기민한 발놀림',
-        chisok: '치명적 속도'
-    };
     var stack = "";
     if (rune === "bokjaJung") {
         stack = "(".concat(runeRealInfo.bokjaJung.stack, ", ").concat(Math.ceil(runeRealInfo.bokjaJung.duration / 10) / 10, "\uCD08)");
@@ -230,6 +224,11 @@ setInterval(function () {
     else if (rune === 'gibal') {
         if (runeRealInfo.gibal.cooldown > 0)
             stack = "(".concat(Math.ceil(runeRealInfo.gibal.cooldown / 10) / 10, "\uCD08 \uB0A8\uC74C)");
+    }
+    else if (rune === 'gamjun') {
+        stack = "(".concat(Math.ceil(runeInfo.gamjun.damage + runeInfo.gamjun.ad * players[team].spec.ad + runeInfo.gamjun.ap * players[team].spec.ap), ")");
+        if (runeRealInfo.gamjun.cooldown > 0)
+            stack = "(".concat(Math.ceil(runeInfo.gamjun.damage + runeInfo.gamjun.ad * players[team].spec.ad + runeInfo.gamjun.ap * players[team].spec.ap), ", ").concat(Math.ceil(runeRealInfo.gamjun.cooldown / 10) / 10, "\uCD08 \uB0A8\uC74C)");
     }
     else {
         stack = "";
@@ -287,7 +286,21 @@ setInterval(function () {
         var angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
         players[team].status.invisible = false;
         if (players[team].specINIT.defaultAAType == "long") {
-            if (char[team] == "graves") {
+            if (char[team] === 'sniper' && players[getEnemyTeam()].marker.sniper && playerDistance <= players[team].spec.range * 1.3) {
+                projectiles[team].push(new ProjectileBuilder()
+                    .setDamage((players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage +
+                    players[team].spec.ad * (skillInfo.passive.ad + skillInfo.passive.criticD * (players[team].spec.criticD / 100 + 1.75) * players[team].spec.criticP / 100)), 'melee')
+                    .setCritical(100, players[team].spec.criticD)
+                    .setReach(players[team].spec.range * 5)
+                    .setSpeed(players[team].spec.projectileSpd * 1.5)
+                    .setTarget()
+                    .setSize({ height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1] })
+                    // .setStyle('gray')
+                    .onHit("sniper aa")
+                    .build(team));
+                socket.send(JSON.stringify({ body: { msg: 'sniper-power-aa' } }));
+            }
+            else if (char[team] == "graves") {
                 for (var i = -1; i < 2; i++) {
                     projectiles[team].push(new ProjectileBuilder()
                         .setDamage((players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage) * 0.7, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
@@ -304,7 +317,7 @@ setInterval(function () {
             else if (char[team] == "aphelios") {
                 apheliosAmmo[0] -= 1;
                 projectiles[team].push(new ProjectileBuilder()
-                    .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage + (players[getEnemyTeam()].marker.aphelios.CalibrumWheel ? 30 : 0), aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
+                    .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage + (players[getEnemyTeam()].marker.aphelios.CalibrumWheel ? 20 + players[team].spec.ad * 0.6 : 0), aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
                     .setCritical(players[team].spec.criticP, players[team].spec.criticD)
                     .setDegree(angle)
                     .setStyle(weaponColor[apheliosWeapon[players[getEnemyTeam()].marker.aphelios.Calibrum ? apheliosWeapon[1] === 'Calibrum' ? 0 : 1 : 0]])
@@ -385,15 +398,19 @@ setInterval(function () {
     }
     if (keyDown.q && charClass.cooldown.q === 0 && deathCoolDown[team] === 0) {
         charClass.skillQ();
+        skillUse();
     }
     if (keyDown.e && charClass.cooldown.e === 0 && deathCoolDown[team] === 0) {
         charClass.skillE();
+        skillUse();
     }
     if (keyDown.shift && charClass.cooldown.shift === 0 && deathCoolDown[team] === 0) {
         charClass.skillLShift();
+        skillUse();
     }
     if (keyDown.mouse[1] && charClass.cooldown.wheel === 0 && deathCoolDown[team] === 0) {
         charClass.skillWheel();
+        skillUse();
     }
     function skillUpdate(skillKey, index) {
         if (charClass.isActive[skillKey]) {
@@ -407,6 +424,9 @@ setInterval(function () {
                 skillBtns[index].innerHTML = "".concat(skillKey.toUpperCase());
             if (char[team] === 'ahri' && skillKey === 'wheel' && ahri.isActive.wheel && ahri.cooldown.wheel === 0) {
                 skillBtns[index].innerHTML = "WHEEL (".concat(ahriWheelTimes, ")");
+            }
+            else if (char[team] === 'yasuo' && skillKey === 'q' && yasuoQStack > 0 && yasuo.cooldown.q === 0) {
+                skillBtns[index].innerHTML = "Q (".concat(yasuoQStack, ")");
             }
         }
         else if (charClass.cooldown[skillKey] > 0) {
@@ -428,6 +448,9 @@ setInterval(function () {
             skillBtns[index].style.color = 'black';
             skillBtns[index].style.border = '';
             skillBtns[index].innerHTML = "".concat(skillKey.toUpperCase());
+            if (skillKey === 'q') {
+                skillBtns[index].style.fontSize = '30px';
+            }
             if (char[team] === 'aphelios' && skillKey == 'e') {
                 var fontColor = {
                     Calibrum: 'white',
@@ -483,6 +506,10 @@ setInterval(function () {
                 // skillBtns[index].style.borderRadius = '100%'
                 // skillBtns[index].innerHTML = `NEXT`;
             }
+            else if (char[team] === 'yasuo' && skillKey === 'q' && yasuoQStack > 0) {
+                skillBtns[index].innerHTML = "Q (".concat(yasuoQStack, ")");
+                skillBtns[index].style.fontSize = '20px';
+            }
         }
     }
     // 엑티브 아이템 사용 | active item use
@@ -518,6 +545,23 @@ setInterval(function () {
                     canMove = true;
                 }
             }, findItem('a3_galeforce').body.activeInfo[2]);
+            for (var i = -1; i <= 1; i++) {
+                if (playerDistance > 650)
+                    continue;
+                projectiles[team].push(new ProjectileBuilder()
+                    .setDamage(findItem('a3_galeforce').body.activeInfo[3] + findItem('a3_galeforce').body.activeInfo[4] * players[team].spec.ad, 'melee')
+                    .setCritical(0, players[team].spec.criticD)
+                    .setDegree(angle_1)
+                    .projOffset({ x: Math.random() * 100 - 50, y: Math.random() * 100 - 50 })
+                    .setReach(5500)
+                    .setSpeed(20)
+                    .setTarget()
+                    .setStyle('rgb(51, 159, 206)')
+                    .setSize({ height: 10, width: 10 })
+                    // .setStyle('gray')
+                    .onHit("")
+                    .build(team));
+            }
         }
         else if (hasItem('a3_rocketbelt')) {
             activeItemCooldown = findItem('a3_rocketbelt').body.activeInfo[0];
@@ -592,7 +636,7 @@ setInterval(function () {
             slowTime = 0;
             players[team].marker.ashe = 0;
             players[team].marker.aphelios.Gravitum = false;
-            canMove = true;
+            players[team].status.cc.stun = 0;
         }
         else if (hasItem('a3_youmu')) {
             activeItemCooldown = findItem('a3_youmu').body.activeInfo[0];
@@ -648,6 +692,16 @@ setInterval(function () {
     }
     animation(team);
     animation(getEnemyTeam());
+    if (players[team].status.cc.stun > 0) {
+        canMove = false;
+        atkWait = 20;
+    }
+    else if (players[team].status.cc.cantMove > 0) {
+        canMove = false;
+    }
+    else {
+        canMove = true;
+    }
     // 아이템
     // if (hasItem("3_shieldbow") && cooldownItem.shieldbow == 0 && players[team].hp[1] / players[team].hp[0] <= 0.3 && players[team].hp[1] > 0) {
     //     players[team].hp[1] += players[team].hp[0] * (findItem("3_shieldbow").body.extra[0] / 100);
@@ -655,11 +709,22 @@ setInterval(function () {
     // }
     var newProjectiles = [];
     projectiles[team].forEach(function (e) {
-        if (e.isArrive) {
-            newProjectiles.push(e);
+        if (!e.isSent) {
+            var send = e;
+            var selector = e.selector;
+            //@ts-ignore
+            send.selector = e.selector.outerHTML;
+            newProjectiles.push(send);
+            // console.log(send);
+            //@ts-ignore
+            // send.selector = new DOMParser().parseFromString(e.selector, 'text/html');
+            //@ts-ignore
+            // send.selector = send.selector.lastChild.lastChild.firstChild;
+            //@ts-ignore
+            // send.selector = e.selector;
         }
     });
-    projectiles[team] = __spreadArray([], newProjectiles, true);
+    // projectiles[team] = [...newProjectiles];
     var sendData = {
         pos: absolutePosition[team],
         projectiles: projectiles[team],
@@ -669,7 +734,8 @@ setInterval(function () {
         item: players[team].items,
         marker: players[team].marker,
         spec: players[team].spec,
-        status: players[team].status
+        status: players[team].status,
+        objHp: objHp
     };
     socket.send(JSON.stringify({ body: sendData }));
     projectiles[team].forEach(function (e) {
@@ -767,6 +833,10 @@ setInterval(function () {
             }
         });
     }
+    if (players[team].status.cc.stun > 0)
+        players[team].status.cc.stun -= 1;
+    if (players[team].status.cc.cantMove > 0)
+        players[team].status.cc.cantMove -= 1;
     if (slowTime > 0)
         slowTime -= 1;
     if (slowTime === 0) {
@@ -799,12 +869,16 @@ setInterval(function () {
         runeRealInfo.chisok.duration -= 1;
     if (runeRealInfo.gibal.cooldown >= 1)
         runeRealInfo.gibal.cooldown -= 1;
-    if (runeRealInfo.bokjaJung.duration === 0) {
+    if (runeRealInfo.gamjun.cooldown >= 1)
+        runeRealInfo.gamjun.cooldown -= 1;
+    if (runeRealInfo.gamjun.duration >= 1)
+        runeRealInfo.gamjun.duration -= 1;
+    if (runeRealInfo.bokjaJung.duration === 0)
         runeRealInfo.bokjaJung.stack = 0;
-    }
-    ;
     if (runeRealInfo.chisok.duration === 0)
         runeRealInfo.chisok.stack = 0;
+    if (runeRealInfo.gamjun.duration === 0)
+        runeRealInfo.gamjun.stack = 0;
 }, 10);
 setInterval(function () {
     var nexusIndex = { blue: [7, 8], red: [9, 10] };
@@ -879,18 +953,10 @@ function onhit(type, tags, damage) {
         charClass.cooldown.e -= charClass.cooldownINIT.e * decreasePercent;
         charClass.cooldown.shift -= charClass.cooldownINIT.shift * decreasePercent;
     }
-    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && cooldownItem.sheen.isActive) {
+    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && cooldownItem.sheen.isActive && type === 'aa') {
         cooldownItem.sheen.isActive = false;
         aaA.ad = 0;
         aaA.damageType = undefined;
-    }
-    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && !cooldownItem.sheen.isActive && type == 'skill') {
-        aaA.ad += players[team].spec.ad;
-        if (hasItem('3_lich_bane')) {
-            aaA.ad += players[team].spec.ad * (findItem('3_lich_bane').body.extra[0] / 100) + players[team].spec.ap * (findItem('3_lich_bane').body.extra[2] / 100);
-            aaA.damageType = 'magic';
-        }
-        cooldownItem.sheen.isActive = true;
     }
     if (aaA.ad > 0 && !cooldownItem.sheen.isActive) {
         aaA.ad = 0;
@@ -915,6 +981,9 @@ function onhit(type, tags, damage) {
     else if (char[team] === 'talon' && talon.isActive.wheel) {
         talonHitWheel = true;
     }
+    else if (char[team] === 'yasuo' && (tags === null || tags === void 0 ? void 0 : tags.includes('q'))) {
+        yasuoQStack += 1;
+    }
     // 룬
     if (rune === 'bokjaJung') {
         // if (runeRealInfo.bokjaJung.stack === runeInfo.bokjaJung.maxStack - 1) players[team].specItem.vamp += runeInfo.bokjaJung.vamp;
@@ -937,11 +1006,32 @@ function onhit(type, tags, damage) {
                 info: ["heal", healAmount, false, team]
             }
         }));
-        players[team].hp[1] += healAmount;
+        // players[team].hp[1] += healAmount;
         players[team].specItem.moveSpd += runeInfo.gibal.moveSpd;
         setTimeout(function () {
             players[team].specItem.moveSpd -= runeInfo.gibal.moveSpd;
         }, runeInfo.gibal.duration * 10);
+    }
+    else if (rune === 'gamjun' && runeRealInfo.gamjun.cooldown === 0) {
+        runeRealInfo.gamjun.stack += 1;
+        runeRealInfo.gamjun.duration = 200;
+        if (runeRealInfo.gamjun.stack === 3) {
+            runeRealInfo.gamjun.stack = 0;
+            runeRealInfo.gamjun.duration = 0;
+            runeRealInfo.gamjun.cooldown = runeInfo.gamjun.cooldown;
+            socket.send(JSON.stringify({
+                body: {
+                    msg: 'damageAlert',
+                    info: [
+                        "magic",
+                        Math.ceil(runeInfo.gamjun.damage + runeInfo.gamjun.ad * players[team].spec.ad + runeInfo.gamjun.ap * players[team].spec.ap),
+                        false,
+                        getEnemyTeam()
+                    ]
+                }
+            }));
+            damageAlert("magic", Math.ceil(runeInfo.gamjun.damage + runeInfo.gamjun.ad * players[team].spec.ad + runeInfo.gamjun.ap * players[team].spec.ap), false, getEnemyTeam());
+        }
     }
 }
 function death() {

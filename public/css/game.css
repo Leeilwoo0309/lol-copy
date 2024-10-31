@@ -81,6 +81,19 @@ body {
     
 }
 
+.hp.obj {
+    margin-left: -50px;
+    margin-top: -50px;
+    border: 1px solid black;
+    border-radius: 3px;
+    
+    width: 200px;
+    height: 30px;
+    
+    background-color: black;
+    
+}
+
 .hp-progress {
     width: 80%;
     height: 100%;
@@ -107,6 +120,27 @@ body {
 }
 
 .hp-progress.nexus.later {
+    position: inherit;
+
+    width: 80%;
+    height: 100%;
+    
+    background-color: red;
+    transition: 1s all ease-out;
+}
+
+.hp-progress.obj {
+    width: 100%;
+    height: 100%;
+    
+    background-color: yellowgreen;
+}
+
+.hp-progress.obj:not(.later) {
+    margin-top: -30px;
+}
+
+.hp-progress.obj.later {
     position: inherit;
 
     width: 80%;

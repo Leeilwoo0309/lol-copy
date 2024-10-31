@@ -93,38 +93,44 @@ function checkCollide(position) {
     return ret;
 }
 function animation(_team) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
     var enemyTeam = _team === 'blue' ? 'red' : 'blue';
-    if (char[enemyTeam] === 'ezreal') {
-        if (((_a = players[_team].marker) === null || _a === void 0 ? void 0 : _a.ezreal) == true) {
+    if (char[enemyTeam] === 'sniper') {
+        if ((_a = players[_team].marker) === null || _a === void 0 ? void 0 : _a.sniper)
+            players[_team].selector.style.boxShadow = "rgb(13, 68, 168) 0px 0px 10px 10px";
+        else
+            players[_team].selector.style.boxShadow = "";
+    }
+    else if (char[enemyTeam] === 'ezreal') {
+        if (((_b = players[_team].marker) === null || _b === void 0 ? void 0 : _b.ezreal) == true) {
             players[_team].selector.style.boxShadow = "rgb(235, 201, 54) 0px 0px 10px";
             players[_team].selector.style.border = "3px solid rgb(235, 201, 54)";
         }
-        else if (((_b = players[_team].marker) === null || _b === void 0 ? void 0 : _b.ezreal) == false) {
+        else if (((_c = players[_team].marker) === null || _c === void 0 ? void 0 : _c.ezreal) == false) {
             players[_team].selector.style.boxShadow = "";
             players[_team].selector.style.border = "";
         }
     }
     else if (char[enemyTeam] === 'vayne') {
-        if (((_c = players[_team].marker) === null || _c === void 0 ? void 0 : _c.vayne) == 1) {
+        if (((_d = players[_team].marker) === null || _d === void 0 ? void 0 : _d.vayne) == 1) {
             players[_team].selector.style.boxShadow = "rgb(0, 128, 255) 0px 0px 10px";
         }
-        else if (((_d = players[_team].marker) === null || _d === void 0 ? void 0 : _d.vayne) == 2) {
+        else if (((_e = players[_team].marker) === null || _e === void 0 ? void 0 : _e.vayne) == 2) {
             players[_team].selector.style.boxShadow = "rgb(255, 0, 0) 0px 0px 10px";
         }
-        else if (((_e = players[_team].marker) === null || _e === void 0 ? void 0 : _e.vayne) == 0) {
+        else if (((_f = players[_team].marker) === null || _f === void 0 ? void 0 : _f.vayne) == 0) {
             players[_team].selector.style.boxShadow = "";
             players[_team].selector.style.border = "";
         }
     }
     else if (char[enemyTeam] === 'aphelios') {
-        if (((_g = (_f = players[_team].marker) === null || _f === void 0 ? void 0 : _f.aphelios) === null || _g === void 0 ? void 0 : _g.Calibrum) === true) {
+        if (((_h = (_g = players[_team].marker) === null || _g === void 0 ? void 0 : _g.aphelios) === null || _h === void 0 ? void 0 : _h.Calibrum) === true) {
             players[_team].selector.style.boxShadow = "darkturquoise 0px 0px 10px 5px";
         }
-        else if (((_j = (_h = players[_team].marker) === null || _h === void 0 ? void 0 : _h.aphelios) === null || _j === void 0 ? void 0 : _j.Gravitum) === true) {
+        else if (((_k = (_j = players[_team].marker) === null || _j === void 0 ? void 0 : _j.aphelios) === null || _k === void 0 ? void 0 : _k.Gravitum) === true) {
             players[_team].selector.style.boxShadow = "purple 0px 0px 10px 5px";
         }
-        else if (((_l = (_k = players[_team].marker) === null || _k === void 0 ? void 0 : _k.aphelios) === null || _l === void 0 ? void 0 : _l.Gravitum) === false && ((_o = (_m = players[_team].marker) === null || _m === void 0 ? void 0 : _m.aphelios) === null || _o === void 0 ? void 0 : _o.Calibrum) === false && char[_team == 'blue' ? 'red' : 'blue'] === 'aphelios') {
+        else if (((_m = (_l = players[_team].marker) === null || _l === void 0 ? void 0 : _l.aphelios) === null || _m === void 0 ? void 0 : _m.Gravitum) === false && ((_p = (_o = players[_team].marker) === null || _o === void 0 ? void 0 : _o.aphelios) === null || _p === void 0 ? void 0 : _p.Calibrum) === false && char[_team == 'blue' ? 'red' : 'blue'] === 'aphelios') {
             players[_team].selector.style.boxShadow = "";
             players[_team].selector.style.border = "";
         }
@@ -279,4 +285,15 @@ function checkCollideFromChampion(position, angle, dash) {
         }
     });
     return ret;
+}
+function skillUse() {
+    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && !cooldownItem.sheen.isActive) {
+        console.log('hi');
+        aaA.ad += players[team].spec.ad;
+        if (hasItem('3_lich_bane')) {
+            aaA.ad += players[team].spec.ad * (findItem('3_lich_bane').body.extra[0] / 100) + players[team].spec.ap * (findItem('3_lich_bane').body.extra[2] / 100);
+            aaA.damageType = 'magic';
+        }
+        cooldownItem.sheen.isActive = true;
+    }
 }

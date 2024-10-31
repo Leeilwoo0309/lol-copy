@@ -402,8 +402,7 @@ function makeAphelios() {
                 msg: "aphelios-wheel"
             }
         }));
-
-        canMove = false;
+        players[team].status.cc.cantMove = 40;
 
         apheliosWheelWheelMotion(team, {x: absolutePosition[team].x, y: absolutePosition[team].y});
         // apheliosSeverumQMotion(team);
@@ -411,8 +410,6 @@ function makeAphelios() {
         
 
         setTimeout(() => {
-            canMove = true;
-
             let damage: number = players[team].spec.ad * skillInfo.wheel.ad + players[team].spec.ap * skillInfo.wheel.ap + skillInfo.wheel.damage
 
             if (apheliosWeapon[0] === 'Infernum') damage *= 1.5 + players[team].spec.ad * 0.005;

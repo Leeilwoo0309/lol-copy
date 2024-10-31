@@ -60,7 +60,7 @@ app.use(cors());
 
 app.get('/getChar', (req, res) => {
     const query = req.query.char;
-    const charList = ['teacher', 'sniper', 'samira', 'ezreal', 'vayne', 'exponent', 'graves', 'assassin', 'vampire', 'aphelios', 'ashe', 'kaisa', 'akali', 'ahri', 'talon'];
+    const charList = ['teacher', 'sniper', 'samira', 'ezreal', 'vayne', 'exponent', 'graves', 'assassin', 'vampire', 'aphelios', 'ashe', 'kaisa', 'akali', 'ahri', 'talon', 'yasuo'];
 
     if (query === undefined) {
         return res.send(JSON.stringify({
