@@ -42,8 +42,8 @@
         "E": {
             "cooldown": 900,
             "type": "magic",
-            "damage": 15,
-            "ap": 0.7,
+            "damage": 10,
+            "ap": 0.5,
             "moveSpd": 0.7,
             "duration": 100
         },
@@ -52,16 +52,16 @@
             "type": "magic",
             "moveSpd": 0.7,
             "damage": 30,
-            "ap": 0.9,
+            "ap": 0.8,
             "duration": 150
         },
         "Wheel": {
-            "cooldown": 13000,
+            "cooldown": 5500,
             "duration": 1000,
             "type": "magic",
             "range": 30,
             "damage": 30,
-            "ap": 0.5,
+            "ap": 0.4,
             "armor": 100
         }
     },
