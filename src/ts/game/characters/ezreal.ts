@@ -15,8 +15,8 @@ function makeEzreal() {
                 .setDegree(angle)
                 .setReach(700)
                 .setSpeed(30)
-                .setSize({height: 50, width: 25})
-                .setStyle('rgb(14, 144, 177)')
+                .setSize({height: 70, width: 35})
+                .setStyle('rgb(126, 187, 202)')
                 .onHit('ezreal skill q')
                 .build(team)
         )
@@ -34,7 +34,7 @@ function makeEzreal() {
                 .setDegree(angle)
                 .setReach(500)
                 .setSpeed(25)
-                .setSize({height: 30, width: 30})
+                .setSize({height: 40, width: 40})
                 .setStyle('yellow')
                 .onHit('ezreal skill e')
                 .build(team)
@@ -48,19 +48,19 @@ function makeEzreal() {
     
         let dashLength = 0;
 
-        // projectiles[team].push(
-        //     new ProjectileBuilder()
-        //         .setDamage(players[team].spec.ad * skillInfo.e.ad + skillInfo.e.damage, skillInfo.e.type)
-        //         .setCritical(0, 0)
-        //         .setDegree(angle)
-        //         .setReach(625)
-        //         .setSpeed(35)
-        //         .setSize({height: 40, width: 15})
-        //         .setStyle('yellow')
-        //         .onHit('ezreal skill shift')
-        //         .setTarget()
-        //         .build(team)
-        // )
+        projectiles[team].push(
+            new ProjectileBuilder()
+                .setDamage(players[team].spec.ad * skillInfo.shift.ad + skillInfo.shift.damage, skillInfo.shift.type)
+                .setCritical(0, 0)
+                .setDegree(angle)
+                .setReach(625)
+                .setSpeed(35)
+                .setSize({height: 40, width: 15})
+                .setStyle('yellow')
+                .onHit('ezreal skill shift')
+                .setTarget()
+                .build(team)
+        )
     
         const dash = setInterval(() => {  
             canMove = false;

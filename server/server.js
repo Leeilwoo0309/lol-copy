@@ -60,7 +60,7 @@ app.use(cors());
 
 app.get('/getChar', (req, res) => {
     const query = req.query.char;
-    const charList = ['teacher', 'sniper', 'samira', 'ezreal', 'vayne', 'exponent', 'graves', 'assassin', 'vampire', 'aphelios', 'ashe'];
+    const charList = ['teacher', 'sniper', 'samira', 'ezreal', 'vayne', 'exponent', 'graves', 'assassin', 'vampire', 'aphelios', 'ashe', 'kaisa', 'akali', 'ahri', 'talon', 'yasuo'];
 
     if (query === undefined) {
         return res.send(JSON.stringify({
@@ -83,6 +83,16 @@ app.get('/getChar', (req, res) => {
 
 app.get('/getItem', (req, res) => {
     fs.readFile(`./jsons/items.json`, (err, data) => {
+        if (err) throw err;
+
+        const itemData = {body: JSON.parse(data.toString())};
+
+        return res.send(JSON.stringify(itemData));
+    });
+});
+
+app.get('/getRune', (req, res) => {
+    fs.readFile(`./jsons/runes.json`, (err, data) => {
         if (err) throw err;
 
         const itemData = {body: JSON.parse(data.toString())};
@@ -147,12 +157,20 @@ app.get('/addPlay', async (req, res) => {
         ("${ data.char.blue }", "${ data.items.red }", ${ data.onhitCount.red }, ${ data.dmg.blue  }, "${ data.team == 'red' && data.result == 'win' }")
         `);
 
+    let addPlayData = await db.all(`
+        INSERT INTO d_plays ("win", "date", "champion", "items", "runes", "dmgs", "projectileHit")
+        VALUES
+        ('${ data.team }', '${ new Date().toISOString() }', '${ JSON.stringify(data.char) }', '${ JSON.stringify(data.items) }', '${ JSON.stringify(data.rune) }', '${ JSON.stringify(data.dmg) }', '${ JSON.stringify(data.onhitCount) }')
+        `)
+
+    // INSERT INTO 'main'."d_plays" ("win", "champion", "items", "runes", "dmgs", "projectileHit") VALUES ('', '', '{"blue":[],"red":[]}', '', '{"blue":0,"red":0}', '{"blue":0,"red":0}');
+
     // return res.send(data);
 });
 
 app.get('/get/char/:name', async (req, res) => {
     const charName = req.params.name;
-    const charList = ["sniper", "ezreal", "samira", "vayne", "exponent", "graves", 'vampire', 'aphelios', 'ashe'];
+    const charList = ["sniper", "ezreal", "samira", "vayne", "exponent", "graves", 'vampire', 'aphelios', 'ashe', 'kaisa', 'akali', 'ahri', 'talon', 'yasuo', 'akali'];
 
     const db = await open({
         filename: './db/playdata.db',
@@ -160,26 +178,62 @@ app.get('/get/char/:name', async (req, res) => {
     });
 
     if (charName === 'all') {
-        let data = {};
+        let pushData = await db.all(`SELECT * FROM d_plays`);
 
-        charList.forEach(async e => {
-            let pushData = await db.all(`SELECT * FROM ${ e }`);
+        return res.send(pushData);
+        // let data = {};
 
-            data[e] = pushData;
-        });
+        // charList.forEach(async e => {
+        //     // let pushData = await db.all(`SELECT * FROM ${ e }`);
 
-        const ret = setInterval(() => {
-            if (data != []) {
-                clearInterval(ret);
-                return res.send(data);
-            };
-        }, 16);
+        //     data[e] = pushData;
+        // });
+
+        // const ret = setInterval(() => {
+        //     if (data != []) {
+        //         clearInterval(ret);
+        //         return res.send(data);
+        //     };
+        // }, 16);
     } else {
-        let data = await db.all(`SELECT * FROM ${ charName }`);
+        // console.log(`SELECT * FROM d_plays WHERE champion LIKE "%${ charName }"%`);
+        let data = await db.all(`SELECT * FROM d_plays WHERE champion LIKE "%${ charName }%"`);
     
         return res.send(data);
     }
 });
+
+app.get('/get/char-old/:name', async (req, res) => {
+        const charName = req.params.name;
+        const charList = ["sniper", "ezreal", "samira", "vayne", "exponent", "graves", 'vampire', 'aphelios', 'ashe', 'kaisa', 'akali', 'ahri'];
+    
+        const db = await open({
+            filename: './db/playdata (~241125).db',
+            driver: sqlite3.Database,
+        });
+    
+        if (charName === 'all') {
+            let data = {};
+    
+            charList.forEach(async e => {
+                let pushData = await db.all(`SELECT * FROM ${ e }`);
+    
+                data[e] = pushData;
+            });
+    
+            const ret = setInterval(() => {
+                if (data != []) {
+                    clearInterval(ret);
+                    return res.send(data);
+                };
+            }, 16);
+        } else {
+            let data = await db.all(`SELECT * FROM ${ charName }`);
+        
+            return res.send(data);
+        }
+    });
+    
 
 app.get('/get/image/:name', (req, res) => {
     const type = req.params.name;

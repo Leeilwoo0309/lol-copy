@@ -53,6 +53,10 @@ var ItemBuilder = /** @class */ (function () {
         this.item.active = active;
         return this;
     };
+    ItemBuilder.prototype.setActiveInfo = function (activeInfo) {
+        this.item.activeInfo = activeInfo;
+        return this;
+    };
     ItemBuilder.prototype.build = function () {
         return this.item;
     };

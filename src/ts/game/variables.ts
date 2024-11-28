@@ -12,6 +12,13 @@ let damageAmount = {blue: 0, red: 0};
 let onhitCount = {blue: 0, red: 0};
 let canMove: boolean = true;
 let hasActiveItem: boolean = false;
+let activeItemCooldown: number = 0;
+let skillUsed = {
+    q: false,
+    e: false,
+    shift: false,
+    wheel: false
+}
 const players: Players = {
     blue: {
         selector: document.querySelector('.player.blue'),
@@ -64,15 +71,27 @@ const players: Players = {
             manaR: 0
         },
         marker: {
+            sniper: false,
             aphelios: {
                 Calibrum: false,
                 CalibrumWheel: false,
                 Gravitum: false
             },
-            ashe: 0
+            ashe: 0,
+            zhonya: false,
+            kaisa: 0,
+            talon: {
+                cooldown: 0,
+                stack: 0
+            },
+            akali: false
         },
         status: {
             invisible: false,
+            cc: {
+                stun: 0,
+                cantMove: 0
+            }
         },
         gold: 50000,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
@@ -129,15 +148,27 @@ const players: Players = {
             manaR: 0
         },
         marker: {
+            sniper: false,
             aphelios: {
                 Calibrum: false,
                 CalibrumWheel: false,
                 Gravitum: false
             },
-            ashe: 0
+            ashe: 0,
+            zhonya: false,
+            kaisa: 0,
+            talon: {
+                cooldown: 0,
+                stack: 0
+            },
+            akali: false
         },
         status: {
             invisible: false,
+            cc: {
+                stun: 0,
+                cantMove: 0
+            }
         },
         gold: 50000,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]
@@ -147,6 +178,24 @@ const players: Players = {
 let aaA: Ability = {
     ad: 0
 };
+let runeNameEngToKr = {
+    bokjaJung: '정복자',
+    gibal: '기민한 발놀림',
+    chisok: '치명적 속도',
+    gamjun: '감전'
+};
+let runeInfo = {
+    bokjaJung: { duration: 0, ad: 0, ap: 0, maxStack: 0, vamp: 0 },  // 정복자
+    chisok: { duration: 0, atkspd: 0, maxStack: 0 }, // 치속
+    gibal: { cooldown: 0, heal: { default: 0, ad: 0, ap: 0}, moveSpd: 0, duration: 0 }, // 기@발
+    gamjun: { cooldown: 0, damage: 0, ad: 0, ap: 0 } // 기@발
+};
+let runeRealInfo = {
+    bokjaJung: { stack: 0, duration: 0 },
+    chisok: { stack: 0, duration: 0 },
+    gibal: { cooldown: 0, isActive: false },
+    gamjun: { cooldown: 0, duration: 0, stack: 0, }
+}
 
 const socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 const params = new URLSearchParams(window.location.search);
@@ -157,12 +206,17 @@ let readyStatus = {blue: false, red: false};
 let playerDistance: number = 0;
 let skillHit = {
     vampire: false,
-    ashe: false
+    ashe: false,
+    talonE: false,
+    akali: false,
 }
 let slowTime: number = 0;
 let slowness: number = 0;
 //@ts-ignore
 const team: 'red' | 'blue' = params.get('team');
+//@ts-ignore
+const rune: Rune = params.get('rune')
+let enemyRune: Rune = undefined;
 //@ts-ignore
 char[team] = params.get('char');
 
@@ -204,7 +258,12 @@ let cooldownItem = {
     },
     draksar: {
         damage: 0
-    }
+    },
+    stormrazor: {
+        cooldown: 0,
+        use: 0
+    },
+    liandry: { duration: 0 }
 };
 let keyDown: KeyDown = {
     w: false,
@@ -217,6 +276,7 @@ let keyDown: KeyDown = {
     e: false,
     shift: false,
     tab: false,
+    f: false,
     arrowup: false,
     arrowleft: false,
     arrowdown: false,
@@ -252,7 +312,11 @@ let gameObjects: GameObject[] = [
     new GameObjectBuilder().setPosition(1175, 375).setSize(50, 50).setCollideSetting(false).setColor('rgb(0, 0, 175)').setRole('nexus').setTeam('blue').build(),
     new GameObjectBuilder().setPosition(2900, 100).setSize(600, 600).setCollideSetting(false).setColor('rgb(255, 0, 0, 0.08)').build(),
     new GameObjectBuilder().setPosition(3175, 375).setSize(50, 50).setCollideSetting(false).setColor('rgb(175, 0, 0)').setRole('nexus').setTeam('red').build(),
+    // 맵 - 오브젝트 [11, 12]
+    new GameObjectBuilder().setPosition(2200 - 50, -500 - 50).setSize(100, 100).setCollideSetting(false).setColor('rgb(110, 110, 110)').setRole('obj').build(),
+    new GameObjectBuilder().setPosition(2200 - 500, -500 - 500).setSize(1000, 1000).setCollideSetting(false).setColor('rgba(146, 146, 146, 0.31)').setRole('obj').build(),
 ];
+let objHp: [number, number] = [1500, 1500];
 
 let itemData: Item[] = [];
 

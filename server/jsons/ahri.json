@@ -1,0 +1,75 @@
+{
+    "cn": "ahri",
+    "name": "아리",
+    "defaultSpec": {
+        "ad": 16,
+        "ap": 0,
+        "atkspd": 1.1,
+        "armor": 21,
+        "ignoreArmor": 0,
+        "ignoreArmorPercent": 0,
+        "magicRegist": 30,
+        "skillHaste": 0,
+        "range": 470,
+        "projectileSpd": 15,
+        "moveSpd": 3.4,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 450,
+        "healthBoost": 2.5,
+        "vamp": 0,
+        "projectileSize": [20, 20],
+        "damageType": "melee",
+        "defaultAAType": "long"
+    },
+    "growth": [
+        {"health": 30, "armor": 2, "magicRegist": 2},
+        {"health": 80, "armor": 6, "magicRegist": 6},
+        {"health": 300, "armor": 25, "magicRegist": 25}
+    ],
+    "skills": {
+        "passive": {
+            "damage": 20,
+            "ap": 0.2
+        },
+        "Q": {
+            "cooldown": 700,
+            "type": "magic",
+            "damage": 20,
+            "ap": 1.05,
+            "duration": 400
+        },
+        "E": {
+            "cooldown": 900,
+            "type": "magic",
+            "damage": 10,
+            "ap": 0.35,
+            "moveSpd": 0.7,
+            "duration": 100
+        },
+        "Shift": {
+            "cooldown": 1200,
+            "type": "magic",
+            "moveSpd": 0.7,
+            "damage": 30,
+            "ap": 0.8,
+            "duration": 150
+        },
+        "Wheel": {
+            "cooldown": 5500,
+            "duration": 1000,
+            "type": "magic",
+            "range": 30,
+            "damage": 30,
+            "ap": 0.55,
+            "armor": 100
+        }
+    },
+    "des": {
+        "passive": "스킬 5회 적중 시 체력을 회복합니다. (회복량: $pd + 주문력 * $pap)",
+        "Q": "아리가 구슬을 던진 후 다시 받습니다. 던질 때는 마법 피해를 입히며 돌아올 때는 고정 피해를 입힙니다.<br /> (피해량: $qd + 주문력 * $qap, 재사용 대기시간: $qcd초)",
+        "E": "아리가 근처 적에게 날아가는 여우불 세 개를 방출하여 마법 피해를 입힙니다. 첫 번째 여우불이 적중한 후에는 마법 피해량이 감소합니다. 또한 이동 속도가 0.7 증가합니다.<br /> (피해량 : $ed + 주문력 * $eap, 재사용 대기시간: $ecd초)",
+        "Shift": "아리가 키스를 날려 첫 번째로 맞는 적을 일정 시간 기절시키고 마법 피해를 입힙니다. <br /> (피해량: $sd + 주문력 * $sap, 재사용 대기시간: $scd초)",
+        "Wheel": "애쉬가 얼음 수정화살을 발사하여 적중한 적에게 마법 피해를 입히고 기절시킵니다.<br /> (피해량: $wd + 주문력 * $wap, 재사용 대기시간: $wcd초)"
+    }
+}

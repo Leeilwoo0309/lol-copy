@@ -15,6 +15,8 @@ type IsActive = {
 function calculateSkillHaste() {
     let haste: number = (50 / (players[team].spec.skillHaste + 50));
 
+    let hasBadheart = hasItem('3_badheart') ? 1 - findItem('3_badheart').body.extra[0] / 100 : 1
+    let hasAxiom = hasItem('3_axiom') ? findItem('3_axiom').body.extra[0] : 1
     return {
         // q: 500,
         // e: 800,
@@ -23,7 +25,7 @@ function calculateSkillHaste() {
         q: skillInfo.q.cooldown * haste,
         e: skillInfo.e.cooldown * haste,
         shift: skillInfo.shift.cooldown * haste,
-        wheel: skillInfo.wheel.cooldown * haste
+        wheel: skillInfo.wheel.cooldown * haste * hasBadheart * hasAxiom
     }
 
 }

@@ -1,0 +1,71 @@
+{
+    "cn": "yasuo",
+    "name": "야스오",
+    "defaultSpec": {
+        "ad": 21,
+        "ap": 0,
+        "atkspd": 1,
+        "armor": 32,
+        "ignoreArmor": 0,
+        "ignoreArmorPercent": 0,
+        "magicRegist": 32,
+        "skillHaste": 0,
+        "range": 160,
+        "projectileSpd": 26,
+        "moveSpd": 3.4,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 470,
+        "healthBoost": 6,
+        "vamp": 0,
+        "projectileSize": [20, 20],
+        "damageType": "melee",
+        "defaultAAType": "long"
+    },
+    "growth": [
+        {"health": 35, "armor": 3, "magicRegist": 2},
+        {"health": 110, "armor": 10, "magicRegist": 6},
+        {"health": 350, "armor": 32, "magicRegist": 25}
+    ],
+    "skills": {
+        "passive": {
+            "damage": 30,
+            "ad": 2.1
+        },
+        "Q": {
+            "cooldown": 400,
+            "type": "melee",
+            "damage": 5,
+            "ad": 1.05
+        },
+        "E": {
+            "cooldown": 1200,
+            "type": "melee",
+            "damage": 40,
+            "ad": 2
+        },
+        "Shift": {
+            "cooldown": 400,
+            "type": "magic",
+            "damage": 15,
+            "ad": 0.3,
+            "ap": 0.8,
+            "range": 60
+        },
+        "Wheel": {
+            "cooldown": 5000,
+            "type": "melee",
+            "damage": 100,
+            "ad": 1.5,
+            "duration": 800,
+            "ignoreArmorPercent": 60
+        }
+    },
+    "des": {
+        "passive": "공격 속도에 따라 Q 스킬의 쿨타임이 감소합니다.",
+        "Q": "야스오가 검을 내질러 물리 피해를 입힙니다. 적중 시 6초간 1회 중첩됩니다. 2회 중첩 시 이 스킬을 다시 사용하면 회오리바람을 날려 동일한 피해를 입히고 1초 동안 기절시킵니다. <br /> (피해량: $qd + 공격력 * $qad, 재사용 대기시간: $qcd초)",
+        "E": "2초간 지속되는 보호막을 얻습니다. <br /> (보호막 양: $ed + 공격력 * $ead, 재사용 대기시간: $ecd초)",
+        "Shift": "대상을 뚫고 돌진하여 마법 피해를 입힙니다. <br /> (피해량: $sd + 공격력 * $sad + 주문력 * $sap, 재사용 대기시간: $scd초)",
+        "Wheel": "야스오가 적 챔피언에게 순간이동하여 붙들어 두며 물리 피해를 입히고 주변 모든 적을 1초 더 기절시킵니다. 이후 야스오의 치명타 공격이 8초 동안 대상 추가 방어력의 60%를 무시합니다. <br /> (피해량: $wd + 공격력 * $wad, 재사용 대기시간: $wcd초)"
+    }
+}

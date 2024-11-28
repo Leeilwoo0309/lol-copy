@@ -39,7 +39,7 @@
         },
         "E": {
             "cooldown": 1200,
-            "moveSpd": 0.4,
+            "moveSpd": 0.8,
             "duration": 400
         },
         "Shift": {
@@ -52,7 +52,7 @@
         "Wheel": {
             "cooldown": 3500,
             "damage": 40,
-            "ad": 0.6,
+            "ad": 0.75,
             "armor": 16,
             "type": "melee"
         }

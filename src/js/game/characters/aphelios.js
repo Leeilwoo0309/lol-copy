@@ -195,6 +195,7 @@ function makeAphelios() {
         else if (apheliosWeapon[0] === 'Severum') {
             atkWait += 250;
             aphelios.cooldown.e += 250;
+            aphelios.cooldown.wheel += 250;
             apheliosSeverumQMotion(team);
             var severumQ_1 = setInterval(function () {
                 var weapon = apheliosWeapon[(index + 1) % 2];
@@ -237,7 +238,7 @@ function makeAphelios() {
             damageAlert('magic', damage * (1 / (1 + players[getEnemyTeam()].spec.magicRegist * 0.01)), false, getEnemyTeam());
         }
         else if (apheliosWeapon[0] === 'Infernum') {
-            canMove = false;
+            players[team].status.cc.cantMove = 50;
             apheliosAmmo[0] -= 10;
             var index_1 = 0;
             var infernumQ_1 = setInterval(function () {
@@ -249,6 +250,7 @@ function makeAphelios() {
                     .setReach(450)
                     .setSpeed(25)
                     .setSize({ height: 60, width: 40 })
+                    .setStyle("".concat(weaponColor[apheliosWeapon[0]]))
                     // .setStyle('gray')
                     .canPass()
                     .onHit("aphelios skill q-infernum")
@@ -330,30 +332,31 @@ function makeAphelios() {
     aphelios.skillLShift = function () {
     };
     aphelios.skillWheel = function () {
+        var wheelPosition = absolutePosition[team];
         aphelios.cooldown.wheel = skillInfo.wheel.cooldown;
-        aphelios.cooldown.e += 50;
-        aphelios.cooldown.q += 50;
+        aphelios.cooldown.e += 100;
+        aphelios.cooldown.q += 100;
         socket.send(JSON.stringify({
             body: {
                 msg: "aphelios-wheel"
             }
         }));
-        canMove = false;
+        players[team].status.cc.cantMove = 40;
         apheliosWheelWheelMotion(team, { x: absolutePosition[team].x, y: absolutePosition[team].y });
         // apheliosSeverumQMotion(team);
         var angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
         setTimeout(function () {
-            canMove = true;
             var damage = players[team].spec.ad * skillInfo.wheel.ad + players[team].spec.ap * skillInfo.wheel.ap + skillInfo.wheel.damage;
             if (apheliosWeapon[0] === 'Infernum')
                 damage *= 1.5 + players[team].spec.ad * 0.005;
             projectiles[team].push(new ProjectileBuilder()
                 .setDamage(damage, skillInfo.wheel.type)
                 .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                .projOffset({ x: wheelPosition.x - absolutePosition[team].x, y: wheelPosition.y - absolutePosition[team].y })
                 .setDegree(angle)
                 .setReach(700)
                 .setSpeed(24)
-                .setSize({ height: 120, width: 120 })
+                .setSize({ height: 150, width: 150 })
                 .setStyle("".concat(weaponColor[apheliosWeapon[0]]), 40)
                 .onHit("aphelios skill wheel sub-".concat(apheliosWeapon[0]))
                 .ignoreObj()
@@ -380,7 +383,6 @@ function makeAphelios() {
     }
 }
 /**
- *
  * @param _team 맞을 팀 쓰셈ㅇ
  */
 function apheliosSeverumQMotion(_team) {
@@ -464,7 +466,7 @@ function apheliosWheelWheelMotion(_team, position) {
         index += 1;
         // absolutePosition[getEnemyTeam()].x - cameraPosition.x
         // -absolutePosition[getEnemyTeam()].y - cameraPosition.y
-        var range = 80 + players[_team].size;
+        var range = 120 + players[_team].size;
         eff.style.top = "".concat(-position.y - cameraPosition.y - (range / 2) + players[_team].size / 2.5, "px");
         eff.style.left = "".concat(position.x - cameraPosition.x - (range / 2) + players[_team].size / 2.5, "px");
         eff.style.position = 'absolute';

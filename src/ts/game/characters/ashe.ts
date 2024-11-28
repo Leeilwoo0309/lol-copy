@@ -74,25 +74,27 @@ function asheQ(angle: number, alphaDamage: number, target: boolean = false) {
     let index: number = 0;
 
     const asheQ = setInterval(() => {
-        if (index >= 5) {
+        if (index >= 4) {
             clearInterval(asheQ);
         } else {
             index += 1;
             projectiles[team].push(
                 new ProjectileBuilder()
-                    .setDamage((players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage + alphaDamage) * 0.2 + skillInfo.q.ad * players[team].spec.ad, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
+                    .setDamage((players[team].spec.ad + aaA.ad + (cooldownItem.kraken.damage) * 0.3 + alphaDamage) * 0.1 + skillInfo.q.ad * players[team].spec.ad, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
                     .setCritical(players[team].spec.criticP, players[team].spec.criticD)
                     .setDegree(angle)
                     .setReach(players[team].spec.range)
                     .setSpeed(players[team].spec.projectileSpd)
                     .setSize({height: 23, width: 15})
-                    .onHit(`ashe`)
+                    .onHit(`ashe ${ index == 1 ? "aa" : 'skill' } range`)
                     .setStyle('rgb(59, 138, 216)')
                     // .ignoreObj()
                     .setTarget(target)
                     .build(team)
             );
+            if (atkWait < 11) atkWait = 11;
         }
 
-    }, 400 / 5);
+
+    }, 400 / 4);
 }

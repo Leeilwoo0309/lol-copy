@@ -10,14 +10,14 @@ function makeGraves() {
         graves.cooldown.q = graves.cooldownINIT.q;
 
         let index: number = 0;
-        canMove = false;
+        const angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
+        
+        players[team].status.cc.cantMove = 80;
         atkWait += skillInfo.q.atkspd * 2 / 10
 
         const gravesQSkill = setInterval(() => {
             index += 1;
-            
-            const angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
-            
+
             for (let i = -2; i < 3; i++) {
                 projectiles[team].push(
                     new ProjectileBuilder()
@@ -61,8 +61,8 @@ function makeGraves() {
         const angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
         let dashLength: number = 0;
 
-        players[team].specINIT.armor += skillInfo.shift.armor;
-        players[team].specINIT.magicRegist += skillInfo.shift.armor;
+        players[team].specINIT.armor += skillInfo.shift.armor + players[team].spec.ad * skillInfo.shift.ad;
+        players[team].specINIT.magicRegist += skillInfo.shift.armor + players[team].spec.ad * skillInfo.shift.ad;
         graves.isActive.shift = true;
         
         setTimeout(() => {

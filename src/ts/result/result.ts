@@ -4,25 +4,38 @@ type GameResult = {
     char: {blue: string, red: string},
     kda: {blue: [number, number], red: [number, number]},
     team: 'red' | 'blue', result: 'win' | 'lose',
-    items: string
+    items: string,
+    rune: Rune
 }
 
 const params = new URLSearchParams(window.location.search);
 const result = params.get('result');
-console.log(params.get('game'));
 let gameResult: GameResult = JSON.parse(atob(unescape(encodeURIComponent(params.get('game')))));
+console.log(gameResult);
 const resultPar: HTMLParagraphElement = document.querySelector('.header');
 const resultPrint: HTMLDivElement = document.querySelector('.result');
 const toTitleBtn: HTMLDivElement = document.querySelector('#back');
 const charKr = {
-    sniper: "스나이퍼",
+    sniper: "케이틀린",
     ezreal: "이즈리얼",
     samira: "사미라",
     vayne: "베인",
     exponent: "엑스포넨트",
     graves: "그레이브즈",
     vampire: "블라디미르",
-    aphelios: "아펠리오스"
+    aphelios: "아펠리오스",
+    ashe: "애쉬",
+    kaisa: "카이사",
+    ahri: "아리",
+    talon: "탈론",
+    yasuo: "야스오",
+    akali: '아칼리'
+};
+const runeKr = {
+    bokjaJung: '정복지',
+    chisok: '치명적 속도',
+    gibal: '기민한 발놀림',
+    gamjun: '감전'
 }
 
 if (result == 'win') {
@@ -38,6 +51,7 @@ function addResult(team: 'red' | 'blue') {
     resultPrint.innerHTML += `
     <div class="res">
         <h2><span style="color: ${ team }">[${ team == 'blue' ? "블루" : "레드" }팀] </span>${ charKr[gameResult.char[team]] } ${ gameResult.team == team ? "(승)" : ""}</h2>
+        <p><b>룬</b>: ${ runeKr[gameResult.rune[team]] }</p>
         <p><b>킬</b>: ${ gameResult.kda[team][0] } / <b>데스</b>: ${ gameResult.kda[team][1] }</p>
         <p><b>가한 피해량</b>: ${ Math.floor(gameResult.dmg[team == 'red' ? 'blue' : 'red']) }</p>
         <p><b>적중한 투사체</b>: ${ Math.floor(gameResult.onhitCount[team]) }</p>

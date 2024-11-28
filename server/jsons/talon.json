@@ -1,0 +1,91 @@
+{
+    "cn": "talon",
+    "name": "탈론",
+    "defaultSpec": {
+        "ad": 23,
+        "ap": 0,
+        "atkspd": 0.9,
+        "armor": 30,
+        "ignoreArmor": 0,
+        "ignoreArmorPercent": 0,
+        "magicRegist": 39,
+        "skillHaste": 0,
+        "range": 180,
+        "projectileSpd": 24,
+        "moveSpd": 3.5,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 500,
+        "healthBoost": 5.5,
+        "vamp": 0,
+        "projectileSize": [20, 20],
+        "damageType": "melee",
+        "defaultAAType": "long"
+    },
+    "growth": [
+        {"health": 35, "armor": 3, "magicRegist": 2},
+        {"health": 110, "armor": 10, "magicRegist": 6},
+        {"health": 350, "armor": 32, "magicRegist": 25}
+    ],
+    "skills": {
+        "passive": {
+            "damage": 30,
+            "ad": 2.1
+        },
+        "Q": {
+            "cooldown": 650,
+            "type": "melee",
+            "damage": 20,
+            "ad": 1.0,
+            "range": 60
+        },
+        "E": {
+            "cooldown": 800,
+            "type": "melee",
+            "damages": [
+                {
+                    "damage": 25,
+                    "ad": 0.4
+                },
+                {
+                    "damage": 30,
+                    "ad": 0.9
+                }
+            ],
+            "damage": 55,
+            "ad": 1.3
+        },
+        "Shift": {
+            "cooldown": 1500,
+            "type": "melee",
+            "duration": 100,
+            "damage": 10,
+            "ad": 0.5
+        },
+        "Wheel": {
+            "cooldown": 8000,
+            "duration": 250,
+            "type": "melee",
+            "moveSpd": 0.7,
+            "damages": [
+                {
+                    "damage": 20,
+                    "ad": 1
+                },
+                {
+                    "damage": 5,
+                    "ad": 0.2
+                }
+            ],
+            "damage": 60,
+            "ad": 2.0
+        }
+    },
+    "des": {
+        "passive": "상대방에게 스킬로 3번 피해를 입히면 추가 도트 피해를 입힙니다. (총 피해량: $pd + 공격력 * $pad)",
+        "Q": "탈론이 대상에게 도약해 물리 피해를 입힙니다. <br /> (피해량: $qd + 공격력 * $qad, 재사용 대기시간: $qcd초)",
+        "E": "탈론이 부메랑 단검을 여러 개 던져 물리 피해를 입힙니다. 이후 단검이 돌아오며 물리 피해를 입힙니다.  <br /> (피해량 : $ed + 공격력 * $ead, 재사용 대기시간: $ecd초)",
+        "Shift": "즉시 상대방에게 이동해 물리 피해를 입히고 침묵 효과를 적용시킵니다, <br /> (피해량: $sd + 공격력 * $sad, 재사용 대기시간: $scd초)",
+        "Wheel": "탈론이 사방에 검을 던져 물리 피해를 입히고, 이동 속도가 상승하며 최대 2.5초 동안 투명 상태가 됩니다. 투명 상태가 끝나면 검이 탈론에게 돌아오며 다시 물리 피해를 입힙니다. <br /> (재사용 대기시간: $wcd초)"
+    }
+}

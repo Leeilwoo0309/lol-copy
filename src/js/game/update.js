@@ -29,6 +29,7 @@ setInterval(function () {
         document.querySelector('#loading').innerHTML = "\uC0C1\uB300\uBC29\uC774 \uC0AC\uB9DD\uD588\uC2B5\uB2C8\uB2E4! (\uBD80\uD65C\uAE4C\uC9C0: ".concat(deathCoolDown[getEnemyTeam()], "\uCD08..)");
     else
         document.querySelector('#loading').innerHTML = "";
+    // Tab UI
     if (keyDown.tab) {
         var inf = document.querySelector('#information');
         inf.style.display = '';
@@ -40,12 +41,6 @@ setInterval(function () {
             if (e !== undefined) {
                 var item = document.querySelector("#inf-item-b>#vault-".concat(i + 1));
                 item.style.backgroundImage = "url(./assets/items/".concat(e === null || e === void 0 ? void 0 : e.name[1], ".png)");
-                if (e.name[1].includes('a3_')) {
-                    item.style.border = "10px solid yellow";
-                }
-                else {
-                    item.style.border = "";
-                }
             }
             else {
                 var item = document.querySelector("#vault-".concat(i + 1));
@@ -145,6 +140,13 @@ setInterval(function () {
         projectileSpd: players[team].specINIT.projectileSpd,
         vamp: players[team].specINIT.vamp + players[team].specItem.vamp
     };
+    players[team].spec.ad += Math.floor(runeRealInfo.bokjaJung.stack * runeInfo.bokjaJung.ad * 10) / 10;
+    players[team].spec.ap += Math.floor(runeRealInfo.bokjaJung.stack * runeInfo.bokjaJung.ap * 10) / 10;
+    if (runeRealInfo.bokjaJung.stack === runeInfo.bokjaJung.maxStack)
+        players[team].spec.vamp += runeInfo.bokjaJung.vamp;
+    if (runeRealInfo.chisok.stack === runeInfo.chisok.maxStack)
+        players[team].spec.ad += players[team].specItem.atkspd * 0.1;
+    players[team].spec.atkspd *= 1 + runeRealInfo.chisok.stack * runeInfo.chisok.atkspd;
     if (cooldownItem.guinsu.time == 0)
         cooldownItem.guinsu.count = 0;
     if (cooldownItem.guinsu.time > 0) {
@@ -163,6 +165,11 @@ setInterval(function () {
         players[team].spec.ad += findItem('3_bloodthir').body.extra[2];
     if (char[team] === 'vampire')
         players[team].spec.vamp = Math.round(players[team].spec.vamp * skillInfo.passive.vamp);
+    if (char[team] === 'aphelios') {
+        players[team].spec.ad += legendItem * 10;
+        players[team].spec.atkspd *= (1 + legendItem * 0.08);
+        players[team].spec.ignoreArmor += legendItem * 5;
+    }
     players[team].spec.atkspd = Math.round(players[team].spec.atkspd * 100) / 100;
     players[team].spec.ad += Math.round(cooldownItem.draksar.damage);
     document.querySelector('#now-hp').innerHTML = "".concat(Math.round(players[team].hp[1]), " / ").concat(players[team].hp[0]);
@@ -172,6 +179,9 @@ setInterval(function () {
         }
         else if (e.className.indexOf('nexus') >= 0 && e.className.indexOf('red') >= 0) {
             e.style.width = "".concat(nexusHp.red[1] / nexusHp.red[0] * 100, "%");
+        }
+        else if (e.className.indexOf('obj') >= 0) {
+            e.style.width = "".concat(objHp[1] / objHp[0] * 100, "%");
         }
         else if (e.className.indexOf(team) >= 0) {
             var totalBarrier_1 = 0;
@@ -212,20 +222,36 @@ setInterval(function () {
             }
         }
     });
+    players[team].spec.ap = Math.ceil(players[team].spec.ap);
+    var stack = "";
+    if (rune === "bokjaJung") {
+        stack = "(".concat(runeRealInfo.bokjaJung.stack, ", ").concat(Math.ceil(runeRealInfo.bokjaJung.duration / 10) / 10, "\uCD08)");
+    }
+    else if (rune === 'chisok') {
+        stack = "(".concat(runeRealInfo.chisok.stack, ", ").concat(Math.ceil(runeRealInfo.chisok.duration / 10) / 10, "\uCD08)");
+    }
+    else if (rune === 'gibal') {
+        if (runeRealInfo.gibal.cooldown > 0)
+            stack = "(".concat(Math.ceil(runeRealInfo.gibal.cooldown / 10) / 10, "\uCD08 \uB0A8\uC74C)");
+    }
+    else if (rune === 'gamjun') {
+        stack = "(".concat(Math.ceil(runeInfo.gamjun.damage + runeInfo.gamjun.ad * players[team].spec.ad + runeInfo.gamjun.ap * players[team].spec.ap), ")");
+        if (runeRealInfo.gamjun.cooldown > 0)
+            stack = "(".concat(Math.ceil(runeInfo.gamjun.damage + runeInfo.gamjun.ad * players[team].spec.ad + runeInfo.gamjun.ap * players[team].spec.ap), ", ").concat(Math.ceil(runeRealInfo.gamjun.cooldown / 10) / 10, "\uCD08 \uB0A8\uC74C)");
+    }
+    else {
+        stack = "";
+    }
     statusDiv.style.left = "".concat(window.innerWidth / 2 - 300, "px");
     itemsDiv.style.left = "".concat(window.innerWidth / 2 + 300, "px");
-    itemsDiv.children[6].innerHTML = "<p id=\"gold\">G".concat(players[team].gold, "</p>");
-    specDiv.style.left = "".concat(window.innerWidth / 2 - 470, "px");
-    specDiv.innerHTML = "\n        <p>\uACF5\uACA9\uB825: ".concat(players[team].spec.ad, "</p>\n        <p>\uC8FC\uBB38\uB825: ").concat(players[team].spec.ap, "</p>\n        <p>\uACF5\uACA9 \uC18D\uB3C4: ").concat(players[team].spec.atkspd, "</p>\n        <p>\uBC29\uC5B4\uB825: ").concat(Math.round(players[team].spec.armor), "</p>\n        <p>\uB9C8\uBC95 \uC800\uD56D\uB825: ").concat(Math.round(players[team].spec.magicRegist), "</p>\n        <p>\uC0AC\uAC70\uB9AC: ").concat(players[team].spec.range, "</p>\n        <p>\uC774\uB3D9\uC18D\uB3C4: ").concat(Math.round((players[team].spec.moveSpd) * 100) / 100, "</p>\n        <p>\uCE58\uBA85\uD0C0 \uD655\uB960: ").concat(players[team].spec.criticP, "%</p>\n        <p>\uC0DD\uBA85\uB825 \uD761\uC218: ").concat(players[team].spec.vamp, "%</p>\n        <p>\uBB3C\uB9AC \uAD00\uD1B5\uB825: ").concat(players[team].spec.ignoreArmor, "</p>\n        <p>\uBC29\uC5B4\uAD6C \uAD00\uD1B5\uB825: ").concat(players[team].spec.ignoreArmorPercent, "%</p>\n        <p>\uC2A4\uD0AC \uAC00\uC18D: ").concat(players[team].spec.skillHaste, "</p>\n        <p>\uCD08\uB2F9 \uCCB4\uB825 \uD68C\uBCF5: ").concat(Math.round((players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10) / 10, "</p>\n    ");
+    itemsDiv.children[6].innerHTML = "<p id=\"gold\">G".concat(players[team].gold).concat(hasActiveItem && activeItemCooldown > 0 ? " (".concat(Math.floor(activeItemCooldown / 100), "\uCD08)") : "", "</p>");
+    specDiv.style.left = "".concat(window.innerWidth / 2 - 530, "px");
+    specDiv.innerHTML = "\n        <p>\uB8EC: ".concat(runeNameEngToKr[rune], " ").concat(stack, "</p>\n        <p>\uACF5\uACA9\uB825: ").concat(players[team].spec.ad, "</p>\n        <p>\uC8FC\uBB38\uB825: ").concat(players[team].spec.ap, "</p>\n        <p>\uACF5\uACA9 \uC18D\uB3C4: ").concat(players[team].spec.atkspd, "</p>\n        <p>\uBC29\uC5B4\uB825: ").concat(Math.round(players[team].spec.armor), "</p>\n        <p>\uB9C8\uBC95 \uC800\uD56D\uB825: ").concat(Math.round(players[team].spec.magicRegist), "</p>\n        <p>\uC0AC\uAC70\uB9AC: ").concat(players[team].spec.range, "</p>\n        <p>\uC774\uB3D9\uC18D\uB3C4: ").concat(Math.round((players[team].spec.moveSpd) * 100) / 100, "</p>\n        <p>\uCE58\uBA85\uD0C0 \uD655\uB960: ").concat(players[team].spec.criticP, "%</p>\n        <p>\uC0DD\uBA85\uB825 \uD761\uC218: ").concat(players[team].spec.vamp, "%</p>\n        <p>\uBB3C\uB9AC \uAD00\uD1B5\uB825: ").concat(players[team].spec.ignoreArmor, "</p>\n        <p>\uBC29\uC5B4\uAD6C \uAD00\uD1B5\uB825: ").concat(players[team].spec.ignoreArmorPercent, "%</p>\n        <p>\uC2A4\uD0AC \uAC00\uC18D: ").concat(players[team].spec.skillHaste, "</p>\n        <p>\uCD08\uB2F9 \uCCB4\uB825 \uD68C\uBCF5: ").concat(Math.round((players[team].specINIT.healthBoost + players[team].specINIT.healthBoost * players[team].spec.healthBoost / 100 - players[team].specINIT.healthBoost / 100) * 10) / 10, "</p>\n    ");
     shopBtn.addEventListener('click', function () { shopOpen(); });
     var position = {
         x: parseFloat(players[team].selector.style.left),
         y: parseFloat(players[team].selector.style.top)
     };
-    move(position);
-    gameObjects.forEach(function (e) {
-        e.position = { x: e.INIT.position.x - cameraPosition.x, y: e.INIT.position.y - cameraPosition.y };
-    });
     if (absolutePosition[team].x < 0) {
         absolutePosition[team].x = 0;
     }
@@ -240,6 +266,10 @@ setInterval(function () {
         absolutePosition[team].y = -668;
         players[team].selector.style.top = "668px";
     }
+    move(position);
+    gameObjects.forEach(function (e) {
+        e.position = { x: e.INIT.position.x - cameraPosition.x, y: e.INIT.position.y - cameraPosition.y };
+    });
     cameraPosition.x = absolutePosition[team].x - window.innerWidth * 0.5 + players[team].size / 2;
     cameraPosition.y = -absolutePosition[team].y - window.innerHeight * 0.5 + players[team].size;
     if (cameraPosition.x < 0)
@@ -265,7 +295,35 @@ setInterval(function () {
         var angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
         players[team].status.invisible = false;
         if (players[team].specINIT.defaultAAType == "long") {
-            if (char[team] == "graves") {
+            if (char[team] === 'sniper' && players[getEnemyTeam()].marker.sniper && playerDistance <= players[team].spec.range * 3) {
+                projectiles[team].push(new ProjectileBuilder()
+                    .setDamage((players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage +
+                    players[team].spec.ad * (skillInfo.passive.ad + skillInfo.passive.criticD * (players[team].spec.criticD / 100 + 1.75) * players[team].spec.criticP / 100)), 'melee')
+                    .setCritical(100, players[team].spec.criticD)
+                    .setReach(players[team].spec.range * 5)
+                    .setSpeed(players[team].spec.projectileSpd * 1.25)
+                    .setTarget()
+                    .setSize({ height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1] })
+                    // .setStyle('gray')
+                    .onHit("sniper aa")
+                    .build(team));
+                socket.send(JSON.stringify({ body: { msg: 'sniper-power-aa' } }));
+            }
+            else if (char[team] === 'akali' && akaliPassive.isActive > 0 && playerDistance <= players[team].spec.range * 3.5) {
+                projectiles[team].push(new ProjectileBuilder()
+                    .setDamage((players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage + skillInfo.passive.damage + skillInfo.passive.ad * players[team].spec.ad + skillInfo.passive.ap * players[team].spec.ap), 'magic')
+                    .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                    .setReach(players[team].spec.range * 5)
+                    .setSpeed(players[team].spec.projectileSpd * 1.25)
+                    .setTarget()
+                    .setSize({ height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1] })
+                    // .setStyle('gray')
+                    .onHit("sniper aa")
+                    .build(team));
+                players[team].specINIT.moveSpd -= skillInfo.passive.moveSpd;
+                akaliPassive.isActive = 0;
+            }
+            else if (char[team] == "graves") {
                 for (var i = -1; i < 2; i++) {
                     projectiles[team].push(new ProjectileBuilder()
                         .setDamage((players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage) * 0.7, aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
@@ -280,19 +338,24 @@ setInterval(function () {
                 }
             }
             else if (char[team] == "aphelios") {
+                var calibrumMarker = players[getEnemyTeam()].marker.aphelios.Calibrum && playerDistance <= players[team].spec.range * 2;
                 apheliosAmmo[0] -= 1;
                 projectiles[team].push(new ProjectileBuilder()
-                    .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage + (players[getEnemyTeam()].marker.aphelios.CalibrumWheel ? 30 : 0), aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
+                    .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage
+                    + (players[getEnemyTeam()].marker.aphelios.CalibrumWheel ? 20 + players[team].spec.ad * 0.8 : 0)
+                    + (players[getEnemyTeam()].marker.aphelios.Calibrum ? players[team].spec.ad * 0.4 : 0), aaA.damageType == 'magic' ? 'magic' : players[team].specINIT.damageType)
                     .setCritical(players[team].spec.criticP, players[team].spec.criticD)
                     .setDegree(angle)
                     .setStyle(weaponColor[apheliosWeapon[players[getEnemyTeam()].marker.aphelios.Calibrum ? apheliosWeapon[1] === 'Calibrum' ? 0 : 1 : 0]])
-                    .setReach(players[team].spec.range)
+                    .setReach(calibrumMarker ? players[team].spec.range * 10 : players[team].spec.range)
                     .setSpeed(players[team].spec.projectileSpd)
-                    .setTarget(players[getEnemyTeam()].marker.aphelios.Calibrum)
+                    .setTarget(calibrumMarker)
                     .setSize({ height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1] })
                     // .setStyle('gray')
                     .onHit("aphelios aa Cali-".concat(players[getEnemyTeam()].marker.aphelios.Calibrum, " ").concat(players[getEnemyTeam()].marker.aphelios.Calibrum ? apheliosWeapon[1] === 'Calibrum' ? apheliosWeapon[0] : apheliosWeapon[1] : apheliosWeapon[0]))
                     .build(team));
+                if (calibrumMarker)
+                    socket.send(JSON.stringify({ body: { msg: 'aphelios-power-aa' } }));
                 if ((players[getEnemyTeam()].marker.aphelios.Calibrum || players[getEnemyTeam()].marker.aphelios.CalibrumWheel) && apheliosWeapon.includes('Crescendum')) {
                     crescendumAmount += 1;
                     crescendumAa(angle, true);
@@ -352,7 +415,7 @@ setInterval(function () {
             nonProjectiles[team].push(new NonProjectileBuilder()
                 .setDamage(players[team].spec.ad + aaA.ad + cooldownItem.kraken.damage, players[team].specINIT.damageType)
                 .setCritical(players[team].spec.criticP, players[team].spec.criticD)
-                .setDegree(angle)
+                // .setDegree(angle)
                 .setReach(players[team].spec.range)
                 .setSpeed(players[team].spec.projectileSpd)
                 .setSize({ height: players[team].specINIT.projectileSize[0], width: players[team].specINIT.projectileSize[1] })
@@ -361,17 +424,25 @@ setInterval(function () {
                 .build(team));
         }
     }
-    if (keyDown.q && charClass.cooldown.q === 0 && deathCoolDown[team] === 0) {
+    if (keyDown.q && charClass.cooldown.q === 0 && deathCoolDown[team] === 0 && !skillUsed.q) {
         charClass.skillQ();
+        skillUse();
+        skillUsed.q = true;
     }
-    if (keyDown.e && charClass.cooldown.e === 0 && deathCoolDown[team] === 0) {
+    if (keyDown.e && charClass.cooldown.e === 0 && deathCoolDown[team] === 0 && !skillUsed.e) {
         charClass.skillE();
+        skillUse();
+        skillUsed.e = true;
     }
-    if (keyDown.shift && charClass.cooldown.shift === 0 && deathCoolDown[team] === 0) {
+    if (keyDown.shift && charClass.cooldown.shift === 0 && deathCoolDown[team] === 0 && !skillUsed.shift) {
         charClass.skillLShift();
+        skillUse();
+        skillUsed.shift = true;
     }
-    if (keyDown.mouse[1] && charClass.cooldown.wheel === 0 && deathCoolDown[team] === 0) {
+    if (keyDown.mouse[1] && charClass.cooldown.wheel === 0 && deathCoolDown[team] === 0 && !skillUsed.wheel) {
         charClass.skillWheel();
+        skillUse();
+        skillUsed.wheel = true;
     }
     function skillUpdate(skillKey, index) {
         if (charClass.isActive[skillKey]) {
@@ -383,6 +454,12 @@ setInterval(function () {
                 skillBtns[index].innerHTML = "".concat(Math.round(charClass.cooldown[skillKey] / 10) / 10);
             else
                 skillBtns[index].innerHTML = "".concat(skillKey.toUpperCase());
+            if (char[team] === 'ahri' && skillKey === 'wheel' && ahri.isActive.wheel && ahri.cooldown.wheel === 0) {
+                skillBtns[index].innerHTML = "WHEEL (".concat(ahriWheelTimes, ")");
+            }
+            else if (char[team] === 'yasuo' && skillKey === 'q' && yasuoQStack > 0 && yasuo.cooldown.q === 0) {
+                skillBtns[index].innerHTML = "Q (".concat(yasuoQStack, ")");
+            }
         }
         else if (charClass.cooldown[skillKey] > 0) {
             // 쿨타임일 때
@@ -403,6 +480,9 @@ setInterval(function () {
             skillBtns[index].style.color = 'black';
             skillBtns[index].style.border = '';
             skillBtns[index].innerHTML = "".concat(skillKey.toUpperCase());
+            if (skillKey === 'q') {
+                skillBtns[index].style.fontSize = '30px';
+            }
             if (char[team] === 'aphelios' && skillKey == 'e') {
                 var fontColor = {
                     Calibrum: 'white',
@@ -458,7 +538,183 @@ setInterval(function () {
                 // skillBtns[index].style.borderRadius = '100%'
                 // skillBtns[index].innerHTML = `NEXT`;
             }
+            else if (char[team] === 'yasuo' && skillKey === 'q' && yasuoQStack > 0) {
+                skillBtns[index].innerHTML = "Q (".concat(yasuoQStack, ")");
+                skillBtns[index].style.fontSize = '20px';
+            }
         }
+    }
+    // 엑티브 아이템 사용 | active item use
+    if (keyDown.f && hasActiveItem && activeItemCooldown <= 0) {
+        if (hasItem('a3_galeforce')) {
+            activeItemCooldown = findItem('a3_galeforce').body.activeInfo[0];
+            var angle_1 = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
+            var dashLength_1 = 0;
+            var dash_1 = setInterval(function () {
+                canMove = false;
+                dashLength_1 += 1;
+                var collideChecker = document.querySelector('.checker-dash.player');
+                var ret = false;
+                collideChecker.style.position = 'absolute';
+                collideChecker.style.backgroundColor = 'green';
+                collideChecker.style.left = "".concat(absolutePosition[team].x + 35 - cameraPosition.x - 5 * Math.cos(angle_1), "px");
+                collideChecker.style.top = "".concat(-absolutePosition[team].y - 35 - cameraPosition.y + 5 * Math.sin(angle_1), "px");
+                collideChecker.style.height = '80px';
+                collideChecker.style.width = '80px';
+                gameObjects.forEach(function (e, i) {
+                    if (e.isCollide(collideChecker) && e.extra.canCollide) {
+                        ret = true;
+                        clearInterval(dash_1);
+                        canMove = true;
+                    }
+                });
+                if (!checkCollideFromChampion(absolutePosition[team], angle_1, dash_1) && dashLength_1 < findItem('a3_galeforce').body.activeInfo[1]) {
+                    absolutePosition[team].x -= 5 * Math.cos(angle_1);
+                    absolutePosition[team].y -= 5 * Math.sin(angle_1);
+                }
+                else {
+                    clearInterval(dash_1);
+                    canMove = true;
+                }
+            }, findItem('a3_galeforce').body.activeInfo[2]);
+            for (var i = -1; i <= 1; i++) {
+                if (playerDistance > 650)
+                    continue;
+                projectiles[team].push(new ProjectileBuilder()
+                    .setDamage(findItem('a3_galeforce').body.activeInfo[3] + findItem('a3_galeforce').body.activeInfo[4] * players[team].spec.ad, 'melee')
+                    .setCritical(0, players[team].spec.criticD)
+                    .setDegree(angle_1)
+                    .projOffset({ x: Math.random() * 100 - 50, y: Math.random() * 100 - 50 })
+                    .setReach(5500)
+                    .setSpeed(20)
+                    .setTarget()
+                    .setStyle('rgb(51, 159, 206)')
+                    .setSize({ height: 10, width: 10 })
+                    // .setStyle('gray')
+                    .onHit("")
+                    .build(team));
+            }
+        }
+        else if (hasItem('a3_rocketbelt')) {
+            activeItemCooldown = findItem('a3_rocketbelt').body.activeInfo[0];
+            var angle_2 = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
+            for (var i = -2; i < 3; i++) {
+                projectiles[team].push(new ProjectileBuilder()
+                    .setDamage(findItem('a3_rocketbelt').body.activeInfo[3] + findItem('a3_rocketbelt').body.activeInfo[4] * players[team].spec.ap, 'magic')
+                    .setCritical(players[team].spec.criticP, players[team].spec.criticD)
+                    .setDegree(angle_2 + i * 0.2)
+                    .setReach(350)
+                    .setSpeed(20)
+                    .setSize({ height: 30, width: 15 })
+                    // .setStyle('gray')
+                    .onHit("")
+                    .build(team));
+            }
+            var dashLength_2 = 0;
+            var dash_2 = setInterval(function () {
+                canMove = false;
+                dashLength_2 += 1;
+                var collideChecker = document.querySelector('.checker-dash.player');
+                var ret = false;
+                collideChecker.style.position = 'absolute';
+                collideChecker.style.backgroundColor = 'green';
+                collideChecker.style.left = "".concat(absolutePosition[team].x + 35 - cameraPosition.x - 5 * Math.cos(angle_2), "px");
+                collideChecker.style.top = "".concat(-absolutePosition[team].y - 35 - cameraPosition.y + 5 * Math.sin(angle_2), "px");
+                collideChecker.style.height = '80px';
+                collideChecker.style.width = '80px';
+                gameObjects.forEach(function (e, i) {
+                    if (e.isCollide(collideChecker) && e.extra.canCollide) {
+                        ret = true;
+                        clearInterval(dash_2);
+                        canMove = true;
+                    }
+                });
+                if (!checkCollideFromChampion(absolutePosition[team], angle_2, dash_2) && dashLength_2 < findItem('a3_rocketbelt').body.activeInfo[1]) {
+                    absolutePosition[team].x -= 5 * Math.cos(angle_2);
+                    absolutePosition[team].y -= 5 * Math.sin(angle_2);
+                }
+                else {
+                    clearInterval(dash_2);
+                    canMove = true;
+                }
+            }, findItem('a3_rocketbelt').body.activeInfo[2]);
+        }
+        else if (hasItem('a3_solari')) {
+            activeItemCooldown = findItem('a3_solari').body.activeInfo[0];
+            players[team].barrier.push([players[team].hp[0] * (findItem('a3_solari').body.activeInfo[2]) + findItem('a3_solari').body.activeInfo[1], findItem('a3_solari').body.activeInfo[3]]);
+        }
+        else if (hasItem('a3_zhonya')) {
+            activeItemCooldown = findItem('a3_zhonya').body.activeInfo[0];
+            players[team].marker.zhonya = true;
+            players[team].specItem.armor += 50000000;
+            players[team].specItem.magicRegist += 50000000;
+            canMove = false;
+            charClass.cooldown = {
+                q: findItem('a3_zhonya').body.activeInfo[1],
+                e: findItem('a3_zhonya').body.activeInfo[1],
+                shift: findItem('a3_zhonya').body.activeInfo[1],
+                wheel: findItem('a3_zhonya').body.activeInfo[1]
+            };
+            atkWait = findItem('a3_zhonya').body.activeInfo[1];
+            setTimeout(function () {
+                players[team].marker.zhonya = false;
+                players[team].specItem.armor -= 50000000;
+                players[team].specItem.magicRegist -= 50000000;
+                canMove = true;
+            }, findItem('a3_zhonya').body.activeInfo[1] * 10);
+        }
+        else if (hasItem('a3_hg')) {
+            activeItemCooldown = findItem('a3_hg').body.activeInfo[0];
+            slowTime = 0;
+            players[team].marker.ashe = 0;
+            players[team].marker.aphelios.Gravitum = false;
+            players[team].status.cc.stun = 0;
+        }
+        else if (hasItem('a3_youmu')) {
+            activeItemCooldown = findItem('a3_youmu').body.activeInfo[0];
+            players[team].specItem.moveSpd += findItem('a3_youmu').body.activeInfo[2];
+            setTimeout(function () {
+                players[team].specItem.moveSpd -= findItem('a3_youmu').body.activeInfo[2];
+            }, findItem('a3_youmu').body.activeInfo[1] * 10);
+        }
+    }
+    // 카이사 5타
+    if (players[team].marker.kaisa >= 5) {
+        players[team].marker.kaisa -= 5;
+        socket.send(JSON.stringify({
+            body: {
+                msg: 'damageAlert',
+                info: [
+                    "magic",
+                    (players[team].hp[0] - players[team].hp[1]) * (enemySkillInfo.passive.damage + enemySkillInfo.passive.ap * players[getEnemyTeam()].spec.ap),
+                    false,
+                    team
+                ]
+            }
+        }));
+        damageAlert("magic", (players[team].hp[0] - players[team].hp[1]) * (enemySkillInfo.passive.damage + enemySkillInfo.passive.ap * players[getEnemyTeam()].spec.ap), false, team);
+    }
+    if (players[team].marker.talon.stack >= 3) {
+        players[team].marker.talon.stack = 0;
+        players[team].marker.talon.cooldown = 600;
+        var index_1 = 0;
+        var talonPassive_1 = setInterval(function () {
+            index_1 += 1;
+            if (index_1 > 10)
+                clearInterval(talonPassive_1);
+            socket.send(JSON.stringify({
+                body: {
+                    msg: 'damageAlert',
+                    info: [
+                        "melee",
+                        (enemySkillInfo.passive.damage + enemySkillInfo.passive.ad * players[getEnemyTeam()].spec.ad) / 10,
+                        false,
+                        team
+                    ]
+                }
+            }));
+            damageAlert("melee", (enemySkillInfo.passive.damage + enemySkillInfo.passive.ad * players[getEnemyTeam()].spec.ad) / 10, false, team);
+        }, 200);
     }
     if (charClass !== undefined) {
         skillUpdate('q', 0);
@@ -468,6 +724,16 @@ setInterval(function () {
     }
     animation(team);
     animation(getEnemyTeam());
+    if (players[team].status.cc.stun > 0) {
+        canMove = false;
+        atkWait = 20;
+    }
+    else if (players[team].status.cc.cantMove > 0) {
+        canMove = false;
+    }
+    else {
+        canMove = true;
+    }
     // 아이템
     // if (hasItem("3_shieldbow") && cooldownItem.shieldbow == 0 && players[team].hp[1] / players[team].hp[0] <= 0.3 && players[team].hp[1] > 0) {
     //     players[team].hp[1] += players[team].hp[0] * (findItem("3_shieldbow").body.extra[0] / 100);
@@ -475,8 +741,19 @@ setInterval(function () {
     // }
     var newProjectiles = [];
     projectiles[team].forEach(function (e) {
-        if (e.isArrive) {
-            newProjectiles.push(e);
+        if (!e.isSent) {
+            var send = e;
+            var selector = e.selector;
+            //@ts-ignore
+            send.selector = e.selector.outerHTML;
+            newProjectiles.push(send);
+            // console.log(send);
+            //@ts-ignore
+            // send.selector = new DOMParser().parseFromString(e.selector, 'text/html');
+            //@ts-ignore
+            // send.selector = send.selector.lastChild.lastChild.firstChild;
+            //@ts-ignore
+            // send.selector = e.selector;
         }
     });
     projectiles[team] = __spreadArray([], newProjectiles, true);
@@ -489,7 +766,9 @@ setInterval(function () {
         item: players[team].items,
         marker: players[team].marker,
         spec: players[team].spec,
-        status: players[team].status
+        status: players[team].status,
+        objHp: objHp,
+        rune: rune
     };
     socket.send(JSON.stringify({ body: sendData }));
     projectiles[team].forEach(function (e) {
@@ -522,6 +801,10 @@ setInterval(function () {
     if (keyDown.space) {
         players[team].hp[1] = players[team].hp[0];
     }
+    if (activeItemCooldown > 0)
+        activeItemCooldown -= 1;
+    if (activeItemCooldown < 0)
+        activeItemCooldown = 0;
     if (passiveActiveTime > 0) {
         passiveActiveTime -= 1;
         if (char[team] == 'sniper') {
@@ -541,9 +824,12 @@ setInterval(function () {
         catch (err) { }
         styleGradePrint.style.display = 'none';
     }
-    if (cooldownItem.guinsu.time > 0) {
+    if (cooldownItem.guinsu.time > 0)
         cooldownItem.guinsu.time -= 1;
-    }
+    if (cooldownItem.stormrazor.cooldown > 0)
+        cooldownItem.stormrazor.cooldown -= 1;
+    if (cooldownItem.liandry.duration > 0)
+        cooldownItem.liandry.duration -= 1;
     if (cooldownItem.shieldbow > 0) {
         cooldownItem.shieldbow -= 1;
         players[team].items.forEach(function (e, i) {
@@ -580,6 +866,10 @@ setInterval(function () {
             }
         });
     }
+    if (players[team].status.cc.stun > 0)
+        players[team].status.cc.stun -= 1;
+    if (players[team].status.cc.cantMove > 0)
+        players[team].status.cc.cantMove -= 1;
     if (slowTime > 0)
         slowTime -= 1;
     if (slowTime === 0) {
@@ -592,6 +882,11 @@ setInterval(function () {
             slowness = 0;
         }
     }
+    if (players[team].marker.talon.cooldown > 0)
+        players[team].marker.talon.cooldown -= 1;
+    // if (char[team] === 'ahri') {
+    //     if (ahri)
+    // }
     players[team].barrier.forEach(function (e, i) {
         if (e[0] <= 0)
             players[team].barrier.splice(i, 1);
@@ -601,6 +896,22 @@ setInterval(function () {
             players[team].barrier.splice(i, 1);
     });
     players[team].barrier.sort(function (x, y) { return x[1] - y[1]; });
+    if (runeRealInfo.bokjaJung.stack >= 1)
+        runeRealInfo.bokjaJung.duration -= 1;
+    if (runeRealInfo.chisok.stack >= 1)
+        runeRealInfo.chisok.duration -= 1;
+    if (runeRealInfo.gibal.cooldown >= 1)
+        runeRealInfo.gibal.cooldown -= 1;
+    if (runeRealInfo.gamjun.cooldown >= 1)
+        runeRealInfo.gamjun.cooldown -= 1;
+    if (runeRealInfo.gamjun.duration >= 1)
+        runeRealInfo.gamjun.duration -= 1;
+    if (runeRealInfo.bokjaJung.duration === 0)
+        runeRealInfo.bokjaJung.stack = 0;
+    if (runeRealInfo.chisok.duration === 0)
+        runeRealInfo.chisok.stack = 0;
+    if (runeRealInfo.gamjun.duration === 0)
+        runeRealInfo.gamjun.stack = 0;
 }, 10);
 setInterval(function () {
     var nexusIndex = { blue: [7, 8], red: [9, 10] };
@@ -619,6 +930,15 @@ setInterval(function () {
         players[team].hp[1] += players[team].hp[0] / 40;
     }
     ;
+    if (cooldownItem.liandry.duration > 0) {
+        damageAlert("magic", players[team].hp[0] * findItem('3_liandry').body.extra[0], false, team);
+        socket.send(JSON.stringify({
+            body: {
+                msg: 'damageAlert',
+                info: ["magic", players[team].hp[0] * findItem('3_liandry').body.extra[0], false, team]
+            }
+        }));
+    }
     if (deathCoolDown[team] > 0) {
         deathCoolDown[team] -= 1;
     }
@@ -631,18 +951,19 @@ setInterval(function () {
         deathCoolDown[getEnemyTeam()] = 0;
 }, 1000);
 // 내가 쏜걸 상대방이 맞았을 때
-function onhit(type) {
+function onhit(type, tags, damage) {
+    var isRange = tags.includes('range') ? 1 : 0;
     players[team].gold += 10;
-    players[team].hp[1] += players[team].spec.ad * players[team].spec.vamp / 100;
+    // players[team].hp[1] += damage * players[team].spec.vamp / 100;
     if (hasItem('0_cull')) {
         players[team].gold += findItem('0_cull').body.extra[0];
     }
-    if (hasItem('3_guinsu')) {
+    if (hasItem('3_guinsu') && type !== 'skill') {
         cooldownItem.guinsu.time = findItem('3_guinsu').body.extra[1];
         if (cooldownItem.guinsu.count < findItem('3_guinsu').body.extra[2])
             cooldownItem.guinsu.count += 1;
     }
-    if (hasItem('3_kraken')) {
+    if (hasItem('3_kraken') && type !== 'skill') {
         if (cooldownItem.kraken.count < 3)
             cooldownItem.kraken.count += 1;
         if (cooldownItem.kraken.count == 2)
@@ -652,24 +973,23 @@ function onhit(type) {
             cooldownItem.kraken.damage = 0;
         }
     }
-    if (hasItem('3_navori')) {
+    if (hasItem('3_stormrazor') && type !== 'skill' && cooldownItem.stormrazor.cooldown === 0) {
+        cooldownItem.stormrazor.cooldown = findItem('3_stormrazor').body.extra[1];
+        players[team].specINIT.moveSpd += findItem('3_stormrazor').body.extra[2];
+        setTimeout(function () {
+            players[team].specINIT.moveSpd -= findItem('3_stormrazor').body.extra[2];
+        }, findItem('3_stormrazor').body.extra[0] * 10);
+    }
+    if (hasItem('3_navori') && type !== 'skill') {
         var decreasePercent = findItem('3_navori').body.extra[0] / 100;
         charClass.cooldown.q -= charClass.cooldownINIT.q * decreasePercent;
         charClass.cooldown.e -= charClass.cooldownINIT.e * decreasePercent;
         charClass.cooldown.shift -= charClass.cooldownINIT.shift * decreasePercent;
     }
-    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && cooldownItem.sheen.isActive) {
+    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && cooldownItem.sheen.isActive && type === 'aa') {
         cooldownItem.sheen.isActive = false;
         aaA.ad = 0;
         aaA.damageType = undefined;
-    }
-    if ((hasItem('2_sheen') || hasItem('3_tfo') || hasItem('3_lich_bane')) && !cooldownItem.sheen.isActive && type == 'skill') {
-        aaA.ad += players[team].spec.ad;
-        if (hasItem('3_lich_bane')) {
-            aaA.ad += players[team].spec.ad * (findItem('3_lich_bane').body.extra[0] / 100) + players[team].spec.ap * (findItem('3_lich_bane').body.extra[2] / 100);
-            aaA.damageType = 'magic';
-        }
-        cooldownItem.sheen.isActive = true;
     }
     if (aaA.ad > 0 && !cooldownItem.sheen.isActive) {
         aaA.ad = 0;
@@ -688,6 +1008,74 @@ function onhit(type) {
             atkWait *= 0.9;
         }
     }
+    else if (char[team] === 'ahri' && (tags === null || tags === void 0 ? void 0 : tags.includes('skill'))) {
+        ahriAttackTimes += 1;
+    }
+    else if (char[team] === 'talon' && talon.isActive.wheel) {
+        talonHitWheel = true;
+    }
+    else if (char[team] === 'yasuo' && (tags === null || tags === void 0 ? void 0 : tags.includes('q'))) {
+        yasuoQStack += 1;
+    }
+    else if (char[team] === 'akali' && (tags === null || tags === void 0 ? void 0 : tags.includes('skill'))) {
+        if ((tags === null || tags === void 0 ? void 0 : tags.includes('pas')) && akaliPassive.isOpen === 0 && akaliPassive.isActive === 0) {
+            akaliPassive.position = absolutePosition[getEnemyTeam()];
+            akaliPassive.isOpen = 400;
+        }
+        if (tags === null || tags === void 0 ? void 0 : tags.includes('shift1')) {
+            akali.cooldown.shift = 50;
+            akali.isActive.shift = true;
+        }
+    }
+    // 룬
+    if (rune === 'bokjaJung') {
+        // if (runeRealInfo.bokjaJung.stack === runeInfo.bokjaJung.maxStack - 1) players[team].specItem.vamp += runeInfo.bokjaJung.vamp;
+        if (runeInfo.bokjaJung.maxStack > runeRealInfo.bokjaJung.stack)
+            runeRealInfo.bokjaJung.stack += 1;
+        runeRealInfo.bokjaJung.duration = runeInfo.bokjaJung.duration;
+    }
+    else if (rune === 'chisok') {
+        if (runeInfo.chisok.maxStack > runeRealInfo.chisok.stack)
+            runeRealInfo.chisok.stack += 1;
+        runeRealInfo.chisok.duration = runeInfo.chisok.duration;
+    }
+    else if (rune === 'gibal' && runeRealInfo.gibal.cooldown === 0) {
+        runeRealInfo.gibal.cooldown = runeInfo.gibal.cooldown;
+        var healAmount = runeInfo.gibal.heal.default + runeInfo.gibal.heal.ap * players[team].spec.ap + runeInfo.gibal.heal.ad * players[team].spec.ad;
+        damageAlert("heal", healAmount, false, team);
+        socket.send(JSON.stringify({
+            body: {
+                msg: 'damageAlert',
+                info: ["heal", healAmount, false, team]
+            }
+        }));
+        // players[team].hp[1] += healAmount;
+        players[team].specItem.moveSpd += runeInfo.gibal.moveSpd;
+        setTimeout(function () {
+            players[team].specItem.moveSpd -= runeInfo.gibal.moveSpd;
+        }, runeInfo.gibal.duration * 10);
+    }
+    else if (rune === 'gamjun' && runeRealInfo.gamjun.cooldown === 0) {
+        runeRealInfo.gamjun.stack += 1;
+        runeRealInfo.gamjun.duration = 200;
+        if (runeRealInfo.gamjun.stack === 3) {
+            runeRealInfo.gamjun.stack = 0;
+            runeRealInfo.gamjun.duration = 0;
+            runeRealInfo.gamjun.cooldown = runeInfo.gamjun.cooldown;
+            socket.send(JSON.stringify({
+                body: {
+                    msg: 'damageAlert',
+                    info: [
+                        "magic",
+                        Math.ceil(runeInfo.gamjun.damage + runeInfo.gamjun.ad * players[team].spec.ad + runeInfo.gamjun.ap * players[team].spec.ap),
+                        false,
+                        getEnemyTeam()
+                    ]
+                }
+            }));
+            damageAlert("magic", Math.ceil(runeInfo.gamjun.damage + runeInfo.gamjun.ad * players[team].spec.ad + runeInfo.gamjun.ap * players[team].spec.ap), false, getEnemyTeam());
+        }
+    }
 }
 function death() {
     if (!isNexusAlive[team]) {
@@ -704,7 +1092,9 @@ function death() {
         socket.send(JSON.stringify({ body: { msg: 'gameEnd' } }));
         return;
     }
-    deathCoolDown[team] = 2 + (kda[team][1] + 1) * 5;
+    if (deathCoolDown[team] > 0)
+        return;
+    deathCoolDown[team] = 2 + (kda[team][1] + 1) * 3;
     kda[team][1] += 1;
     kda[getEnemyTeam()][0] += 1;
     setTimeout(function () {
@@ -719,7 +1109,9 @@ function death() {
     socket.send(JSON.stringify({ body: { msg: "death" } }));
 }
 function enemyDeath() {
-    deathCoolDown[getEnemyTeam()] = 2 + (kda[getEnemyTeam()][1] + 1) * 5;
+    if (deathCoolDown[getEnemyTeam()] > 0)
+        return;
+    deathCoolDown[getEnemyTeam()] = 2 + (kda[getEnemyTeam()][1] + 1) * 3;
     kda[getEnemyTeam()][1] += 1;
     kda[team][0] += 1;
     players[getEnemyTeam()].selector.style.display = 'none';

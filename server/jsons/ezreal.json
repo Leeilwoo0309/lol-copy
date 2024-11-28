@@ -30,16 +30,16 @@
     "skills": {
         "passive": {
             "ap": 2.1,
-            "ad": 1.5,
-            "skillHaste": 100,
-            "damage": 15
+            "ad": 2.3,
+            "skillHaste": 150,
+            "damage": 25
         },
         "Q": {
-            "cooldown": 550,
+            "cooldown": 450,
             "type": "melee",
-            "damage": 18,
-            "ad": 1.2,
-            "ap": 0.3
+            "damage": 15,
+            "ad": 1.7,
+            "ap": 0.8
         },
         "E": {
             "cooldown": 850,
@@ -50,7 +50,11 @@
         },
         "Shift": {
             "cooldown": 2000,
-            "range": 30
+            "range": 30,
+            "type": "magic",
+            "damage": 30,
+            "ad": 0.5,
+            "ap": 0.75
         },
         "Wheel": {
             "cooldown": 5500,

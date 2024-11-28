@@ -38,13 +38,17 @@ var charsBtn = document.querySelectorAll('.char-btn');
 var selectedP = document.querySelector('.selected-display');
 var des = document.querySelector('.description');
 var readyBtn = document.querySelector('#ready-btn');
+var runeSelectFinBtn = document.querySelector('#done-btn');
+var runeSelectStartBtn = document.querySelector('#rune-btn');
+var runeBtn = document.querySelectorAll('.rune-btn');
 var _socket = new WebSocket("ws://kimchi-game.kro.kr:8001");
 var selected = { ally: [undefined, undefined], enemy: [undefined, undefined] };
 var chars = undefined;
+var runeInfo = undefined;
 var charName = ['teacher', 'sniper', 'ezreal', 'samira', 'vayne', 'exponent', 'graves', 'vampire', 'aphelios', 'assassin'];
 var charNameKr = ['Prof. CB', '스나이퍼', '이즈리얼', '사미라', '베인', '엑스포넨트', '그레이브즈', '블라디미르', '아펠리오스', '어쌔신'];
 var charNameKrToEng = {
-    스나이퍼: 'sniper',
+    케이틀린: 'sniper',
     이즈리얼: 'ezreal',
     사미라: 'samira',
     베인: 'vayne',
@@ -52,10 +56,15 @@ var charNameKrToEng = {
     그레이브즈: 'graves',
     블라디미르: 'vampire',
     아펠리오스: 'aphelios',
-    애쉬: 'ashe'
+    애쉬: 'ashe',
+    카이사: 'kaisa',
+    아리: 'ahri',
+    탈론: 'talon',
+    야스오: 'yasuo',
+    아칼리: 'akali',
 };
 var charNameEngToKr = {
-    sniper: '스나이퍼',
+    sniper: '케이틀린',
     ezreal: '이즈리얼',
     samira: '사미라',
     vayne: '베인',
@@ -64,9 +73,42 @@ var charNameEngToKr = {
     vampire: '블라디미르',
     aphelios: '아펠리오스',
     ashe: '애쉬',
-    undefined: '정하지 않음'
+    undefined: '정하지 않음',
+    kaisa: "카이사",
+    ahri: '아리',
+    talon: '탈론',
+    yasuo: '야스오',
+    akali: '아칼리',
+};
+var runeNameKrToEnd = {
+    "기민한 발놀림": "gibal",
+    "정복자": "bokjaJung",
+    "치명적 속도": "chisok",
+    "감전": "gamjun"
+};
+var runeNameEngToKr = {
+    bokjaJung: '정복자',
+    chisok: '치명적 속도',
+    gibal: '기민한 발놀림',
+    gamjun: '감전'
 };
 var readyStatus = [false, false];
+var selectedRune = undefined;
+function getRuneInfo() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch('http://kimchi-game.kro.kr:1973/getRune')
+                        .then(function (r) { return r.json(); })
+                        .then(function (result) { return result.body; })
+                        .catch(function (err) { return console.log(err); })];
+                case 1:
+                    runeInfo = _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 function getCharInfo(name) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -78,7 +120,6 @@ function getCharInfo(name) {
                 case 1:
                     chars = _a.sent();
                     updateSelected();
-                    console.log(chars);
                     return [2 /*return*/];
             }
         });
@@ -88,8 +129,10 @@ function getCharInfo(name) {
 charsBtn.forEach(function (e, i) {
     e.addEventListener('click', function () {
         var _a;
+        if (readyStatus[0])
+            return;
         selected.ally = [charNameKrToEng[e.innerHTML], i];
-        console.log(selected);
+        // console.log(selected);
         (_a = document.querySelector('.selected')) === null || _a === void 0 ? void 0 : _a.classList.remove('selected');
         e.classList.add('selected');
         getCharInfo(selected.ally[0]);
@@ -97,10 +140,19 @@ charsBtn.forEach(function (e, i) {
     });
 });
 readyBtn.addEventListener('click', function () {
-    if (selected.ally === undefined) {
-        alert("챔피언을 선택해주세요.");
+    if (selected.ally[0] === undefined) {
+        alert("올바른 챔피언을 선택해주세요.");
         return;
     }
+    else if (selectedRune === undefined) {
+        alert("올바른 룬을 선택해주세요.");
+        return;
+    }
+    console.log(selected.ally);
+    // if (document.querySelectorAll('.char-btn')[selected.ally[1] - 1].classList.contains('developing')) {
+    //     alert("그거 아직 만드는 중임ㅎ");
+    //     return;
+    // }
     // if (selected.ally >= 9) {
     //     alert("그챔 아직 안만듦~~");
     //     return;
@@ -144,11 +196,11 @@ _socket.onopen = function () {
                                 msg: "start"
                             }
                         }));
-                        window.location.href = "../public/game.html?team=blue&char=".concat(chars.cn);
+                        window.location.href = "../public/game.html?team=blue&char=".concat(chars.cn, "&rune=").concat(selectedRune);
                     }
                 }
                 else if (sentJson.body.msg == "start") {
-                    window.location.href = "../public/game.html?team=red&char=".concat(chars.cn);
+                    window.location.href = "../public/game.html?team=red&char=".concat(chars.cn, "&rune=").concat(selectedRune);
                 }
             }
             // console.log(sentJson);
@@ -164,6 +216,9 @@ function updateSelected() {
     }
     if (chars) {
         des.innerHTML = "\n                <h2>".concat(chars.name, "</h2>\n                <hr />\n                <p>\uCCB4\uB825: ").concat(chars.defaultSpec.health, "</p>\n                <p>\uCCB4\uB825 \uC7AC\uC0DD: ").concat(chars.defaultSpec.healthBoost, "</p>\n                <p>\uACF5\uACA9\uB825: ").concat(chars.defaultSpec.ad, "</p>\n                <p>\uACF5\uACA9 \uC18D\uB3C4: ").concat(chars.defaultSpec.atkspd, "</p>\n                <p>\uBC29\uC5B4\uB825: ").concat(chars.defaultSpec.armor, "</p>\n                <p>\uB9C8\uBC95 \uC800\uD56D\uB825: ").concat(chars.defaultSpec.magicRegist, "</p>\n                <p>\uC0AC\uAC70\uB9AC: ").concat(chars.defaultSpec.range, "</p>\n                <p>\uC774\uB3D9 \uC18D\uB3C4: ").concat(chars.defaultSpec.moveSpd, "</p>\n                <p><b>\uAE30\uBCF8 \uC9C0\uC18D \uD6A8\uACFC</b><span> - ").concat(generateDes(chars.des.passive, chars), "</span></p>\n                <p><b>\uC2A4\uD0AC Q</b><span> - ").concat(generateDes(chars.des.Q, chars), " </span></p>\n                <p><b>\uC2A4\uD0AC E</b><span> - ").concat(generateDes(chars.des.E, chars), " </span></p>\n                <p><b>\uC2A4\uD0AC Shift</b><span> - ").concat(generateDes(chars.des.Shift, chars), " </span></p>\n                <p><b>\uC2A4\uD0AC Wheel (\uAD81\uADF9\uAE30)</b><span> - ").concat(generateDes(chars.des.Wheel, chars), " </span></p>\n        ");
+    }
+    if (selectedRune) {
+        document.querySelector('#rune-modal>div.description').innerHTML = "\n            <h2>".concat(runeNameEngToKr[selectedRune], "</h2>\n            <hr />\n            <p>").concat(runeInfo[selectedRune].des, "</p>\n        ");
     }
     selectedP.innerHTML = "<b>".concat((_a = charNameEngToKr[selected.ally[0]]) !== null && _a !== void 0 ? _a : "정하지 않음", " (\uB098)</b> vs <span>").concat((_b = charNameEngToKr[selected.enemy[0]]) !== null && _b !== void 0 ? _b : "정하지 않음", " (\uC0C1\uB300)</span>");
 }
@@ -195,5 +250,42 @@ setInterval(function () {
         readyBtn.style.animation = '';
         readyBtn.style.animation = 'readyFalse 500ms cubic-bezier(0, 0.79, 0.47, 1.01)';
     }
+    var modal = document.querySelector('.modal');
+    modal.style.height = "".concat(window.innerHeight, "px");
+    modal.style.width = "".concat(window.innerWidth, "px");
 }, 16);
+// 룬 선택
+runeBtn.forEach(function (e, i) {
+    e.addEventListener('click', function () {
+        var _a;
+        getRuneInfo();
+        console.log('clicked');
+        if (readyStatus[0])
+            return;
+        selectedRune = runeNameKrToEnd[e.innerHTML];
+        // console.log(selected);
+        (_a = document.querySelector('.selected')) === null || _a === void 0 ? void 0 : _a.classList.remove('selected');
+        e.classList.add('selected');
+        // getCharInfo(selected.ally[0]);
+    });
+});
+runeSelectFinBtn.addEventListener('click', function () {
+    var modal = document.querySelector('.modal');
+    modal.classList.add('off');
+});
+runeSelectStartBtn.addEventListener('click', function () {
+    var modal = document.querySelector('.modal');
+    modal.className = 'modal';
+});
+runeSelectStartBtn.addEventListener('mouseover', function () {
+    var _a;
+    runeSelectStartBtn.innerHTML = (_a = runeNameEngToKr[selectedRune]) !== null && _a !== void 0 ? _a : '정하지 않음';
+    runeSelectStartBtn.style.fontSize = '20px';
+    runeSelectStartBtn.style.top = '670px';
+});
+runeSelectStartBtn.addEventListener('mouseleave', function () {
+    runeSelectStartBtn.innerHTML = '룬 선택';
+    runeSelectStartBtn.style.fontSize = '25px';
+    runeSelectStartBtn.style.top = '665px';
+});
 export {};

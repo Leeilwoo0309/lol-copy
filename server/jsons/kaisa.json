@@ -1,0 +1,71 @@
+{
+    "cn": "kaisa",
+    "name": "카이사",
+    "defaultSpec": {
+        "ad": 10,
+        "ap": 0,
+        "atkspd": 1,
+        "armor": 24,
+        "ignoreArmor": 0,
+        "ignoreArmorPercent": 0,
+        "magicRegist": 22,
+        "skillHaste": 0,
+        "range": 450,
+        "projectileSpd": 21,
+        "moveSpd": 3.3,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 475,
+        "healthBoost": 2.5,
+        "vamp": 0,
+        "projectileSize": [25, 15],
+        "damageType": "melee",
+        "defaultAAType": "long"
+    },
+    "growth": [
+        {"health": 30, "armor": 2, "magicRegist": 2},
+        {"health": 80, "armor": 6, "magicRegist": 6},
+        {"health": 300, "armor": 25, "magicRegist": 25}
+    ],
+    "skills": {
+        "passive": {
+            "ap": 0.001,
+            "damage": 0.25
+        },
+        "Q": {
+            "cooldown": 850,
+            "type": "melee",
+            "damage": 4,
+            "ad": 0.3,
+            "ap": 0.2,
+            "armor": 8
+        },
+        "E": {
+            "cooldown": 2000,
+            "type": "magic",
+            "damage": 20,
+            "ad": 1.3,
+            "ap": 1.2
+        },
+        "Shift": {
+            "cooldown": 1200,
+            "atkspd": 0.6,
+            "moveSpd": 2.4,
+            "duration": 400
+        },
+        "Wheel": {
+            "cooldown": 8500,
+            "damage": 70,
+            "ad": 2,
+            "ap": 1.2,
+            "duration": 200
+        }
+    },
+    "des": {
+        "passive": "카이사의 기본 공격이 4초 동안 플라즈마 중첩을 남깁니다. 4중첩에 도달하면 카이사가 공격했을 때 플라즈마가 폭발하며 대상이 잃은 체력에 비례한 추가 마법 피해를 입힙니다.<br/>(폭발 피해량: 잃은 체력의 (15 + 주문력 * 0.06)% ",
+        "Q": "카이사가 근처 적들을 추적하는 미사일을 6개 발사하며, 적중한 적에게 각각 물리 피해를 입힙니다.<br /> (피해량: $qd + 공격력 * $qad + 주문력 * $qap, 재사용 대기시간: $qcd초)",
+        "E": "카이사가 공허 에너지 광선을 발사해 처음으로 적중한 적에게 마법 피해를 입히고 플라즈마를 2회 적용하며, 4초 동안 절대 시야를 얻습니다.<br /> (피해량 : $ed + 공격력 * $ead + 주문력 * $eap, 재사용 대기시간: $ecd초)",
+        "Shift": "카이사가 일정 시간 동안 공허 에너지를 고속 충전하여 이동 속도가 증가하고 유체화 상태가 되며, 충전을 마친 후 4초 동안 공격 속도가 증가합니다. <br /> (공격 속도 증가량: 60%, 재사용 대기시간: $scd초)",
+        "Wheel": "카이사가 플라즈마 표식이 남은 적 챔피언 근처로 빠르게 돌진하며, 2초 동안 보호막을 얻습니다.<br /> (보호막 양: $wd + 공격력 * $wad + 주문력 * $wap, 재사용 대기시간: $wcd초)"
+    }
+}

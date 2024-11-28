@@ -6,11 +6,11 @@ function makeGraves() {
     graves.skillQ = function () {
         graves.cooldown.q = graves.cooldownINIT.q;
         var index = 0;
-        canMove = false;
+        var angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
+        players[team].status.cc.cantMove = 80;
         atkWait += skillInfo.q.atkspd * 2 / 10;
         var gravesQSkill = setInterval(function () {
             index += 1;
-            var angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
             for (var i = -2; i < 3; i++) {
                 projectiles[team].push(new ProjectileBuilder()
                     .setDamage(skillInfo.q.damage + players[team].spec.ad * skillInfo.q.ad, skillInfo.q.type)
@@ -44,8 +44,8 @@ function makeGraves() {
         graves.cooldown.shift = graves.cooldownINIT.shift;
         var angle = Math.atan2(absolutePosition[team].y - absolutePointerPosition.y, absolutePosition[team].x - absolutePointerPosition.x);
         var dashLength = 0;
-        players[team].specINIT.armor += skillInfo.shift.armor;
-        players[team].specINIT.magicRegist += skillInfo.shift.armor;
+        players[team].specINIT.armor += skillInfo.shift.armor + players[team].spec.ad * skillInfo.shift.ad;
+        players[team].specINIT.magicRegist += skillInfo.shift.armor + players[team].spec.ad * skillInfo.shift.ad;
         graves.isActive.shift = true;
         setTimeout(function () {
             players[team].specINIT.armor -= skillInfo.shift.armor + players[team].spec.ad * skillInfo.shift.ad;

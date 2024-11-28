@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/title.css">
+    <link rel="stylesheet" href="./css/modal.css">
     <title>Legend's League of the Ancients - 타이틀</title>
 </head>
 <body>
@@ -15,7 +16,7 @@
         <p class="selected-display"><b>정하지 않음 (나)</b> vs <span>정하지 않음 (상대)</span></p>
         <div class="char-selection">
             <div class="char-btn" style="display: none;">Prof. CB</div>
-            <div class="char-btn">스나이퍼</div>
+            <div class="char-btn">케이틀린</div>
             <div class="char-btn">이즈리얼</div>
             <div class="char-btn">사미라</div>
             <div class="char-btn">베인</div>
@@ -23,11 +24,12 @@
             <div class="char-btn">그레이브즈</div>
             <div class="char-btn">블라디미르</div>
             <div class="char-btn">아펠리오스</div>
-            <div class="char-btn developing">아칼리</div>
-            <div class="char-btn developing">애쉬</div>
-            <div class="char-btn developing">루시안</div>
+            <div class="char-btn">애쉬</div>
             <div class="char-btn developing">카이사</div>
-            <div class="char-btn developing">바루스</div>
+            <div class="char-btn">아리</div>
+            <div class="char-btn">탈론</div>
+            <div class="char-btn">야스오</div>
+            <div class="char-btn">아칼리</div>
             <div class="char-btn developing">제리</div>
             <div class="char-btn" style="display: none;">어쌔신</div>
         </div>
@@ -50,7 +52,24 @@
             <p><b>스킬 X (궁극기)</b> - 설명~~</p> -->
         </div>
         <p id="ready-btn">준비</p>
+        <p id="rune-btn">룬 선택</p>
     </footer>
+    
+    <div class="modal off" id="rune-select-modal">
+        <div id="rune-modal">
+            <div>
+                <div class="rune-btn">정복자</div>
+                <div class="rune-btn">기민한 발놀림</div>
+                <div class="rune-btn">치명적 속도</div>
+                <div class="rune-btn">감전</div>
+            </div>
+            <div class="description">
+                <h2>-</h2>
+                <hr />
+            </div>
+            <p id="done-btn">완료</p>
+        </div>
+    </div>
 
     <script type="module" src="../src/js/title/main.js"></script>
 </body>

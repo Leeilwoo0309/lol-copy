@@ -1,0 +1,103 @@
+{
+    "cn": "akali",
+    "name": "아칼리",
+    "defaultSpec": {
+        "ad": 25,
+        "ap": 0,
+        "atkspd": 1,
+        "armor": 23,
+        "ignoreArmor": 0,
+        "ignoreArmorPercent": 0,
+        "magicRegist": 37,
+        "skillHaste": 0,
+        "range": 150,
+        "projectileSpd": 22,
+        "moveSpd": 3.55,
+        "criticD": 0,
+        "criticP": 0,
+        "health": 520,
+        "healthBoost": 7,
+        "vamp": 0,
+        "projectileSize": [20, 20],
+        "damageType": "melee",
+        "defaultAAType": "long"
+    },
+    "growth": [
+        {"health": 30, "armor": 2, "magicRegist": 2},
+        {"health": 80, "armor": 6, "magicRegist": 6},
+        {"health": 300, "armor": 25, "magicRegist": 25}
+    ],
+    "skills": {
+        "passive": {
+            "duration": 400,
+            "damage": 8,
+            "ad": 0.2,
+            "ap": 0.55,
+            "moveSpd": 1.2
+        },
+        "Q": {
+            "cooldown": 400,
+            "type": "magic",
+            "damage": 10,
+            "ad": 0.65,
+            "ap": 0.6,
+            "duration": 50,
+            "moveSpd": 2
+        },
+        "E": {
+            "cooldown": 1500,
+            "duration": 500,
+            "moveSpd": 1
+        },
+        "Shift": {
+            "type": "magic",
+            "cooldown": 1000,
+            "damages": [
+                {
+                    "damage": 16,
+                    "ad": 0.3,
+                    "ap": 0.33
+                },
+                {
+                    "damage": 30,
+                    "ad": 0.7,
+                    "ap": 0.7
+                }
+            ],
+            "damage": 46,
+            "ad": 1,
+            "ap": 1.03,
+            "duration": 300,
+            "range": 30
+
+        },
+        "Wheel": {
+            "cooldown": 7000,
+            "type": "magic",
+            "damages": [
+                {
+                    "damage": 40,
+                    "ad": 0.5,
+                    "ap": 0.3
+                },
+                {
+                    "damage": 50,
+                    "ap": 0.6,
+                    "armor": 10
+                }
+            ],
+            "damage": 180,
+            "ad": 0.5,
+            "ap": 0.6,
+            "duration": 1000,
+            "range": [70, 60]
+        }
+    },
+    "des": {
+        "passive": "아칼리가 적 챔피언에게 스킬을 적중시키면 해당 챔피언 주변에 $pdu초 동안 고리가 나타납니다. 고리를 넘어가면 다음 기본 공격 시 사거리가 두 배로 증가하며 마법 피해를 추가로 입히고 이동 속도가 $pmv 증가합니다. (피해량: $pd + 공격력 * $pad + 주문력 * $pap)",
+        "Q": "아칼리가 단검을 부채꼴 모양으로 던져 마법 피해를 입히고 적중한 적을 0.5초 동안 50%만큼 둔화시킵니다..<br /> (피해량: $qd + 공격력 * $qad + 주문력 * $qap, 재사용 대기시간: $qcd초)",
+        "E": "아칼리가 연막탄을 떨어뜨려 $edu초 동안 지속되는 연막을 생성하고 이동 속도가 증가합니다. 황혼의 장막이 활성화된 동안 아칼리의 기력이 100 증가합니다. 아칼리는 연막 안에서 투명 상태가 됩니다.<br /> (이동 속도 증가량: $emv, 재사용 대기시간: $ecd초)",
+        "Shift": "아칼리가 표창을 던져 마법 피해를 입히고 적이 표창에 맞으면 $sdu초간 지속되는 표식을 남깁니다. 한 번 더 재사용하면 표식을 남긴 대상에게 돌진해 마법 피해를 줍니다.<br /> (피해량: $sd + 공격력 * $sad + 주문력 * $sap, 재사용 대기시간: $scd초)",
+        "Wheel": "아칼리가 적 챔피언을 뛰어넘어 경로 내에 있는 모든 적에게 마법 피해를 입힙니다. 2.5초 후 재사용하면 적들을 관통하며 돌진하여 대상이 잃은 체력에 비례해 마법 피해를 입힙니다.<br /> (피해량: $wd + 공격력 * $wad + 주문력 * $wap, 재사용 대기시간: $wcd초)"
+    }
+}

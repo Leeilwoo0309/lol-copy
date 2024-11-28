@@ -34,7 +34,12 @@ function makeExponent() {
             if (char[team] == 'exponent') {
                 exponentPassiveStack += 1;
                 if (exponentPassiveStack >= 40) {
-                    exponent.passive();
+                    players[team].specINIT.ad += skillInfo.passive.ad * 0.5;
+                    players[team].specINIT.ap += skillInfo.passive.ap * 0.5;
+                    players[team].specINIT.health += skillInfo.passive.health * 0.5;
+                    players[team].hp[1] += skillInfo.passive.health * 0.5;
+                    players[team].specINIT.armor += skillInfo.passive.armor * 0.5;
+                    players[team].specINIT.magicRegist += skillInfo.passive.magicRegist * 0.5;
                 }
     
                 exponent.passive();
@@ -78,7 +83,7 @@ function makeExponent() {
 
         players[team].specINIT.range += skillInfo.shift.range;
         exponent.isActive.shift = true;
-        players[team].barrier.push([50 + players[team].spec.ad * 1.5, 300]);
+        players[team].barrier.push([50 + players[team].spec.ap * skillInfo.shift.ap, 300]);
         
         setTimeout(() => {
             players[team].specINIT.range -= skillInfo.shift.range;

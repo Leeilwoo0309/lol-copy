@@ -56,14 +56,20 @@ body.addEventListener('keydown', function (e) {
         e.preventDefault();
     }
     if (keyDown[e.key.toLowerCase()] === false) {
+        // if (e.key.toLowerCase() === 'q' && skillUsed.q) return;
+        // else if (e.key.toLowerCase() === 'e' && skillUsed.e) return;
+        // else if (e.key.toLowerCase() === 'shift' && skillUsed.shift) return;
         keyDown[e.key.toLowerCase()] = true;
     }
     else if (e.key == ' ')
         keyDown.space = true;
 });
 body.addEventListener('keyup', function (e) {
-    if (keyDown[e.key.toLowerCase()] === true)
+    if (keyDown[e.key.toLowerCase()] === true) {
         keyDown[e.key.toLowerCase()] = false;
+        if (e.key.toLowerCase() === 'q' || e.key.toLowerCase() === 'e' || e.key.toLowerCase() === 'shift')
+            skillUsed[e.key.toLowerCase()] = false;
+    }
     else if (e.key == ' ')
         keyDown.space = false;
 });
@@ -84,6 +90,8 @@ body.addEventListener('mousedown', function (e) {
 });
 body.addEventListener('mouseup', function (e) {
     keyDown.mouse[e.button] = false;
+    if (e.button === 1)
+        skillUsed.wheel = false;
 });
 skillBtns.forEach(function (e, i) {
     //@ts-ignore
@@ -179,6 +187,18 @@ function getItemInfo() {
         });
     });
 }
+function getRuneInfo() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fetch("http://kimchi-game.kro.kr:1973/getRune")
+                        .then(function (r) { return r.json(); })
+                        .then(function (result) { return result.body; })];
+                case 1: return [2 /*return*/, _a.sent()];
+            }
+        });
+    });
+}
 function getData() {
     return __awaiter(this, void 0, void 0, function () {
         var fetched, fetched2, _a, fetchedItemData;
@@ -218,16 +238,34 @@ function getData() {
                     _a.specINIT = _b.sent();
                     players[getEnemyTeam()].hp[0] = players[getEnemyTeam()].specINIT.health;
                     players[getEnemyTeam()].hp[1] = players[getEnemyTeam()].specINIT.health;
-                    makeEzreal();
-                    makeSniper();
-                    makeSamira();
-                    makeVayne();
-                    makeExponent();
-                    makeAssassin();
-                    makeGraves();
-                    makeVampire();
-                    makeAphelios();
-                    makeAshe();
+                    if (char[team] === 'ezreal' || char[getEnemyTeam()] === 'ezreal')
+                        makeEzreal();
+                    if (char[team] === 'sniper' || char[getEnemyTeam()] === 'sniper')
+                        makeSniper();
+                    if (char[team] === 'samira' || char[getEnemyTeam()] === 'samira')
+                        makeSamira();
+                    if (char[team] === 'vayne' || char[getEnemyTeam()] === 'vayne')
+                        makeVayne();
+                    if (char[team] === 'exponent' || char[getEnemyTeam()] === 'exponent')
+                        makeExponent();
+                    if (char[team] === 'graves' || char[getEnemyTeam()] === 'graves')
+                        makeGraves();
+                    if (char[team] === 'vampire' || char[getEnemyTeam()] === 'vampire')
+                        makeVampire();
+                    if (char[team] === 'aphelios' || char[getEnemyTeam()] === 'aphelios')
+                        makeAphelios();
+                    if (char[team] === 'ashe' || char[getEnemyTeam()] === 'ashe')
+                        makeAshe();
+                    if (char[team] === 'kaisa' || char[getEnemyTeam()] === 'kaisa')
+                        makeKaisa();
+                    if (char[team] === 'ahri' || char[getEnemyTeam()] === 'ahri')
+                        makeAhri();
+                    if (char[team] === 'talon' || char[getEnemyTeam()] === 'talon')
+                        makeTalon();
+                    if (char[team] === 'yasuo' || char[getEnemyTeam()] === 'yasuo')
+                        makeYasuo();
+                    if (char[team] === 'akali' || char[getEnemyTeam()] === 'akali')
+                        makeAkali();
                     if (char[team] == 'ezreal') {
                         charClass = ezreal;
                     }
@@ -258,9 +296,27 @@ function getData() {
                     else if (char[team] == 'ashe') {
                         charClass = ashe;
                     }
+                    else if (char[team] == 'kaisa') {
+                        charClass = kaisa;
+                    }
+                    else if (char[team] == 'ahri') {
+                        charClass = ahri;
+                    }
+                    else if (char[team] == 'talon') {
+                        charClass = talon;
+                    }
+                    else if (char[team] == 'yasuo') {
+                        charClass = yasuo;
+                    }
+                    else if (char[team] == 'akali') {
+                        charClass = akali;
+                    }
                     return [4 /*yield*/, getItemInfo()];
                 case 4:
                     fetchedItemData = _b.sent();
+                    return [4 /*yield*/, getRuneInfo()];
+                case 5:
+                    runeInfo = _b.sent();
                     itemData = [];
                     fetchedItemData.forEach(function (e) {
                         if (e.enable) {
@@ -275,8 +331,10 @@ function getData() {
                                 item.setExtra(e.extra);
                             if (e.des)
                                 item.setDescription(e.des);
-                            if (e.active)
+                            if (e.active) {
                                 item.setActive(e.active);
+                                item.setActiveInfo(e.activeInfo);
+                            }
                             itemData.push(item.build());
                         }
                     });
