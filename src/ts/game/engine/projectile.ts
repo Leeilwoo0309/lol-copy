@@ -380,6 +380,48 @@ class Projectile {
                                 players[team].marker.akali = false;
                             }, enemySkillInfo.shift.duration * 10)
                         }
+                    } else if (this.onhit?.includes('kaisa')) {
+                        if (this.onhit?.includes('aa')) {
+                            players[team].marker.kaisa += 1;
+                        } else if (this.onhit?.includes('skill e')) {
+                            players[team].marker.kaisa += 2;
+                        }
+                    } else if (this.onhit?.includes('ahri')) {
+                        if (this.onhit?.includes('shift')) {
+                            players[team].status.cc.stun = enemySkillInfo.shift.duration;
+                            charClass.cooldown.q += enemySkillInfo.shift.duration;
+                            charClass.cooldown.e += enemySkillInfo.shift.duration;
+                            charClass.cooldown.shift += enemySkillInfo.shift.duration;
+                            charClass.cooldown.wheel += enemySkillInfo.shift.duration;
+
+                            atkWait += enemySkillInfo.shift.duration;
+
+                            // setTimeout(() => {
+                            //     canMove = true;
+                            // }, enemySkillInfo.shift.duration * 10);
+                        }
+                    } else if (this.onhit?.includes('talon skill')) {
+                        if (players[team].marker.talon.cooldown === 0) {
+                            players[team].marker.talon.stack += 1;
+                        }
+
+                        if (this.onhit?.includes('talon skill e')) {
+                            skillHit.talonE = true;
+    
+                            setTimeout(() => {
+                                skillHit.talonE = false;
+                            }, 50);
+                        }
+                    } else if (this.onhit?.includes('yasuo skill q2')) {
+                        players[team].status.cc.stun += 100;
+                        
+
+                        charClass.cooldown.q += 100;
+                        charClass.cooldown.e += 100;
+                        charClass.cooldown.shift += 100;
+                        charClass.cooldown.wheel += 100;
+
+                        atkWait += 100;
                     }
 
                     if (hasShadowflame && isCritical && !this.onhit?.includes('objProjectile')) {

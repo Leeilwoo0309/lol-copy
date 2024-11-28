@@ -84,14 +84,15 @@ const players: Players = {
                 cooldown: 0,
                 stack: 0
             },
-            akali: false
+            akali: false,
         },
         status: {
-            invisible: false,
             cc: {
                 stun: 0,
                 cantMove: 0
-            }
+            },
+            invisible: false,
+
         },
         gold: 50000,
         items: [undefined, undefined, undefined, undefined, undefined, undefined]

@@ -170,7 +170,7 @@ app.get('/addPlay', async (req, res) => {
 
 app.get('/get/char/:name', async (req, res) => {
     const charName = req.params.name;
-    const charList = ["sniper", "ezreal", "samira", "vayne", "exponent", "graves", 'vampire', 'aphelios', 'ashe', 'kaisa', 'akali', 'ahri', 'talon', 'yasuo', 'akali'];
+    const charList = ["sniper", "ezreal", "samira", "vayne", "exponent", "graves", 'vampire', 'aphelios', 'ashe'];
 
     const db = await open({
         filename: './db/playdata.db',

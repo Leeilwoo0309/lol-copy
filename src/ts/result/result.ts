@@ -11,7 +11,6 @@ type GameResult = {
 const params = new URLSearchParams(window.location.search);
 const result = params.get('result');
 let gameResult: GameResult = JSON.parse(atob(unescape(encodeURIComponent(params.get('game')))));
-console.log(gameResult);
 const resultPar: HTMLParagraphElement = document.querySelector('.header');
 const resultPrint: HTMLDivElement = document.querySelector('.result');
 const toTitleBtn: HTMLDivElement = document.querySelector('#back');

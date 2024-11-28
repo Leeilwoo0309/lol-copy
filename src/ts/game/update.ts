@@ -850,7 +850,7 @@ setInterval(() => {
         }
     });
 
-    projectiles[team] = [...newProjectiles];
+    // projectiles[team] = [...newProjectiles];
 
     let sendData = {
         pos: absolutePosition[team],
