@@ -902,9 +902,10 @@ setInterval(() => {
         if (char[team] == 'sniper') {
             alphaMoveSpd = skillInfo.passive.moveSpd;
         }
-    } else if (char[team] !== 'samira') {
-        alphaMoveSpd = 0;
     }
+    // else if (char[team] !== 'samira') {
+    //     alphaMoveSpd = 0;
+    // }
 
     if (passiveActiveTime == 0 && char[team] == 'samira') {
         styleGrade = 0;

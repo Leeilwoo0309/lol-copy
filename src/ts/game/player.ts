@@ -134,8 +134,24 @@ function animation(_team: 'red' | 'blue') {
         } else if (players[_team].marker.ashe === 0) {
             players[_team].selector.style.boxShadow = ``;
         }
+    } else if (char[enemyTeam] === 'kaisa') {
+        let color: string[] = ['', 'rgb(57, 188, 221) 0px 0px 10px 5px', 'rgb(52, 228, 75) 0px 0px 10px 5px', 'rgb(219, 188, 12) 0px 0px 10px 5px', 'red 0px 0px 10px 5px'];
+        
+        players[_team].selector.style.boxShadow = `${ color[players[_team].marker.kaisa] }`;
+    } else if (char[enemyTeam] === 'talon') {
+        let color: string[] = ['', 'rgb(0, 128, 255) 0px 0px 10px 5px', 'rgb(255, 0, 0) 0px 0px 10px 5px'];
+        
+        players[_team].selector.style.boxShadow = `${ color[players[_team].marker.talon.stack] }`;
+    } else if (char[enemyTeam] === 'akali') {
+        if (players[_team].marker.akali) players[_team].selector.style.boxShadow = `rgb(32, 83, 20) 0px 0px 10px 5px`;
+        else players[_team].selector.style.boxShadow = ``;
     }
 
+    if (players[_team].marker.zhonya) {
+        players[_team].selector.style.backgroundColor = 'yellow';
+    } else {
+        players[_team].selector.style.backgroundColor = _team;
+    }
 
 
 

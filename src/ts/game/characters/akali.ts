@@ -189,8 +189,8 @@ function makeAkali() {
             }, 10);
         } else {
             akali.cooldown.shift = akali.cooldownINIT.shift;
-            akali.cooldown.q = 10;
-            akali.cooldown.e = 10;
+            akali.cooldown.q += 30;
+            akali.cooldown.e += 30;
             socket.send(JSON.stringify({
                 body: {
                     msg: 'akali-shift'

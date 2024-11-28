@@ -45,7 +45,6 @@ function makeSniper() {
 
         projectiles[team].push(
             new ProjectileBuilder()
-<<<<<<< HEAD
                 .setDamage(0.1, skillInfo.q.type)
                 .setCritical(0, players[team].spec.criticD)
                 .projOffset({x: -absolutePosition[team].x + absolutePointerPosition.x -15, y: -absolutePosition[team].y + absolutePointerPosition.y + 15})
@@ -57,17 +56,6 @@ function makeSniper() {
                 .setStyle(team === "red" ? "rgb(39, 20, 20)" : "rgb(20, 20, 39)", 50)
                 .canPass()
                 .onHit('sniper skill e1')
-=======
-                .setDamage(1, skillInfo.q.type)
-                .setCritical(0, players[team].spec.criticD)
-                .projOffset({x: -absolutePosition[team].x + absolutePointerPosition.x -15, y: -absolutePosition[team].y + absolutePointerPosition.y + 15})
-                .setDegree(angle)
-                .setReach(1)
-                .setSpeed(0.001)
-                .setSize({height: 30, width: 30})
-                .ignoreObj()
-                .onHit('sniper skill e')
->>>>>>> fb84ca6c683f9d78306fbbe5c890b8d93756e7ae
                 .build(team)
         );
         // players[team].specItem.atkspd += 100 * skillInfo.e.atkspd + skillInfo.e.ap * players[team].spec.ap

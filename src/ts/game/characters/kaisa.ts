@@ -83,7 +83,34 @@ function makeKaisa() {
     kaisa.skillWheel = () => {
         kaisa.cooldown.wheel = kaisa.cooldownINIT.wheel;
         
-        absolutePosition[team] = absolutePosition[getEnemyTeam()];
+        const dash = setInterval(() => {
+            let angle = Math.atan2(absolutePosition[team].y - absolutePosition[getEnemyTeam()].y, absolutePosition[team].x - absolutePosition[getEnemyTeam()].x);
+
+            canMove = false;
+
+            const collideChecker: HTMLDivElement = document.querySelector('.checker-dash.player');
+            let ret: boolean = false;
+            
+            collideChecker.style.position = 'absolute';
+            collideChecker.style.backgroundColor = 'green';
+        
+            collideChecker.style.left = `${ absolutePosition[team].x + 35 - cameraPosition.x - 5 * Math.cos(angle) }px`;
+            collideChecker.style.top = `${ -absolutePosition[team].y - 35 - cameraPosition.y + 5 * Math.sin(angle) }px`;
+            collideChecker.style.height = '80px';
+            collideChecker.style.width = '80px';
+
+            if (playerDistance > 35) {
+                absolutePosition[team].x -= 30 * Math.cos(angle);
+                absolutePosition[team].y -= 30 * Math.sin(angle);
+            } else {
+                clearInterval(dash);
+                
+                // akali.cooldown.shift = akali.cooldownINIT.shift;
+                absolutePosition[team] = absolutePosition[getEnemyTeam()];
+            }
+        }, 4);
+
+        // absolutePosition[team] = absolutePosition[getEnemyTeam()];
         players[team].barrier.push([skillInfo.wheel.damage + skillInfo.wheel.ap * players[team].spec.ap + skillInfo.wheel.ad * players[team].spec.ad, skillInfo.wheel.duration]);
     }
 }
